@@ -1,0 +1,276 @@
+.doc-view{
+    width: calc(100% - 75px);
+    left: 75px;
+    height: calc(100% - 60px);
+    position: absolute;
+    overflow: auto;
+    margin-top: 60px;
+    padding: 1.875rem 1.875rem 0;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+
+}
+
+
+.doc-view-sa {
+    width: calc(100% - 240px);
+    left: 240px;
+    height: calc(100% - 60px);
+    position: absolute;
+    overflow: auto;
+    margin-top: 60px;
+    padding: 1.875rem 1.875rem 0;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+
+}
+
+
+.profile-header {
+    background-color: #fff;
+    border: 1px solid #f0f0f0;
+    padding: 1.5rem;
+}
+.profile-menu {
+    background-color: #fff;
+	border: none;
+    padding: 0.9375rem 1.5rem;
+}
+.profile-menu .nav-tabs.nav-tabs-solid {
+	background-color: transparent;
+}
+.profile-header img {
+    height: auto;
+    max-width: 120px;
+    width: 120px;
+}
+.profile-tab-cont {
+	padding-top: 1.875rem;
+}
+.about-text {
+    max-width: 500px;
+}
+.skill-tags span {
+    background-color: #f4f4f5;
+    border-radius: 4px;
+    color: #66676b;
+    display: inline-block;
+    font-size: 15px;
+    line-height: 22px;
+    margin: 2px 0;
+    padding: 5px 15px;
+}
+.edit-link {
+    color: #66676b;
+    font-size: 16px;
+    margin-top: 4px;
+}
+.cal-icon {
+	position: relative;
+	width: 100%;
+}
+.cal-icon:after {
+	color: #979797;
+	content: "\f073";
+	display: block;
+	font-family: "FontAwesome";
+    font-size: 15px;
+    margin: auto;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+}
+.form-title {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    font-size: 1.25rem;
+	font-weight: 500;
+    line-height: inherit;
+    color: #333;
+    white-space: normal;
+    position: relative;
+    display: block;
+    margin-bottom: 20px;
+}
+.form-title:before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    height: 1px;
+    top: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.form-title span {
+    padding: 0px 0.5rem 0 0;
+    background-color: #fff;
+    display: inline-block;
+    z-index: 2;
+    position: relative;
+}
+
+/*-----------------
+	24. Template Options
+-----------------------*/
+
+.skin-settings {
+	z-index: 999;
+	position: fixed;
+	top: 50%;
+	width: 190px;
+	border: 0;
+	box-shadow: none;
+	padding: 0;
+	border-bottom-left-radius: 2px;
+	right: -190px;
+	background: #fff;
+	transition: all 0.4s ease;
+}
+.skin-settings.active {
+	right: 0;
+	transition: all 0.4s ease;
+}
+.skin-settings .skin-sett-icon {
+    background-color: #fff;
+    border-bottom-left-radius: 2px;
+    border-color: #e0e0e0;
+    border-style: solid;
+    border-top-left-radius: 2px;
+    border-width: 1px 0 1px 1px;
+    color: #666;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 20px;
+    height: 48px;
+    left: -47px;
+    line-height: 48px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 48px;
+}
+.skin-settings .skin-sett-body {
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+    border-top: 1px solid #e0e0e0;
+    color: #616161;
+    padding: 14px 10px;
+}
+.skin-sett-body h4 {
+    color: #666;
+    font-size: 1.125rem;
+}
+.skin-settings .skin-colors {
+    font-size: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+.skin-settings .skin-colors > li {
+    display: inline-block;
+}
+.skin-settings .skin-colors li a {
+    border-radius: 2px;
+	cursor: pointer;
+    display: block;
+    height: 36px;
+    margin: 0 3px;
+	position: relative;
+    width: 36px;
+}
+.skin-settings .skin-colors .skin-red {
+    background-color: #c12942;
+}
+.skin-settings .skin-colors .skin-orange {
+	background-color: #ff7000;
+}
+.skin-settings .skin-colors .skin-teal {
+	background: linear-gradient(to right, #00a0b0 0%, #00d2e6 100%);
+}
+.skin-settings .skin-colors .skin-purple {
+	background-color: #1b5a90;
+}
+.skin-settings .skin-colors li a.active:after {
+    color: #fff;
+	content: "\f00c";
+    display: block;
+    font-family: "FontAwesome";
+    font-size: 15px;
+    left: 50%;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.nav .active{
+    background: rgba(204, 204, 204, 0.2) !important;
+    border: none !important;
+    color: white !important;
+    background-color: #1b5a90  !important;
+    // border-radius: 10px !important;
+    &:hover{
+        background-color: #1b5a90  !important;
+        color: white !important;
+
+    }
+  }
+
+
+
+  .about{
+    border-radius: 0px !important;
+    color: black !important;
+     &:hover{
+       background: #f5f5f5 !important;
+     }
+   }
+   
+   .basetime{
+     border-radius: 0px !important;
+     color: black !important;
+   
+     &:hover{
+       background: #f5f5f5 !important;
+     }
+   
+   }
+   .timeslot{
+    border-radius: 0px !important;
+    color: black !important;
+  
+    &:hover{
+      background: #f5f5f5 !important;
+    }
+  
+  }
+  .appoinmenttab{
+    border-radius: 0px !important;
+    color: black !important;
+  
+    &:hover{
+      background: #f5f5f5 !important;
+    }
+  
+  }
+
+
+  .editview {
+    background-color: #1b5a90 !important;
+    border: 1px solid #1b5a90 !important;
+    color: white !important;
+}

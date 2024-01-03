@@ -1,0 +1,175 @@
+
+.maincontainer-BaseTimeForm{
+
+
+
+.parent-BaseTimeForm{
+    // height: 305px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 4px;
+
+.create-BaseTimeForm{
+    // height: 305px;
+    width: 500px;
+    background-color: white;
+    display: block;
+    position: relative;
+    border-radius: 4px;
+    display: flex;
+    flex-flow: column;
+  border: none;
+  padding: 0;
+  margin: 0;
+    .BaseTimeForm-headerclass{
+        width: calc(100% - 0px);
+        height: 50px;
+        padding: 11px;
+        font-weight: 500;
+        font-size: 16px;
+        border-bottom: 1px solid rgba(0,0,0,.04);
+        
+
+    }
+}
+}
+}
+.isactive{
+    margin-top: 7px;
+    margin-bottom: 0;
+}
+
+.updatebutton{
+    width: 116px;
+    height: 33px;    
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    color: #fff;
+    background-color: #4d9bd7 !important;
+    border: none;
+    border-radius: 5px;
+    float: right;
+    padding: 0px 0px !important;
+    >p{
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        font-size: 11px;
+        font-weight: 400;
+        margin-inline-start:0;
+        margin-inline-end: 0;
+        text-transform:none;
+    }
+    &:hover{
+        background-color: #4d9bd7 !important;
+        box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    }
+
+}
+
+.cancelbutton{
+    width: 88px;
+    height: 33px;    
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12) !important;
+    color: #fff !important;
+    background-color: #f44336 !important;
+    border: none !important;
+    border-radius: 5px !important;
+    float: right;
+    padding: 0px 0px !important;
+    float: left;
+    >p{
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        font-size: 11px;
+        font-weight: 400;
+        margin-inline-start:0;
+        margin-inline-end: 0;
+        text-transform:none;
+    }
+ 
+}
+
+  .searchBox { // To change search box element look
+	border: none;
+	font-size: 12px;
+    width: 315px;
+	min-height: 50px;
+  }
+  .inputField { // To change input field position or margin
+      margin: 5px;
+  }
+  .chips { // To change css chips(Selected options)
+	background: red;
+  }
+  .optionContainer { // To change css for option container 
+	border: 0px solid;
+    
+  }
+  .option { // To change css for dropdown options
+	color: blue;
+  
+  }
+  .groupHeading 
+  { 
+    // To chanage group heading style
+	
+  }
+  .navheader{
+    border: none !important;
+     background-color: transparent !important;
+     padding: 5px !important;
+     cursor:pointer !important;
+
+}
+.BaseTimeForm-header{
+    max-width: 960px;
+    padding-right: 0; 
+    padding-left: 0; 
+    margin-right: 0; 
+     margin-left: 0;
+
+
+}
+
+.react-tooltip-arrow {
+  display: none !important;
+}
+
+
+
+.css-e83jn5-MuiStack-root{
+overflow: hidden !important;
+}
+
+.css-1xhypcz-MuiStack-root{
+    overflow: hidden !important;
+  
+}
+
+
+.css-1srlocp{
+  overflow: hidden !important;
+
+}
+
+
+.adminform1{
+  width: 100%;
+  height: 100%;
+      position: absolute;
+      overflow: auto;
+      padding: 1.875rem 1.875rem 0;
+      -webkit-transition: all 0.2s ease-in-out;
+      -ms-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    background-color: rgba(0, 0, 0, 0.407);
+      &::-webkit-scrollbar {
+          display: none;
+      }
+  
+  
+  }

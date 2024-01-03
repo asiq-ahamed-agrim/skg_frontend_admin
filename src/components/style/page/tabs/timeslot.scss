@@ -1,0 +1,63 @@
+.timeslot-header{
+    max-width: 960px;
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: 0;
+    margin-left: 0;
+}
+.table-content-timeslot{
+    width: calc(100% - 15px);
+
+    table{
+        tr{
+            max-height: 48px;
+            td{
+                padding-top: 7px;
+                padding-bottom: 7px;
+            }
+        }
+    }
+    // padding-left: 20px;   
+
+
+}
+.maincontainer_time{
+    width: calc(100% - 0px);
+    left: 0px;
+    height: 91%;
+    display: flex;
+    flex-direction: column;
+    padding: 0.333333rem;
+    overflow-x: auto;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
+    .table{
+        width: calc(100% - 0px);
+        padding: 46px 6px 10px 0px;
+        // height: 344px; 
+
+    }
+}
+
+
+.timeslot_v{
+    margin-bottom: 60px;
+}
+
+
+.color1{
+    width: 10px !important;
+    height: 20px !important;
+    background-color: gray !important;
+    margin: 5px !important;
+    border-radius: 5px !important;
+}
+.color2{
+    width: 20px !important;
+    height: 20px !important;
+    background-color: green !important;
+    margin: 5px !important;
+    border-radius: 5px !important;
+
+
+}

@@ -1,0 +1,36 @@
+.packages {
+    width: calc(100% - 75px);
+    left: 75px;
+    height: calc(100% - 60px);
+    position: absolute;
+    overflow: auto;
+    margin-top: 60px;
+    padding: 1.875rem 1.875rem 0;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+
+}
+
+
+.packages-sa {
+    width: calc(100% - 240px);
+    left: 240px;
+    height: calc(100% - 60px);
+    position: absolute;
+    overflow: auto;
+    margin-top: 60px;
+    padding: 1.875rem 1.875rem 0;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+
+}

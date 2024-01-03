@@ -1,0 +1,171 @@
+
+
+.docpage {
+    width: calc(100% - 75px);
+    left: 75px;
+    height: calc(100% - 60px);
+    position: absolute;
+    overflow: auto;
+    margin-top: 60px;
+    padding: 1.875rem 1.875rem 0;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+
+}
+
+
+.docpage-sa {
+    width: calc(100% - 240px);
+    left: 240px;
+    height: calc(100% - 60px);
+    position: absolute;
+    overflow: auto;
+    margin-top: 60px;
+    padding: 1.875rem 1.875rem 0;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+
+}
+
+
+
+
+///
+.getdata {
+	// Removes browser styling
+	appearance: none;
+	border: none;
+	font-size: inherit;
+	
+	// Units scale with font-size
+	border-radius: 10px;
+	padding: 0.75em 1em;
+	
+	background:#FF00FF;
+	color: white;
+	
+	display: inline-flex;
+	align-items: center;
+	
+	cursor: wait;
+}
+
+.spinner {
+	--size: 1.25em;
+	--offset-r: calc(var(--size) * -1);
+	--offset-l: 0;
+	--opacity: 0;
+	
+	position: relative;
+	display: inline-flex;
+	
+	height: var(--size);
+	width: var(--size);
+	
+	margin-top: calc(var(--size) * -0.5);
+	margin-right: var(--offset-r);
+	margin-bottom: calc(var(--size) * -0.5);
+	margin-left: var(--offset-l);
+	
+	box-sizing: border-box;
+	opacity: var(--opacity);
+	
+	transition: 0.25s;
+}
+
+// Reveal spinner and animate
+.getdata {
+	&:active .spinner,
+	&:focus .spinner,
+	&:hover .spinner {
+		--width: 1em;
+		--offset-r: 0.333em;
+		--offset-l: -0.333em;
+		--opacity: 1;
+		
+		animation: 0.666s load infinite;
+		
+		@keyframes load {
+			to {
+				// transform: rotate(360deg);
+			}
+		}
+	}
+}
+
+
+
+
+// .dnbtn {
+// 	border: 2px solid #9370DB;
+// 	border-radius: 50px;
+// 	position: relative;
+// 	color: #9370DB;
+// 	// transform: translate(-50%, -50%);
+// 	padding: 3px;
+// 	width: 50px;
+// 	height: 50px;
+// 	text-decoration: none;
+// 	transition: .3s;
+// 	display: block;
+//   }
+  
+//   .dnbtn:before {
+//     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='19' height='25' fill='MediumPurple' class='bi bi-download' viewBox='0 0 16 16'> <path d='M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z'/> <path d='M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z'/> </svg>");
+// 	content: '\f2dd';
+// 	font-size: 26px;
+// 	background-repeat: no-repeat;
+// 	color: transparent;
+// 	position: relative;
+// 	transform: translate(-50%, -50%);
+// 	transition: .3s;
+//   }
+  
+//   .dnbtn:hover:before {
+// 	display: none;
+//   }
+  
+//   .dnbtn:hover:after {
+// 	font-family: Prompt;
+// 	content: 'DOWNLOAD';
+// 	color: #9370DB;
+// 	font-size: 18px;
+// 	position: relative;
+// 	transform: translate(-50%, -50%);
+// 	transition: .3s;
+// 	animation: fadein .3s;
+// 	top: 7px;
+//   }
+  
+//   .dnbtn:hover {
+// 	width: 160px;
+// 	text-decoration: none !important;
+//   }
+  
+//   @keyframes fadein {
+// 	from {
+// 	  opacity: 0;
+// 	}
+// 	to {
+// 	  opacity: 1;
+// 	}
+//   }
+  
+//   @keyframes fadeout {
+// 	from {
+// 	  opacity: 1;
+// 	}
+// 	to {
+// 	  opacity: 0;
+// 	}
+//   }

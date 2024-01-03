@@ -1,0 +1,178 @@
+.adminpage {
+    width: calc(100% - 75px);
+    left: 75px;
+    height: calc(100% - 60px);
+    position: absolute;
+    overflow: auto;
+    margin-top: 60px;
+    padding: 1.875rem 1.875rem 0;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+
+}
+
+
+.adminpage-sa {
+    width: calc(100% - 240px);
+    left: 240px;
+    height: calc(100% - 60px);
+    position: absolute;
+    overflow: auto;
+    margin-top: 60px;
+    padding: 1.875rem 1.875rem 0;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+    // &::-webkit-scrollbar {
+    //     display: none;
+    // }
+
+}
+
+.breadcrumb-item {
+    text-decoration: none;
+}
+
+.edit {
+    background-color: rgba(15, 183, 107, 0.12) !important;
+    color: #26af48 !important;
+    margin: 2px;
+    padding: 4px;
+    font-size: .875rem;
+    border:none !important;
+
+    &:hover {
+        color: #26af48 !important;
+    }
+}
+
+.delete {
+    background-color: rgba(15, 183, 107, 0.12) !important;
+    color: #26af48 !important;
+    margin: 2px;
+    padding: 4px;
+    font-size: .875rem;
+    border:none !important;
+
+    &:hover {
+        color: #26af48 !important;
+    }
+
+}
+
+
+
+
+///
+.adminform{
+    width: 100%;
+    height: 100%;
+        position: absolute;
+        overflow: auto;
+        padding: 1.875rem 1.875rem 0;
+        -webkit-transition: all 0.2s ease-in-out;
+        -ms-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+      background-color: transparent;
+      display: flex;
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.407);
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    
+    
+    }
+    
+    .modal {
+        position: fixed!important;
+        top: 0!important;
+        left: 0!important;
+        z-index: 1055!important;
+        width: 100%!important;
+        height: 100%!important;
+        overflow-x: hidden!important;
+        overflow-y: auto!important;
+        outline: 0;
+    }
+    
+    
+    .modal-dialog-centered {
+        display: flex !important;
+        align-items: center !important;
+        // min-height: calc(100% - 1rem);
+    }
+    
+    .modal-dialog1 {
+        position: relative;
+        width: auto;
+        margin: 0.5rem;
+        pointer-events: none;
+        display: flex !important;
+        align-items: center !important;
+
+    }
+    
+    
+    #delete_modal .modal-content {
+        text-align: center;
+    }
+    .modal-content {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        pointer-events: auto !important;
+        background-color: #fff !important;
+        background-clip: padding-box !important;
+        border: 1px solid rgba(0,0,0,.2) !important;
+        border-radius: 0.3rem !important;
+        outline: 0 !important;
+    }
+    
+    .modal-body {
+        position: relative!important;
+        flex: 1 1 auto!important;
+        padding: 1rem;
+    }
+    
+    .modal-title {
+        margin-bottom: 0 !important;
+        line-height: 1.5 !important;
+        font-family: "Mada", sans-serif;
+        font-weight: 500 !important;
+
+    }
+    
+    .modal-header{
+        display: flex!important;
+        flex-shrink: 0!important;
+        align-items: center!important;
+        justify-content: space-between!important;
+        padding: 1rem 1rem!important;
+        border-bottom: 1px solid #dee2e6!important;
+        border-top-left-radius: calc(0.3rem - 1px)!important;
+        border-top-right-radius: calc(0.3rem - 1px)!important;
+    }
+    
+    
+    .create {
+        background-color: #1b5a90 !important;
+        border: 1px solid #1b5a90 !important;
+        width: 100%;
+    
+        &:hover{
+            color: #ffffff;
+            background-color: #19c1dc;
+            border-color: #19c1dc;
+        }
+        
+    }

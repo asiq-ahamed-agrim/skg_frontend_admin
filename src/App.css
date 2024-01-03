@@ -1,0 +1,157 @@
+.App {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #f8f9fa;
+}
+
+.rs-anim-fade.rs-anim-in{
+z-index: 999 !important;
+}
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+input[type="search"]::-webkit-search-decoration:hover,
+input[type="search"]::-webkit-search-cancel-button:hover { 
+    cursor:pointer !important; 
+}
+
+
+input[type="number"]::-webkit-outer-spin-button, 
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+.btn:disabled,
+.btn:disabled:hover,
+.btn:disabled:focus,
+.btn.disabled:hover,
+.btn.disabled:focus {
+  cursor: not-allowed !important;
+  pointer-events: all !important;
+}
+
+
+.breadcrumb{
+  background-color: transparent  !important;
+}
+
+
+/* download */
+
+.dnbtn {
+	border: 2px solid white;
+	border-radius: 50px;
+	position: relative;
+	color: #9370DB;
+	/* transform: translate(-50%, -50%); */
+	padding: 3px;
+	width: 50px;
+	height: 50px;
+	text-decoration: none;
+	transition: .3s;
+	display: block;
+  background-color: #1B5A90;
+
+  }
+  
+  .dnbtn:before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='19' height='25' fill='white' class='bi bi-download' viewBox='0 0 16 16'> <path d='M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z'/> <path d='M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z'/> </svg>");
+	content: '\f2dd';
+	font-size: 26px;
+	background-repeat: no-repeat;
+	color: transparent;
+	position: relative;
+	transform: translate(-50%, -50%);
+	transition: .3s;
+  }
+  
+  @-moz-document url-prefix() {
+    .dnbtn:before {
+
+    margin-right: -2px;
+    font-size: 44px;
+  
+    }}
+
+  .dnbtn:hover:before {
+	display: none;
+  }
+  
+  .dnbtn:hover:after {
+	font-family: Prompt;
+	content: 'DOWNLOAD DATA';
+	color: #fff;
+	font-size: 13px;
+	position: relative;
+	transform: translate(-50%, -50%);
+	transition: .3s;
+	animation: fadein .3s;
+	top: 7px;
+  }
+  
+  .dnbtn:hover {
+	width: 140px;
+	text-decoration: none !important;
+  }
+  
+  @keyframes fadein {
+	from {
+	  opacity: 0;
+	}
+	to {
+	  opacity: 1;
+	}
+  }
+  
+  @keyframes fadeout {
+	from {
+	  opacity: 1;
+	}
+	to {
+	  opacity: 0;
+	}
+  }
+
+
+  .nav-link{
+    &:hover,
+    &:focus {
+        color: white !important;
+    }
+  }
