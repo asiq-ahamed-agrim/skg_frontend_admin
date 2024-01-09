@@ -1,21 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   sidebarnav: "true",
-  sidebar: "DashBoard",
+  sidebar: "Client Details",
   loader: "false",
   popupalert: "false",
+  clientaddstatevalue:"",
+
+
   editadminuser: "",
   editadminuserid: "",
-  edituserdoctorid: "",
   editdoctoruser: "",
-  basetimeedit: "",
-  basetimeid: "",
   patientid: "",
   speciality: "",
   specialityid: "",
   symptoms: "",
   symptomsid: "",
-  pharmacypopup: "",
   pharmacyid: "",
   dvtabs: "About",
   bannerdata: "",
@@ -29,10 +28,7 @@ const initialState = {
   Pharmacylistissue:"",
 Pharmacylistissueid:"",
 videobannerstate:"",
-videobannerid:"",
 userdata:"",
-appoinmentreshedule:"",
-appoinmentresheduleid:"",
 };
 export const counterSlice = createSlice({
   name: "counterSlice",
@@ -54,6 +50,14 @@ export const counterSlice = createSlice({
       state.popupalert = action.payload;
       // console.log(state.popupalert,"kdsjh")
     },
+    
+    clientaddstate: (state, action) => {
+      state.clientaddstatevalue = action.payload;
+      // console.log(state.edituser,"kdsjh")
+    },
+
+
+    ///
     editadminuser: (state, action) => {
       state.edituser = action.payload;
       // console.log(state.edituser,"kdsjh")
@@ -66,18 +70,7 @@ export const counterSlice = createSlice({
       state.editdoctoruser = action.payload;
       // console.log(state.edituser,"kdsjh")
     },
-    editdoctoruserid: (state, action) => {
-      state.edituserdoctorid = action.payload;
-      // console.log(state.edituserdoctorid,"kdsjh")
-    },
-    basetimeedit: (state, action) => {
-      state.basetimeedit = action.payload;
-      //  console.log(state.basetimeedit,"kdsjh")
-    },
-    basetimeid: (state, action) => {
-      state.basetimeid = action.payload;
-      //  console.log(state.basetimeid,"kdsjh")
-    },
+
     patientid: (state, action) => {
       state.patientid = action.payload;
       //  console.log(state.patientid,"kdsjh")
@@ -97,10 +90,7 @@ export const counterSlice = createSlice({
     specialityid: (state, action) => {
       state.specialityid = action.payload;
     },
-    pharmacypopup: (state, action) => {
-      state.pharmacypopup = action.payload;
-      // console.log(state.edituser,"kdsjh")
-    },
+
     pharmacyid: (state, action) => {
       state.pharmacyid = action.payload;
       // console.log(state.edituser,"kdsjh")
@@ -125,11 +115,9 @@ export const counterSlice = createSlice({
     },
     Investigation: (state, action) => {
       state.Investigation = action.payload;
-      // console.log(state.Investigation,"kdsjh")
     },
     Investigationid: (state, action) => {
       state.Investigationid = action.payload;
-      // console.log(state.Investigation,"kdsjh")
     },
     packages: (state, action) => {
       state.packages = action.payload;
@@ -147,17 +135,9 @@ export const counterSlice = createSlice({
     videobannerstate: (state, action) => {
       state.videobannerstate = action.payload;
     },
-    videobannerid: (state, action) => {
-      state.videobannerid = action.payload;
-    },
+
     userdata: (state, action) => {
       state.userdata = action.payload;
-    },
-    appoinmentreshedule: (state, action) => {
-      state.appoinmentreshedule = action.payload;
-    },
-    appoinmentresheduleid: (state, action) => {
-      state.appoinmentresheduleid = action.payload;
     },
 
 
@@ -172,18 +152,16 @@ export const {
   sidebar,
   loader,
   popupalert,
+  clientaddstate,
+
+
   editadminuser,
   editadminuserid,
-  editdoctoruser,
-  editdoctoruserid,
-  basetimeedit,
-  basetimeid,
   patientid,
   speciality,
   specialityid,
   symptoms,
   symptomsid,
-  pharmacypopup,
   pharmacyid,
   dvtabs,
   bannerdata,
@@ -197,10 +175,7 @@ export const {
   Pharmacylistissue,
 Pharmacylistissueid,
 videobannerstate,
-videobannerid,
 userdata,
-appoinmentreshedule,
-appoinmentresheduleid
 } = counterSlice.actions;
 
 export default counterSlice.reducer;

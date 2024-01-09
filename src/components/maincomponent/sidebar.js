@@ -30,11 +30,14 @@ function SideBar() {
   const sideactive = useSelector((state) => state.counter.sidebarnav);
   const sidebarmenustate = useDispatch();
   const sidebarstate = useSelector((state) => state.counter.sidebar);
-  const [expand, setexpand] = useState();
+  const [expand, setexpand] = useState(null);
   const sidebaractive = useDispatch();
   const tabsstate = useDispatch();
   const dispatch = useDispatch();
   const dispatchid = useDispatch();
+  // console.log(list,list2)
+  console.log(expand);
+
   let roledata = localStorage.getItem("role");
   $(window).resize(function () {
     // console.log(
@@ -67,19 +70,19 @@ function SideBar() {
     //     `${sidebarstate == "Admin User" ? " activesidemenu" : ""}`,
     //   link: "/",
     // },
-    {
-          name: "Client Details",
-          link: "/",
-          icon: (
-            <PersonRoundedIcon style={{ padding: "10px", fontSize: "46px" }} />
-          ),
-          text: "Client Details",
-          class:
-            "doctorsidebar" +
-            `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
-        },
+    // {
+    //       name: "Client Details",
+    //       link: "/",
+    //       icon: (
+    //         <PersonRoundedIcon style={{ padding: "10px", fontSize: "46px" }} />
+    //       ),
+    //       text: "Client Details",
+    //       class:
+    //         "doctorsidebar" +
+    //         `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
+    //     },
 
-    // (roledata == "Super Admin" || roledata == "Doctor Admin") && {
+    //  {
     //   id: 2,
     //   icon: (
     //     // <PersonAddAltRoundedIcon
@@ -96,7 +99,7 @@ function SideBar() {
     //     `${sidebarstate == "Doctors" ? " activesidemenu" : ""}`,
     //   link: "/Doctor",
     // },
-    // roledata == "Super Admin" && {
+    //  {
     //   id: 3,
     //   icon: <PersonRoundedIcon style={{ padding: "10px", fontSize: "46px" }} />,
     //   text: "Patient",
@@ -105,7 +108,7 @@ function SideBar() {
     //     `${sidebarstate == "Patient" ? " activesidemenu" : ""}`,
     //   link: "/Patient",
     // },
-    // roledata == "Super Admin" && {
+    //  {
     //   id: 6,
     //   icon: <CreditCardIcon style={{ padding: "10px", fontSize: "46px" }} />,
     //   text: "Bill Payments",
@@ -114,7 +117,7 @@ function SideBar() {
     //     `${sidebarstate == "Bill Payments" ? " activesidemenu" : ""}`,
     //   link: "/BillPayments",
     // },
-    // roledata == "Super Admin" && {
+    //  {
     //   id: 7,
     //   icon: (
     //     <NotificationsActiveIcon
@@ -127,7 +130,7 @@ function SideBar() {
     //     `${sidebarstate == "Send Notification" ? " activesidemenu" : ""}`,
     //   link: "/SendNotification",
     // },
-    // roledata == "Super Admin" && {
+    //  {
     //   id: 8,
     //   icon: (
     //     // <NotificationsActiveIcon
@@ -144,7 +147,7 @@ function SideBar() {
     //     `${sidebarstate == "Cash Back Points" ? " activesidemenu" : ""}`,
     //   link: "/CashBackPoints",
     // },
-    // roledata == "Super Admin" && {
+    //  {
     //   id: 10,
     //   icon: (
     //     // <NotificationsActiveIcon
@@ -161,7 +164,7 @@ function SideBar() {
     //     `${sidebarstate == "Kranium Billing List" ? " activesidemenu" : ""}`,
     //   link: "/kraniumBillingList",
     // },
-    // roledata == "Super Admin" && {
+    //  {
     //   id: 11,
     //   icon: (
     //     // <NotificationsActiveIcon
@@ -178,7 +181,7 @@ function SideBar() {
     //     `${sidebarstate == "Patient Testimonials" ? " activesidemenu" : ""}`,
     //   link: "/Patienttestimonials",
     // },
-    // roledata == "Super Admin" && {
+    //  {
     //   name: "img",
     //   link: "/Banner",
     //   icon: (
@@ -189,7 +192,7 @@ function SideBar() {
     //     "doctorsidebar" +
     //     `${sidebarstate == "Banner Images" ? " activesidemenu" : ""}`,
     // },
-    // roledata == "Super Admin" && {
+    //  {
     //   name: "img",
     //   link: "/BannerVideo",
     //   icon: (
@@ -202,60 +205,30 @@ function SideBar() {
     //       sidebarstate == "Banner Images and Videos" ? " activesidemenu" : ""
     //     }`,
     // },
-    // (roledata == "Super Admin" || roledata == "Doctor Admin") && {
-    //   id: 4,
-    //   icon: <LocalHospitalIcon style={{ padding: "10px", fontSize: "46px" }} />,
-    //   text: "Doctor",
-    //   subMenus: [
-    //     (roledata == "Super Admin" || roledata == "Doctor Admin") && {
-    //       name: "spa",
-    //       link: "/Speciality",
-    //       icon: (
-    //         <i
-    //           class="fa fa-stethoscope"
-    //           style={{ padding: "13px", fontSize: "17px" }}
-    //         ></i>
-    //       ),
-    //       text: "Speciality",
-    //       class:
-    //         "doctorsidebar" +
-    //         `${sidebarstate == "Speciality" ? " activesidemenu" : ""}`,
-    //     },
-    //     (roledata == "Super Admin" || roledata == "Doctor Admin") && {
-    //       name: "sym",
-    //       link: "/Symptoms",
-    //       icon: <SickIcon style={{ padding: "10px", fontSize: "46px" }} />,
-    //       text: "Symptoms",
-    //       class:
-    //         "doctorsidebar" +
-    //         `${sidebarstate == "Symptoms" ? " activesidemenu" : ""}`,
-    //     },
-    //     (roledata == "Super Admin" || roledata == "Doctor Admin") && {
-    //       name: "sym",
-    //       link: "/Appoinments",
-    //       icon: (
-    //         // <SickIcon style={{ padding: "10px", fontSize: "46px" }} />
-    //         <i
-    //           class="fas fa-history"
-    //           style={{ padding: "15px", fontSize: "17px" }}
-    //         ></i>
-    //       ),
-
-    //       text: "Appoinments Reschedule",
-    //       class:
-    //         "doctorsidebar" +
-    //         `${
-    //           sidebarstate == "Appoinments Reschedule" ? " activesidemenu" : ""
-    //         }`,
-    //     },
-    //   ],
-    // },
+     {
+      id: 0,
+      icon: <LocalHospitalIcon style={{ padding: "10px", fontSize: "46px" }} />,
+      text: "Organisation",
+      subMenus: [
+        {
+          name: "ClientDetails",
+          link: "/",
+          icon: (
+            <PersonRoundedIcon style={{ padding: "10px", fontSize: "46px" }} />
+          ),
+          text: "Client Details",
+          class:
+            "doctorsidebar" +
+            `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
+        },
+      ],
+    },
     // {
-    //   id: 12,
+    //   id: 1,
     //   icon: <LocalPharmacyIcon style={{ padding: "10px", fontSize: "46px" }} />,
     //   text: "Pharmacy(OLD)",
     //   subMenus: [
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
+    //      {
     //       name: "Productsorder",
     //       link: "/Productsorder",
     //       icon: (
@@ -268,65 +241,15 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Products Order" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
-    //       name: "PharmacyIssue",
-    //       link: "/PharmacyIssue",
-    //       icon: (
-    //         <i
-    //           class="fas fa-comment-medical"
-    //           style={{ padding: "13px", fontSize: "17px" }}
-    //         ></i>
-    //       ),
-    //       text: "Pharmacy Issue",
-    //       class:
-    //         "doctorsidebar" +
-    //         `${sidebarstate == "Pharmacy Issue" ? " activesidemenu" : ""}`,
-    //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
-    //       name: "IssueList",
-    //       link: "/IssueList",
-    //       icon: (
-    //         <i
-    //           class="fas fa-address-card"
-    //           style={{ padding: "13px", fontSize: "17px" }}
-    //         ></i>
-    //       ),
-    //       text: "Issue List",
-    //       class:
-    //         "doctorsidebar" +
-    //         `${sidebarstate == "Issue List" ? " activesidemenu" : ""}`,
-    //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
-    //       name: "Pharmacybill",
-    //       link: "/Pharmacybill",
-    //       icon: (
-    //         <i
-    //           class="fas fa-money-check"
-    //           style={{ padding: "13px", fontSize: "17px" }}
-    //         ></i>
-    //       ),
-    //       text: "Pharmacy Bill List",
-    //       class:
-    //         "doctorsidebar" +
-    //         `${sidebarstate == "Pharmacy Bill List" ? " activesidemenu" : ""}`,
-    //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
-    //       name: "pharmacy",
-    //       link: "/Pharmacy",
-    //       icon: <VaccinesIcon style={{ padding: "10px", fontSize: "46px" }} />,
-    //       text: "Pharmacys",
-    //       class:
-    //         "doctorsidebar" +
-    //         `${sidebarstate == "Pharmacys" ? " activesidemenu" : ""}`,
-    //     },
+
     //   ],
     // },
-    // (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
-    //   id: 13,
+    //  {
+    //   id: 2,
     //   icon: <LocalPharmacyIcon style={{ padding: "10px", fontSize: "46px" }} />,
     //   text: "Online Pharmacy",
     //   subMenus: [
-    //             (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
+    //              {
     //       name: "Productsorder",
     //       link: "/Productsordernew",
     //       icon: (
@@ -339,7 +262,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Products Order new" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
+    //      {
     //       name: "PharmacyIssue",
     //       link: "/PharmacyIssue",
     //       icon: (
@@ -353,7 +276,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Pharmacy Issue" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
+    //      {
     //       name: "IssueList",
     //       link: "/IssueList",
     //       icon: (
@@ -367,7 +290,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Issue List" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
+    //      {
     //       name: "Pharmacybill",
     //       link: "/Pharmacybill",
     //       icon: (
@@ -381,7 +304,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Pharmacy Bill List" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
+    //      {
     //       name: "Online pharmacy",
     //       link: "/PharmacyNew",
     //       icon: <VaccinesIcon style={{ padding: "10px", fontSize: "46px" }} />,
@@ -390,7 +313,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Online pharmacy" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
+    //      {
     //       name: "Medicine Type",
     //       link: "/MedicineType",
     //       icon: <VaccinesIcon style={{ padding: "10px", fontSize: "46px" }} />,
@@ -399,7 +322,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Medicine Type" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
+    //      {
     //       name: "img",
     //       link: "/PharmacyBannerVideo",
     //       icon: (
@@ -412,7 +335,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "PharmacyBanner" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Pharmacy Admin") && {
+    //      {
     //       name: "img",
     //       link: "/PharmacyRequest",
     //       icon: (
@@ -428,7 +351,7 @@ function SideBar() {
     //   ],
     // },
 
-    // (roledata == "Super Admin" || roledata == "Diagnostics Admin") && {
+    //  {
     //   id: 5,
     //   icon: (
     //     <i
@@ -438,7 +361,7 @@ function SideBar() {
     //   ),
     //   text: "Diagnostics",
     //   subMenus: [
-    //     (roledata == "Super Admin" || roledata == "Diagnostics Admin") && {
+    //      {
     //       name: "Invest",
     //       link: "/Investigations",
     //       icon: (
@@ -452,7 +375,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Investigations" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Diagnostics Admin") && {
+    //      {
     //       name: "Pack",
     //       link: "/Packages",
     //       icon: (
@@ -466,7 +389,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Packages" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Diagnostics Admin") && {
+    //      {
     //       name: "DiagnosticsBanner",
     //       link: "/DiagnosticsBanner",
     //       icon: (
@@ -480,7 +403,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Diagnostics Banner" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Diagnostics Admin") && {
+    //      {
     //       name: "Diagnosticsorder",
     //       link: "/Diagnosticsorder",
     //       icon: (
@@ -494,7 +417,7 @@ function SideBar() {
     //         `${sidebarstate == "Diagnostics Order" ? " activesidemenu" : ""}`,
     //     },
 
-    //     (roledata == "Super Admin" || roledata == "Diagnostics Admin") && {
+    //      {
     //       name: "Issue Report",
     //       link: "/DiagnosticsIssueReport",
     //       icon: (
@@ -508,7 +431,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Diagnostics Issue" ? " activesidemenu" : ""}`,
     //     },
-    //     (roledata == "Super Admin" || roledata == "Diagnostics Admin") && {
+    //      {
     //       name: "Diagnosticsbill",
     //       link: "/Diagnosticsbill",
     //       icon: (
@@ -540,7 +463,7 @@ function SideBar() {
     //     },
     //   ],
     // },
-    // roledata == "Super Admin" && {
+    //  {
     //   id: 9,
     //   icon: (
     //     <i
@@ -550,7 +473,7 @@ function SideBar() {
     //   ),
     //   text: "Records",
     //   subMenus: [
-    //     roledata == "Super Admin" && {
+    //      {
     //       name: "Appoinments Details",
     //       link: "/AppoinmentDetails",
     //       icon: (
@@ -564,7 +487,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Appoinments Details" ? " activesidemenu" : ""}`,
     //     },
-    //     roledata == "Super Admin" && {
+    //      {
     //       name: "Pharmacy Details",
     //       link: "/PharmacyDetails",
     //       icon: (
@@ -578,7 +501,7 @@ function SideBar() {
     //         "doctorsidebar" +
     //         `${sidebarstate == "Pharmacy Details" ? " activesidemenu" : ""}`,
     //     },
-    //     roledata == "Super Admin" && {
+    //      {
     //       name: "Diagnostics Details",
     //       link: "/DiagnosticsDetails",
     //       icon: (
@@ -598,7 +521,6 @@ function SideBar() {
 
   const sidebarhandleclick = (e) => {
     if (e != "Settings" && e != "Diagnostics") {
-      console.log(e);
       sidebarmenustate(sidebar(e));
     }
     dispatchid(productorderid(""));
@@ -614,43 +536,43 @@ function SideBar() {
       $(".linkTextclosed").css("display", "block");
       $(".arrow").css("display", "block");
     }
-    console.log(navData);
-    navData[11] != undefined &&
-      navData[11] != "" &&
-      navData[11].subMenus.map((e) => {
+    navData[0] != undefined &&
+      navData[0] != "" &&
+      navData[0].subMenus.map((e) => {
         list.push(e.text);
       });
-    navData[12] != undefined &&
-      navData[12] != "" &&
-      navData[12].subMenus.map((e) => {
+    navData[1] != undefined &&
+      navData[1] != "" &&
+      navData[1].subMenus.map((e) => {
         list2.push(e.text);
       });
-    navData[13] != undefined &&
-      navData[13] != "" &&
-      navData[13].subMenus.map((e) => {
+    navData[2] != undefined &&
+      navData[2] != "" &&
+      navData[2].subMenus.map((e) => {
         list3.push(e.text);
       });
-    navData[14] != undefined &&
-      navData[14] != "" &&
-      navData[14].subMenus.map((e) => {
+    navData[3] != undefined &&
+      navData[3] != "" &&
+      navData[3].subMenus.map((e) => {
         list4.push(e.text);
       });
-    navData[15] != undefined &&
-      navData[15] != "" &&
-      navData[15].subMenus.map((e) => {
+    navData[4] != undefined &&
+      navData[4] != "" &&
+      navData[4].subMenus.map((e) => {
         list5.push(e.text);
       });
+      console.log(navData,list,list2);
 
     if (list.includes(sidebarstate)) {
-      setexpand(11);
+      setexpand(0);
     } else if (list2.includes(sidebarstate)) {
-      setexpand(12);
+      setexpand(1);
     } else if (list3.includes(sidebarstate)) {
-      setexpand(13);
+      setexpand(2);
     } else if (list4.includes(sidebarstate)) {
-      setexpand(14);
+      setexpand(3);
     } else if (list5.includes(sidebarstate)) {
-      setexpand(15);
+      setexpand(4);
     }
   };
   const hoverleave = (e) => {
@@ -658,54 +580,55 @@ function SideBar() {
       // console.log(e);
       $(".sidebarclose").css("width", "65px");
       $(".linkTextclosed").css("display", "none");
-      setexpand(false);
+      setexpand(null);
       $(".arrow").css("display", "none");
     }
   };
   useEffect(() => {
     if (!sideactive) {
-      setexpand(false);
+      setexpand(null);
     }
   }, [sideactive]);
   useEffect(() => {
     if (sideactive) {
-      console.log(navData);
-      navData[11] != undefined &&
-        navData[11] != "" &&
-        navData[11].subMenus.map((e) => {
+      console.log(navData,sideactive,list);
+      navData[0] != undefined &&
+        navData[0] != "" &&
+        navData[0].subMenus.map((e) => {
           list.push(e.text);
         });
-      navData[12] != undefined &&
-        navData[12] != "" &&
-        navData[12].subMenus.map((e) => {
+      navData[1] != undefined &&
+        navData[1] != "" &&
+        navData[1].subMenus.map((e) => {
           list2.push(e.text);
         });
-      navData[13] != undefined &&
-        navData[13] != "" &&
-        navData[13].subMenus.map((e) => {
+      navData[2] != undefined &&
+        navData[2] != "" &&
+        navData[2].subMenus.map((e) => {
           list3.push(e.text);
         });
-      navData[14] != undefined &&
-        navData[14] != "" &&
-        navData[14].subMenus.map((e) => {
+      navData[3] != undefined &&
+        navData[3] != "" &&
+        navData[3].subMenus.map((e) => {
           list4.push(e.text);
         });
-      navData[15] != undefined &&
-        navData[15] != "" &&
-        navData[15].subMenus.map((e) => {
+      navData[4] != undefined &&
+        navData[4] != "" &&
+        navData[4].subMenus.map((e) => {
           list5.push(e.text);
         });
+        console.log(navData,list,list2);
 
       if (list.includes(sidebarstate)) {
-        setexpand(11);
+        setexpand(0);
       } else if (list2.includes(sidebarstate)) {
-        setexpand(12);
+        setexpand(1);
       } else if (list3.includes(sidebarstate)) {
-        setexpand(13);
+        setexpand(2);
       } else if (list4.includes(sidebarstate)) {
-        setexpand(14);
+        setexpand(3);
       } else if (list5.includes(sidebarstate)) {
-        setexpand(15);
+        setexpand(4);
       }
     }
   }, [sideactive]);

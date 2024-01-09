@@ -57,7 +57,7 @@ function Navbar(props) {
         <div
           className={sideactive ? "header-left" : "header-left-inactive"}
           onClick={(e) => {
-            sidebarmenustate(sidebar("DashBoard"));
+            sidebarmenustate(sidebar("Client Details"));
             window.location.href = "/";
           }}
         >

@@ -1,17 +1,15 @@
 import "../style/page/report.scss";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import {
-  productorder,
-  productorderid,
-  sidebar,
-} from "../redux/reducer/counterslice";
+import {clientaddstate,} from "../redux/reducer/counterslice";
 import { useEffect, useState, useMemo } from "react";
 import { clientdata,  clientapprove } from "../../text/apidata";
 import BasicTable from "../maincomponent/reacttable/table";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { NavLink } from "react-router-dom";
 import noimage1 from "../../assets/images/noimage.png";
+import ClientDetailsForm from "../form/clientdetailsfrom";
+
 import $ from 'jquery'; 
 function Client(props) {
   const Token = {
@@ -36,35 +34,36 @@ function Client(props) {
   })
   const dispatch = useDispatch();
   const sideactive = useSelector((state) => state.counter.sidebarnav);
-  const productstate = useSelector((state) => state.counter.productorder);
+  const clientstate = useSelector((state) => state.counter.clientaddstatevalue);
+  console.log(clientstate)
   const handleSubmit = (event) => {
     event.preventDefault();
   };
 
   useEffect(() => {
     if(popup==false){
-    props.loaderchange("true");
-    console.log(Token);
-    axios
-      .get(clientdata+"/"+filter, {headers:Token.headers},)
-      .then((res) => {
-        const correctedDataString = res.data.data
-          .replace(/'/g, '"')
-          .replace(/UUID\("(.*?)"\)/g, '"$1"');
-        console.log(JSON.parse(correctedDataString));
-        settableheaderdata(JSON.parse(correctedDataString));
-        props.loaderchange("false");
+    // props.loaderchange("true");
+    // console.log(Token);
+    // axios
+    //   .get(clientdata+"/"+filter, {headers:Token.headers},)
+    //   .then((res) => {
+    //     const correctedDataString = res.data.data
+    //       .replace(/'/g, '"')
+    //       .replace(/UUID\("(.*?)"\)/g, '"$1"');
+    //     console.log(JSON.parse(correctedDataString));
+    //     settableheaderdata(JSON.parse(correctedDataString));
+    //     props.loaderchange("false");
         
-      })
-      .catch((error) => {
-        console.log(error);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
 
-        props.loaderchange("false");
-        props.popupalert("true");
-        setTimeout(() => {
-          props.popupalert("false");
-        }, 2000);
-      });
+    //     props.loaderchange("false");
+    //     props.popupalert("true");
+    //     setTimeout(() => {
+    //       props.popupalert("false");
+    //     }, 2000);
+    //   });
     }
   }, [popup,filter]);
 
@@ -271,10 +270,25 @@ $(document).ready(function() {
             <div class="col-sm-7 col-auto">
               <h3 class="page-title">Client Details</h3>
             </div>
+            <div class="col-sm-5 col">
+              <a
+                onClick={(e) => {dispatch(clientaddstate("ClientCreate"))}}
+                style={{
+                  backgroundColor: "#1b5a90",
+                  border: "1px solid #1b5a90",
+                  color: "white",
+                }}
+                type="button"
+                data-toggle="modal"
+                class="btn btn-primary float-right mt-2"
+              >
+                Add
+              </a>
+            </div>
           </div>
         </div>
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-md-12 mt-3">
             <div className="card">
               <div className="card-body" style={{ padding: "1.5rem" }}>
                 <form onSubmit={handleSubmit} className="d-flex justify-content-between">
@@ -382,6 +396,9 @@ $(document).ready(function() {
           }}
         />
       </div>
+      {clientstate == "ClientCreate" || clientstate == "ClientEdit" ?(
+        <ClientDetailsForm/>
+      ):""}
       {popup && (
         <>
           <div className="logout_popup">
@@ -416,6 +433,8 @@ $(document).ready(function() {
           </div>
         </>
       )}
+
+      
     </>
   );
 }
