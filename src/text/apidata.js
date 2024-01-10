@@ -3,6 +3,8 @@ const baseurl = "http://122.186.126.218:8001";
 // const baseurl = "http://122.186.126.218:8023";
 // const baseurl ="http://43.205.101.135:8000"
 
+const baseurl2 = "http://192.168.5.103:8005/"
+
 export const loginapi = baseurl+"/adminlogin/";
 
 export const adminlist =baseurl+"/adminpanel/v1/";
@@ -161,7 +163,13 @@ export const Token = {
     },
   };
 
-export const login ="https://zhxpx7std1.execute-api.us-east-1.amazonaws.com/Prod/admin_login"
+export const login ="http://192.168.5.103:8005/admin_login"
+
+export const ClientCreate ="http://192.168.5.103:8005/client_creation"
+
+// export const CustomerDetails = "http://192.168.5.103:8005/get_client_data?page=1&per_page=20&is_active=true"
+export const CustomerDetails = "http://192.168.5.103:8005/get_client_data"
+
 
 export const clientdata="https://zhxpx7std1.execute-api.us-east-1.amazonaws.com/Prod/get_client_data"
 

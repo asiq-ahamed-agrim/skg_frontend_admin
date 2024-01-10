@@ -70,17 +70,17 @@ function SideBar() {
     //     `${sidebarstate == "Admin User" ? " activesidemenu" : ""}`,
     //   link: "/",
     // },
-    // {
-    //       name: "Client Details",
-    //       link: "/",
-    //       icon: (
-    //         <PersonRoundedIcon style={{ padding: "10px", fontSize: "46px" }} />
-    //       ),
-    //       text: "Client Details",
-    //       class:
-    //         "doctorsidebar" +
-    //         `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
-    //     },
+    {
+      name: "ClientDetails",
+      link: "/",
+      icon: (
+        <PersonRoundedIcon style={{ padding: "10px", fontSize: "46px" }} />
+      ),
+      text: "Client Details",
+      class:
+        "doctorsidebar" +
+        `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
+    },
 
     //  {
     //   id: 2,
@@ -205,24 +205,24 @@ function SideBar() {
     //       sidebarstate == "Banner Images and Videos" ? " activesidemenu" : ""
     //     }`,
     // },
-     {
-      id: 0,
-      icon: <LocalHospitalIcon style={{ padding: "10px", fontSize: "46px" }} />,
-      text: "Organisation",
-      subMenus: [
-        {
-          name: "ClientDetails",
-          link: "/",
-          icon: (
-            <PersonRoundedIcon style={{ padding: "10px", fontSize: "46px" }} />
-          ),
-          text: "Client Details",
-          class:
-            "doctorsidebar" +
-            `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
-        },
-      ],
-    },
+    //  {
+    //   id: 0,
+    //   icon: <LocalHospitalIcon style={{ padding: "10px", fontSize: "46px" }} />,
+    //   text: "Organization",
+    //   subMenus: [
+    //     {
+    //       name: "ClientDetails",
+    //       link: "/",
+    //       icon: (
+    //         <PersonRoundedIcon style={{ padding: "10px", fontSize: "46px" }} />
+    //       ),
+    //       text: "Client Details",
+    //       class:
+    //         "doctorsidebar" +
+    //         `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
+    //     },
+    //   ],
+    // },
     // {
     //   id: 1,
     //   icon: <LocalPharmacyIcon style={{ padding: "10px", fontSize: "46px" }} />,
@@ -537,7 +537,7 @@ function SideBar() {
       $(".arrow").css("display", "block");
     }
     navData[0] != undefined &&
-      navData[0] != "" &&
+      navData[0] != "" &&navData[0].subMenus!=undefined &&
       navData[0].subMenus.map((e) => {
         list.push(e.text);
       });
@@ -593,7 +593,7 @@ function SideBar() {
     if (sideactive) {
       console.log(navData,sideactive,list);
       navData[0] != undefined &&
-        navData[0] != "" &&
+        navData[0] != "" && navData[0].subMenus!=undefined && 
         navData[0].subMenus.map((e) => {
           list.push(e.text);
         });

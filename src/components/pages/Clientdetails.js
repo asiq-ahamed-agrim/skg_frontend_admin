@@ -1,16 +1,16 @@
 import "../style/page/report.scss";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import {clientaddstate,} from "../redux/reducer/counterslice";
+import { clientaddstate } from "../redux/reducer/counterslice";
 import { useEffect, useState, useMemo } from "react";
-import { clientdata,  clientapprove } from "../../text/apidata";
+import { clientdata, clientapprove, CustomerDetails } from "../../text/apidata";
 import BasicTable from "../maincomponent/reacttable/table";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import { NavLink } from "react-router-dom";
 import noimage1 from "../../assets/images/noimage.png";
 import ClientDetailsForm from "../form/clientdetailsfrom";
 
-import $ from 'jquery'; 
+import $ from "jquery";
 function Client(props) {
   const Token = {
     headers: {
@@ -21,130 +21,165 @@ function Client(props) {
   const [searchQuery, setSearchQuery] = useState("");
   const [dtpageindex, setdtPageindex] = useState(1);
   const [dtpagesize, setdtPagesize] = useState(10);
-  const [tableheaderdata, settableheaderdata] = useState([]);
   const [datacount, setdatacount] = useState();
-  const [popup, setpopup] = useState(false);
-  const [filter,setfilter]=useState("pending")
-  const [status,setstatus]=useState("")
 
-  const [approvedata,setapprovedata]=useState({
-    org_id : "",
+  const [popup, setpopup] = useState(false);
+  const [filter, setfilter] = useState("pending");
+  const [status, setstatus] = useState("");
+
+  const [approvedata, setapprovedata] = useState({
+    org_id: "",
     user_id: "",
-    status:""
-  })
+    status: "",
+  });
   const dispatch = useDispatch();
+
+  const [customerdetails, setcustomerdetails] = useState([]);
+
   const sideactive = useSelector((state) => state.counter.sidebarnav);
   const clientstate = useSelector((state) => state.counter.clientaddstatevalue);
-  console.log(clientstate)
+  console.log(clientstate);
   const handleSubmit = (event) => {
     event.preventDefault();
   };
 
+  // get api
   useEffect(() => {
-    if(popup==false){
-    // props.loaderchange("true");
-    // console.log(Token);
-    // axios
-    //   .get(clientdata+"/"+filter, {headers:Token.headers},)
-    //   .then((res) => {
-    //     const correctedDataString = res.data.data
-    //       .replace(/'/g, '"')
-    //       .replace(/UUID\("(.*?)"\)/g, '"$1"');
-    //     console.log(JSON.parse(correctedDataString));
-    //     settableheaderdata(JSON.parse(correctedDataString));
-    //     props.loaderchange("false");
-        
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
+    axios({
+      method: "get",
+      url: CustomerDetails,
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: {
+        page: dtpageindex,
+        page_size: dtpagesize,
+        search: searchQuery,
+        // is_active:isactivefilterdata
 
-    //     props.loaderchange("false");
-    //     props.popupalert("true");
-    //     setTimeout(() => {
-    //       props.popupalert("false");
-    //     }, 2000);
-    //   });
+      },
+    })
+      .then((res) => {
+        console.log(res.data, "cdres", res.data.data.pagination.total);
+        setcustomerdetails(res.data.data.data);
+        setdatacount(res.data.data.pagination.total);
+        // props.loaderchange("true");
+      })
+      .catch((error) => {
+        console.log(error, "error");
+        // props.popupalert("true");
+        // props.popuptext(error.response.data.status.message);
+        // setTimeout(() => {
+        //   props.popupalert("false");
+        // }, 2000);
+        props.loaderchange("false");
+      });
+  }, [dtpageindex, dtpagesize]);
+
+  useEffect(() => {
+    if (popup == false) {
+      // props.loaderchange("true");
+      // console.log(Token);
+      // axios
+      //   .get(clientdata+"/"+filter, {headers:Token.headers},)
+      //   .then((res) => {
+      //     const correctedDataString = res.data.data
+      //       .replace(/'/g, '"')
+      //       .replace(/UUID\("(.*?)"\)/g, '"$1"');
+      //     console.log(JSON.parse(correctedDataString));
+      //     settableheaderdata(JSON.parse(correctedDataString));
+      //     props.loaderchange("false");
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     props.loaderchange("false");
+      //     props.popupalert("true");
+      //     setTimeout(() => {
+      //       props.popupalert("false");
+      //     }, 2000);
+      //   });
     }
-  }, [popup,filter]);
+  }, [popup, filter]);
 
   const confirm = (e) => {
-    if(e=="confirm"){
+    if (e == "confirm") {
       props.loaderchange("true");
 
-    axios
-      .post(clientapprove,new URLSearchParams({
-        org_id : approvedata.org_id,
-        user_id: approvedata.user_id,
-        status:"approved"
-      }),
-      {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      }
-)
-      .then((res) => {
-        props.loaderchange("false");
-        props.popupalert("true");
-        setpopup(false);
-        props.popuptext("Client Approved");
-        setTimeout(() => {
-          props.popupalert("false");
-        }, 2000);
+      axios
+        .post(
+          clientapprove,
+          new URLSearchParams({
+            org_id: approvedata.org_id,
+            user_id: approvedata.user_id,
+            status: "approved",
+          }),
+          {
+            headers: {
+              Authorization: `${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          props.loaderchange("false");
+          props.popupalert("true");
+          setpopup(false);
+          props.popuptext("Client Approved");
+          setTimeout(() => {
+            props.popupalert("false");
+          }, 2000);
+        })
+        .catch((error) => {
+          console.log(error);
 
-      })
-      .catch((error) => {
-        console.log(error);
-
-        props.loaderchange("false");
-        // props.popupalert("true");
-        // setTimeout(() => {
-        //   props.popupalert("false");
-        // }, 2000);
-      });
-    }else{
+          props.loaderchange("false");
+          // props.popupalert("true");
+          // setTimeout(() => {
+          //   props.popupalert("false");
+          // }, 2000);
+        });
+    } else {
       props.loaderchange("true");
 
-      axios.post(clientapprove ,new URLSearchParams({
-        org_id : approvedata.org_id,
-        user_id: approvedata.user_id,
-        status:"reject"
-      }),
-      {
-        headers: {
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-      }
-)
-      .then((res) => {
-        props.loaderchange("false");
-        props.popupalert("true");
-        setpopup(false);
-        props.popuptext("Client Rejected");
-        setTimeout(() => {
-          props.popupalert("false");
-        }, 2000);
+      axios
+        .post(
+          clientapprove,
+          new URLSearchParams({
+            org_id: approvedata.org_id,
+            user_id: approvedata.user_id,
+            status: "reject",
+          }),
+          {
+            headers: {
+              Authorization: `${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          props.loaderchange("false");
+          props.popupalert("true");
+          setpopup(false);
+          props.popuptext("Client Rejected");
+          setTimeout(() => {
+            props.popupalert("false");
+          }, 2000);
+        })
+        .catch((error) => {
+          console.log(error);
 
-      })
-      .catch((error) => {
-        console.log(error);
-
-
-        props.loaderchange("false");
-        // props.popupalert("true");
-        // setTimeout(() => {
-        //   props.popupalert("false");
-        // }, 2000);
-      });
-
+          props.loaderchange("false");
+          // props.popupalert("true");
+          // setTimeout(() => {
+          //   props.popupalert("false");
+          // }, 2000);
+        });
     }
+  };
 
-  }
-$(document).ready(function() {
-  $(".productorder").on("scroll", function(event) {
-    console.log("Scroll event detected");
+  $(document).ready(function () {
+    $(".productorder").on("scroll", function (event) {
+      console.log("Scroll event detected");
+    });
   });
-});
 
   const capitalizeFirstLetter = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
@@ -153,7 +188,7 @@ $(document).ready(function() {
   const columns = useMemo(
     () => [
       {
-        Header: "User Name",
+        Header: "Organization Name",
         accessor: "",
 
         Cell: (row) => {
@@ -161,32 +196,32 @@ $(document).ready(function() {
             <>
               <p
                 data-tooltip-id="my-tooltip"
-                data-tooltip-content={row.row.original.username}
+                data-tooltip-content={row.row.original.organization_name}
               >
-                {String(row.row.original.username)}
+                {String(row.row.original.organization_name)}
               </p>
             </>
           );
         },
       },
       {
-        Header: "Origination Name",
+        Header: "Origination Key",
         accessor: "",
         Cell: (row) => {
           return (
             <>
               <p
                 data-tooltip-id="my-tooltip"
-                data-tooltip-content={row.row.original.org_name}
+                data-tooltip-content={row.row.original.organization_key}
               >
-                {row.row.original.org_name}
+                {row.row.original.organization_key}
               </p>
             </>
           );
         },
       },
       {
-        Header: "Status",
+        Header: "Origination Subdomain",
         accessor: "",
 
         Cell: (row) => {
@@ -194,57 +229,55 @@ $(document).ready(function() {
             <>
               <p
                 data-tooltip-id="my-tooltip"
-                data-tooltip-content={row.row.original.status}
+                data-tooltip-content={row.row.original.organization_domain}
                 className="status"
-                style={{color:row.row.original.status!="pending"?"green":"red"}}
+                style={{
+                  color:
+                    row.row.original.contact_person != "pending"
+                      ? "green"
+                      : "red",
+                }}
               >
-                {capitalizeFirstLetter(row.row.original.status)}
+                <a href={row.row.original.organization_domain}>
+                  {row.row.original.organization_domain}
+                </a>
               </p>
             </>
           );
         },
       },
-
       {
-        Header: "Actions",
+        Header: "Contact Person",
         accessor: "",
-        Cell: (row, index) => {
-          // console.log(row.row);
 
+        Cell: (row) => {
           return (
             <>
-              <div class="actions">
-                <button
-                  type="button"
-                  class="approvebutton"
-                  onClick={(e) => {
-                    setpopup(true);
-                    setstatus("Approve")
-                    setapprovedata({
-                      ...approvedata,
-                      org_id : row.row.original.org_id,
-                      user_id: row.row.original.user_id,
-                    })
-                  }}
-                >
-                   Approve
-                </button>
-                <button
-                  type="button"
-                  class="rejectbutton"
-                  onClick={(e) => {
-                    setpopup(true);
-                    setstatus("Reject")
-                    setapprovedata({
-                      ...approvedata,
-                      org_id : row.row.original.org_id,
-                      user_id: row.row.original.user_id,
-                    })
-                  }}
-                >
-                   Reject
-                </button>
-              </div>
+              <p
+                data-tooltip-id="my-tooltip"
+                data-tooltip-content={row.row.original.contact_person}
+                className="status"
+              >
+                {row.row.original.contact_person}
+              </p>
+            </>
+          );
+        },
+      },
+      {
+        Header: "Contact Email",
+        accessor: "",
+
+        Cell: (row) => {
+          return (
+            <>
+              <p
+                data-tooltip-id="my-tooltip"
+                data-tooltip-content={row.row.original.cp_email}
+                className="status"
+              >
+                {row.row.original.cp_email}
+              </p>
             </>
           );
         },
@@ -261,18 +294,19 @@ $(document).ready(function() {
     setdtPageindex(arg);
   };
 
-
   return (
     <>
       <div className={sideactive ? "productorder-sa" : "productorder"}>
         <div class="page-header-PO">
           <div class="row">
             <div class="col-sm-7 col-auto">
-              <h3 class="page-title">Client Details</h3>
+              <h3 class="page-title">Customer Details</h3>
             </div>
             <div class="col-sm-5 col">
               <a
-                onClick={(e) => {dispatch(clientaddstate("ClientCreate"))}}
+                onClick={(e) => {
+                  dispatch(clientaddstate("ClientCreate"));
+                }}
                 style={{
                   backgroundColor: "#1b5a90",
                   border: "1px solid #1b5a90",
@@ -282,7 +316,7 @@ $(document).ready(function() {
                 data-toggle="modal"
                 class="btn btn-primary float-right mt-2"
               >
-                Add
+                Create
               </a>
             </div>
           </div>
@@ -291,7 +325,10 @@ $(document).ready(function() {
           <div className="col-md-12 mt-3">
             <div className="card">
               <div className="card-body" style={{ padding: "1.5rem" }}>
-                <form onSubmit={handleSubmit} className="d-flex justify-content-between">
+                <form
+                  onSubmit={handleSubmit}
+                  className="d-flex justify-content-between"
+                >
                   <div
                     class="input-group rounded"
                     style={{ width: "250px", height: "40px" }}
@@ -338,7 +375,7 @@ $(document).ready(function() {
                       ></i>
                     </span>
                   </div>
-            <div className="rounded d-flex ">
+                  {/* <div className="rounded d-flex ">
               <label class="form-label mb-0 align-self-center mr-2" style={{width:"100px"}}>
                 Filter
               </label>
@@ -364,13 +401,13 @@ $(document).ready(function() {
                 </option>
 
               </select>
-            </div>
+            </div> */}
                 </form>
 
                 <div className="table-responsive">
                   <BasicTable
                     columns={columns}
-                    data={tableheaderdata}
+                    data={customerdetails}
                     pagesize={pagesize}
                     pageindex={pageindex}
                     dtpagesize={dtpagesize}
@@ -396,9 +433,11 @@ $(document).ready(function() {
           }}
         />
       </div>
-      {clientstate == "ClientCreate" || clientstate == "ClientEdit" ?(
-        <ClientDetailsForm/>
-      ):""}
+      {clientstate == "ClientCreate" || clientstate == "ClientEdit" ? (
+        <ClientDetailsForm />
+      ) : (
+        ""
+      )}
       {popup && (
         <>
           <div className="logout_popup">
@@ -414,18 +453,22 @@ $(document).ready(function() {
                 </button>
                 {/* <img src={logoutimg} alt="cookies-img" /> */}
                 <p style={{ marginTop: "20px" }}>
-                  {`Do you Want to ${status=="Approve"?"Approve!":"Reject"} the  Client?`}
+                  {`Do you Want to ${
+                    status == "Approve" ? "Approve!" : "Reject"
+                  } the  Client?`}
                 </p>
                 <div style={{ display: "flex" }}>
-                  <button class="accept p-2 m-2" onClick={(e) => {
-                    if(status=="Approve"){
-                      confirm("confirm")
-
-                    }else{
-                      confirm("reject")
-
-                    }}}>
-                    {status=="Approve"?"Approve!":"Reject"}
+                  <button
+                    class="accept p-2 m-2"
+                    onClick={(e) => {
+                      if (status == "Approve") {
+                        confirm("confirm");
+                      } else {
+                        confirm("reject");
+                      }
+                    }}
+                  >
+                    {status == "Approve" ? "Approve!" : "Reject"}
                   </button>
                 </div>
               </div>
@@ -433,8 +476,6 @@ $(document).ready(function() {
           </div>
         </>
       )}
-
-      
     </>
   );
 }

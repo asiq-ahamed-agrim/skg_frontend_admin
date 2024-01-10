@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../style/form/specialityform.scss";
 import BasicTable from "../maincomponent/reacttable/table";
 import Button from "@mui/material/Button";
@@ -27,8 +27,7 @@ function SpecialityForm(props) {
     description: "",
     speciality_image: "",
     featured_product: false,
-    is_active:false
-
+    is_active: false,
   });
   const settings = useNavigate();
   //
@@ -49,7 +48,8 @@ function SpecialityForm(props) {
   const [imgsrc, setImgsrc] = useState();
   const imgRef = useRef(null);
   const [file, setFile] = useState([]);
-  const [crop, setCrop] = useState(
+  const [crop, setCrop] =
+    useState();
     // {
     //   unit: 'px', // Can be 'px' or '%'
     //   x: 25,
@@ -57,8 +57,6 @@ function SpecialityForm(props) {
     //   width: 510,
     //   height: 510
     // }
-
-  );
   const handleSubmit = (event) => {
     event.preventDefault();
   };
@@ -95,12 +93,11 @@ function SpecialityForm(props) {
             [name]: res.data.data.name,
             description: res.data.data.description,
             speciality_image: res.data.data.speciality_image,
-            is_active:res.data.data.is_active,
-            featured_product:res.data.data.featured_product
+            is_active: res.data.data.is_active,
+            featured_product: res.data.data.featured_product,
           });
           props.loaderchange("false");
-          setisactive(res.data.data.is_active)
-
+          setisactive(res.data.data.is_active);
         })
         .catch((error) => {
           console.log(error);
@@ -152,7 +149,7 @@ function SpecialityForm(props) {
             })
               .then((res) => {
                 if (res.status == 200) {
-                  setalert(false)
+                  setalert(false);
 
                   settings("/Speciality");
                   dispatch(speciality(""));
@@ -211,7 +208,7 @@ function SpecialityForm(props) {
               },
             })
               .then((res) => {
-                setalert(false)
+                setalert(false);
 
                 settings("/Speciality");
                 dispatch(speciality(""));
@@ -268,14 +265,14 @@ function SpecialityForm(props) {
         if (result.isConfirmed) {
           //Swal.fire("Reverted!", "Given Info has been Removed.", "success");
           dispatch(speciality(""));
-          setalert(false)
+          setalert(false);
 
           settings("/Speciality");
         }
       });
     } else {
       dispatch(speciality(""));
-      setalert(false)
+      setalert(false);
 
       settings("/Speciality");
     }
@@ -285,9 +282,7 @@ function SpecialityForm(props) {
 
     const { name, value } = e.target;
     const re = /^[A-Za-z ]+$/;
-    if (value === "" 
-    || re.test(value)
-    ) {
+    if (value === "" || re.test(value)) {
       setspecialityvalue(e.target.value);
       seterroespecialityvalue(false);
 
@@ -323,8 +318,7 @@ function SpecialityForm(props) {
     selectedImage(e);
     setCroppImageViewCount(1);
     setCroppImageView(true);
-    setalert(true)
-
+    setalert(true);
   };
 
   const cancel = (e) => {
@@ -348,93 +342,87 @@ function SpecialityForm(props) {
     // console.log(checkboxvalue, "checkboxvalue");
   };
 
-
   const onImageLoaded = (image) => {
     // imgRef = image;
     imgRef.current = image;
   };
   function getCroppedImg(a, crop, fileName) {
     const canvas = document.createElement("canvas");
-    console.log(canvas)
-    // if(crop&&crop.width!=undefined&&crop.width!=''){ 
+    console.log(canvas);
+    // if(crop&&crop.width!=undefined&&crop.width!=''){
     const image = document.getElementById("localimg");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-    console.log(crop)
-    if(crop){
+    console.log(crop);
+    if (crop) {
       canvas.width = crop.width;
-    canvas.height = crop.height;
-    }
-    else{
+      canvas.height = crop.height;
+    } else {
       canvas.width = image.width;
-    canvas.height = image.height;
+      canvas.height = image.height;
     }
     const ctx = canvas.getContext("2d");
-if(crop){
-  ctx.drawImage(
-    image,
-    crop.x * scaleX,
-    crop.y * scaleY,
-    crop.width * scaleX,
-    crop.height * scaleY,
-    0,
-    0,
-    crop.width,
-    crop.height
-  );
+    if (crop) {
+      ctx.drawImage(
+        image,
+        crop.x * scaleX,
+        crop.y * scaleY,
+        crop.width * scaleX,
+        crop.height * scaleY,
+        0,
+        0,
+        crop.width,
+        crop.height
+      );
+    } else {
+      ctx.drawImage(
+        image,
+        scaleX,
+        scaleY,
+        image.width * scaleX,
+        image.height * scaleY,
+        0,
+        0,
+        image.width,
+        image.height
+      );
+    }
 
-}
-else{
-  ctx.drawImage(
-    image,
-    scaleX,
-    scaleY,
-    image.width* scaleX,
-    image.height* scaleY,
-    0,
-    0,
-    image.width,
-    image.height,
-  );
+    // const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    // const pixels = imageData.data;
+    // const backgroundColor = [255, 255, 255,255]; // RGBA values for the background color
+    // for (let i = 0; i < pixels.length; i += 4) {
+    //   // Check if the pixel is transparent (alpha channel is 0)
+    //   if (pixels[i + 3] === 0) {
+    //     // Set the pixel to the background color
+    //     pixels[i] = backgroundColor[0]; // Red
+    //     pixels[i + 1] = backgroundColor[1]; // Green
+    //     pixels[i + 2] = backgroundColor[2]; // Blue
+    //     pixels[i + 3] = backgroundColor[3]; // Alpha
+    //   }
+    // }
+    // ctx.putImageData(imageData, 0, 0);
+    var dArr = [-1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1], // offset array
+      s = 100, // thickness scale
+      i = 0, // iterator
+      x = 5, // final position
+      y = 5;
 
-}
+    // draw images at offsets from the array scaled by s
+    for (; i < dArr.length; i += 2)
+      ctx.drawImage(image, x + dArr[i] * s, y + dArr[i + 1] * s);
 
+    // fill with color
+    ctx.globalCompositeOperation = "source-in";
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-// const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-// const pixels = imageData.data;
-// const backgroundColor = [255, 255, 255,255]; // RGBA values for the background color
-// for (let i = 0; i < pixels.length; i += 4) {
-//   // Check if the pixel is transparent (alpha channel is 0)
-//   if (pixels[i + 3] === 0) {
-//     // Set the pixel to the background color
-//     pixels[i] = backgroundColor[0]; // Red
-//     pixels[i + 1] = backgroundColor[1]; // Green
-//     pixels[i + 2] = backgroundColor[2]; // Blue
-//     pixels[i + 3] = backgroundColor[3]; // Alpha
-//   }
-// }
-// ctx.putImageData(imageData, 0, 0);
-var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
- s = 100, // thickness scale
- i = 0, // iterator
- x = 5, // final position
- y = 5;
- 
- // draw images at offsets from the array scaled by s
- for(; i < dArr.length; i += 2)
- ctx.drawImage(image, x + dArr[i]*s, y + dArr[i+1]*s);
- 
- // fill with color
- ctx.globalCompositeOperation = "source-in";
- ctx.fillStyle = "white";
- ctx.fillRect(0,0,canvas.width, canvas.height);
- 
- // draw original image in normal mode
- ctx.globalCompositeOperation = "source-over";
- ctx.fillStyle = "white";
- ctx.fillRect(0,0,canvas.width, canvas.height);
- ctx.drawImage(image, x, y);
-// console.log(image1)
+    // draw original image in normal mode
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(image, x, y);
+    // console.log(image1)
 
     return new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
@@ -453,7 +441,7 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
           ]);
           // setimgfile((oldArray) => [...oldArray, croppedFile]);
           // setimgtype((oldArray) => [...oldArray, croppedFile.type]);
-          console.log(croppedFile)
+          console.log(croppedFile);
           setimgfile(croppedFile);
           setimgtype(croppedFile.type);
           var file = croppedFile;
@@ -462,7 +450,7 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
             setUrl(reader.result);
           };
           reader.readAsDataURL(file);
-      
+
           var val = Math.floor(1000 + Math.random() * 9000);
           var url = {
             multiple_files: [
@@ -477,7 +465,7 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
               },
             ],
           };
-            
+
           setTimeout(() => {
             console.log(url);
             axios({
@@ -499,8 +487,7 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
                 console.log(error);
               });
           }, 500);
-      
-        } 
+        }
         blob.name = fileName;
         setCroppImageView(false);
         let fileUrl = window.URL.createObjectURL(blob);
@@ -508,10 +495,10 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
         resolve(fileUrl);
       }, "image/jpeg");
     });
-  // }
+    // }
   }
   const setCompletedCrop = async (c) => {
-    console.log(c)
+    console.log(c);
     const url = await getCroppedImg(imgRef.current, c, "newfile.jpeg");
   };
   const selectedImage = (e) => {
@@ -568,14 +555,14 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
                       class="form-control"
                       id="validationCustom01"
                       name="name"
-                      value={
-                           specialityvalue
-                      }
+                      value={specialityvalue}
                       onChange={(e) => specialityvalidation(e)}
-                      onKeyDown={(e)=>{  if (e.target.value.length === 0 && e.which === 32)
-                        { e.preventDefault();  }
-}}
-                    required
+                      onKeyDown={(e) => {
+                        if (e.target.value.length === 0 && e.which === 32) {
+                          e.preventDefault();
+                        }
+                      }}
+                      required
                     ></input>
                     <p style={{ fontSize: "12px", color: "red" }}>
                       {errorspecialityvalue ? "Speciality Required" : ""}{" "}
@@ -590,15 +577,14 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
                       class="form-control"
                       id="validationCustom01"
                       name="description"
-                      value={
-                          disvalue
-                      }
+                      value={disvalue}
                       style={{ resize: "none" }}
                       onChange={(e) => Descriptionvalidation(e)}
-                      onKeyDown={(e)=>{  if (e.target.value.length === 0 && e.which === 32)
-                        { e.preventDefault();  }
-}}
-
+                      onKeyDown={(e) => {
+                        if (e.target.value.length === 0 && e.which === 32) {
+                          e.preventDefault();
+                        }
+                      }}
                       rows="3"
                       required
                     ></textarea>
@@ -607,7 +593,7 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
                     </p>
                   </div>
                 </div>
-                
+
                 <div
                   class="form-row"
                   style={{
@@ -631,9 +617,10 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
                       {url ? (
                         <img
                           src={url}
-                          onClick={(e)=>{window.open(url)}}
+                          onClick={(e) => {
+                            window.open(url);
+                          }}
                           className="pointer"
-
                           style={{
                             height: 115,
                             width: 115,
@@ -723,7 +710,6 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
                       </label>
                     </div>
                   </div>
-
                 </div>
                 <div
                   class="form-row"
@@ -739,8 +725,11 @@ var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
                       type="submit"
                       class="btn btn-primary  create"
                       onClick={(e) => newusercreat(e)}
-                      disabled={specialityedit == "specialityedit"&&!alert?true:false}
-
+                      disabled={
+                        specialityedit == "specialityedit" && !alert
+                          ? true
+                          : false
+                      }
                     >
                       {specialityedit == "specialityedit"
                         ? "Update Speciality "

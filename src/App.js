@@ -20,6 +20,9 @@ import { admincreate } from "./text/apidata";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Client from "./components/pages/Clientdetails";
+import { ToastContainer } from "react-toastify";
+
+import ClientDetailsForm from "./components/pages/Clientdetails";
 
 function App() {
   const Error = useNavigate();
@@ -79,6 +82,7 @@ function App() {
 
   return (
     <div className="App">
+      <ToastContainer limit={1} />
       {loader == "true" ? (
         <div
           className="loader"
@@ -128,7 +132,7 @@ function App() {
                 }
                 path="/"
               ></Route> */}
-                            <Route
+              <Route
                 element={
                   <Client
                     loaderchange={loaderchange}
@@ -138,6 +142,7 @@ function App() {
                 }
                 path="/"
               ></Route>
+              
               <>
                 <Route
                   element={<ErrorPage errorstatus={errorstatus} />}

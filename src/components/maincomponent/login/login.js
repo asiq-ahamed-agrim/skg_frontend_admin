@@ -89,18 +89,51 @@ function Login(props) {
       if (passwordvalue != "") {
         console.log(userinfo, "999");
         props.loaderchange("true");
-        const res = axios
-          .post(
-            login,
-            new URLSearchParams({
-              username: userinfo.username,
-              password: userinfo.password,
-            })
-          )
+        // const res = axios
+        //   .post(
+        //     login,
+        //     new URLSearchParams({
+        // username: userinfo.username,
+        // password: userinfo.password,
+        //     })
+        //   )
 
+        // .then((res) => {
+        //   console.log(res);
+        //   localStorage.setItem("token", res.data.token);
+        //   localStorage.setItem("login", "false");
+        //   loginpage("/");
+        //   props.loaderchange("false");
+        //   props.popupalert("true");
+        //   props.popuptext("Login Successfull");
+        //   setTimeout(() => {
+        //     props.popupalert("false");
+        //   }, 3000);
+        // })
+        // .catch((error) => {
+        //   console.log(error);
+
+        //   props.loaderchange("false");
+        //   props.popupalert("true");
+        //   // props.popuptext(error.response.data.status.message);
+        //   setTimeout(() => {
+        //     props.popupalert("false");
+        //   }, 2000);
+        // });
+
+        const formData = new FormData();
+        formData.append("username", userinfo.username);
+        formData.append("password", userinfo.password);
+
+        axios({
+          method: "post",
+          url: login,
+          data: formData,
+        })
           .then((res) => {
-            console.log(res);
-            localStorage.setItem("token", res.data.token);
+            debugger
+            console.log(res, "res", res.data.session.token.access);
+            localStorage.setItem("token", res.data.session.token.access);
             localStorage.setItem("login", "false");
             loginpage("/");
             props.loaderchange("false");
@@ -111,6 +144,7 @@ function Login(props) {
             }, 3000);
           })
           .catch((error) => {
+            debugger
             console.log(error);
 
             props.loaderchange("false");
