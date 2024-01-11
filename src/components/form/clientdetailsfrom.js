@@ -10,8 +10,10 @@ import "react-image-crop/dist/ReactCrop.css";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { ClientCreate } from "../../text/apidata";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import validator from "validator";
+import WarningIcon from "@mui/icons-material/Warning";
 
 const ClientDetailsForm = (props) => {
   const [clientdata, setclientdata] = useState({
@@ -31,6 +33,20 @@ const ClientDetailsForm = (props) => {
     org_admin: "",
   });
 
+  console.log(clientdata.store_info[0]?.store_email, "mmm");
+
+  // validtion state
+  const [organizationNameError, setOrganizationNameError] = useState(false);
+  const [domainError, setDomainError] = useState(false);
+  const [codeError, setCodeError] = useState(false);
+
+  const [storeNameError, setStoreNameError] = useState("");
+  const [storeMailError, setStoreMailError] = useState("");
+
+  const [customerNameError, setCustomerNameError] = useState(false);
+  const [customerEmailError, setCustomerEmailError] = useState(false);
+
+  const [orgAdminEmailError, setOrgAdminEmailError] = useState(false);
   // const [orgemail, setorgemail] = useState({
   //   org_admin: ""
   // })
@@ -59,6 +75,161 @@ const ClientDetailsForm = (props) => {
 
   const clientstate = useSelector((state) => state.counter.clientaddstatevalue);
   const dispatch = useDispatch();
+
+  // validation function
+  const validateOrganizationName = (e) => {
+    const orgname = e.target.value;
+
+    if (validator.isEmpty(orgname.trim())) {
+      setOrganizationNameError("*Org Name cannot be empty!");
+    } else {
+      setOrganizationNameError("");
+    }
+
+    setclientdata((prevState) => ({
+      ...prevState,
+      org_name: orgname,
+    }));
+  };
+
+  const validateDomain = (e) => {
+    const domain = e.target.value;
+
+    if (validator.isEmpty(domain.trim())) {
+      setDomainError("*Domain cannot be empty!");
+    } else {
+      setDomainError("");
+    }
+
+    setclientdata((prevState) => ({
+      ...prevState,
+      org_domain: domain,
+    }));
+  };
+
+  const validateCode = (e) => {
+    const code = e.target.value;
+
+    if (validator.isEmpty(code.trim())) {
+      setCodeError("*code cannot be empty!");
+    } else {
+      setCodeError("");
+    }
+
+    setclientdata((prevState) => ({
+      ...prevState,
+      org_key: code,
+    }));
+  };
+
+  const validateStoreName = (e, index) => {
+    const storename = e.target.value;
+    if (validator.isEmpty(storename.trim())) {
+      setStoreNameError("*Store Name cannot be empty!");
+    } else {
+      setStoreNameError("");
+    }
+
+    setclientdata((prevState) => ({
+      ...prevState,
+      store_name: storename,
+    }));
+
+    let l1 = [];
+    for (let i = 0; i < clientdata.store_info.length; i++) {
+      if (index == i) {
+        clientdata.store_info[i][e.target.name] = e.target.value;
+        l1.push(clientdata.store_info[i]);
+      } else {
+        l1.push(clientdata.store_info[i]);
+      }
+    }
+    setclientdata((prev) => {
+      return {
+        ...prev,
+        store_info: l1,
+      };
+    });
+  };
+
+  const validateStoreEmail = (e, index) => {
+    var storeemail = e.target.value;
+    const { name, value } = e.target;
+    setclientdata({
+      ...clientdata,
+      [name]: value,
+    });
+    if (validator.isEmpty(storeemail)) {
+      setStoreMailError("Email Cannot be empty!");
+    } else if (validator.isEmail(storeemail)) {
+      setStoreMailError("");
+    } else {
+      setStoreMailError("valid Email!");
+    }
+
+    let l1 = [];
+    for (let i = 0; i < clientdata.store_info.length; i++) {
+      if (index == i) {
+        clientdata.store_info[i][e.target.name] = e.target.value;
+        l1.push(clientdata.store_info[i]);
+      } else {
+        l1.push(clientdata.store_info[i]);
+      }
+    }
+    setclientdata((prev) => {
+      return {
+        ...prev,
+        store_info: l1,
+      };
+    });
+  };
+
+  const validateCustomerName = (e) => {
+    const customername = e.target.value;
+
+    if (validator.isEmpty(customername.trim())) {
+      setCustomerNameError("*Customer Name cannot be empty!");
+    } else {
+      setCustomerNameError("");
+    }
+
+    setclientdata((prevState) => ({
+      ...prevState,
+      con_name: customername,
+    }));
+  };
+
+  const validateEmail = (e) => {
+    var email = e.target.value;
+    const { name, value } = e.target;
+    setclientdata({
+      ...clientdata,
+      [name]: value,
+    });
+    if (validator.isEmpty(email)) {
+      setCustomerEmailError("Email Cannot be empty!");
+    } else if (validator.isEmail(email)) {
+      setCustomerEmailError("");
+    } else {
+      setCustomerEmailError("valid Email!");
+    }
+  };
+
+  const validateOrgEmail = (e) => {
+    var orgemail = e.target.value;
+    const { name, value } = e.target;
+    setclientdata({
+      ...clientdata,
+      [name]: value,
+    });
+    if (validator.isEmpty(orgemail)) {
+      setOrgAdminEmailError("Email Cannot be empty!");
+    } else if (validator.isEmail(orgemail)) {
+      setOrgAdminEmailError("");
+    } else {
+      setOrgAdminEmailError("valid Email!");
+    }
+  };
 
   const addItemToList = () => {
     setclientdata((prev) => {
@@ -132,6 +303,7 @@ const ClientDetailsForm = (props) => {
     // imgRef = image;
     imgRef.current = image;
   };
+
   function getCroppedImg(a, crop, fileName) {
     const canvas = document.createElement("canvas");
     console.log(canvas);
@@ -283,6 +455,7 @@ const ClientDetailsForm = (props) => {
     });
     // }
   }
+
   const setCompletedCrop = async (c) => {
     console.log(c);
     const url = await getCroppedImg(imgRef.current, c, "newfile.jpeg");
@@ -297,34 +470,76 @@ const ClientDetailsForm = (props) => {
   };
 
   const handleSubmit = () => {
-    setShowModal(true);
+    if (
+      clientdata.org_name != "" &&
+      clientdata.org_domain != "" &&
+      clientdata.org_key != "" &&
+      clientdata.store_info[0].store_name != "" &&
+      clientdata.store_info[0]?.store_email != "" &&
+      clientdata.con_name != "" &&
+      clientdata.con_email != ""
+    ) {
+      setShowModal(true);
+    } else {
+      // console.log(clientdata.store_info[0]?.store_email, "ccc");
+      // debugger;
+      if (clientdata.org_name == "") {
+        setOrganizationNameError("Organization Name cannot be empty!");
+      }
+      if (clientdata.org_domain == "") {
+        setDomainError("Domain cannot be empty!");
+      }
+      if (clientdata.org_key == "") {
+        setCodeError("Code cannot be empty!");
+      }
+      if (clientdata.store_info[0].store_name == "") {
+        setStoreNameError("Store Name cannot be empty!");
+      }
+      if (clientdata.store_info[0]?.store_email == "") {
+        setStoreMailError("Email cannot be empty!");
+      }
+      if (clientdata.con_name == "") {
+        setCustomerNameError("Customer Name cannot be empty!");
+      }
+      if (clientdata.con_email == "") {
+        setCustomerEmailError("Email cannot be empty!");
+      }
+    }
   };
 
   const handleSave = () => {
-    console.log(clientdata, "clientdata", localStorage.getItem("token") + "");
-    // debugger;
-    axios({
-      method: "post",
-      url: ClientCreate,
-      data: clientdata,
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-    })
-      .then((res) => {
-        console.log(res);
-
-        dispatch(clientaddstate(""));
-        toast.success('Client Created Successfully'); 
-        // props.loaderchange("true");       
+    if (clientdata.org_admin != "") {
+      console.log(clientdata, "clientdata");
+      props.loaderchange("true");
+      axios({
+        method: "post",
+        url: ClientCreate,
+        data: clientdata,
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
       })
-      .catch((error) => {
-        console.log(error, "err2");
-        // debugger;
-        // props.loaderchange("false");
-        toast.error('Organization Name Already Exists');
-       
-      });
+        .then((res) => {
+          console.log(res);
+
+          dispatch(clientaddstate(""));
+          props.loaderchange("false");
+          toast.success("Customer Created Successfully");
+
+          props.setcustomerdetails2(true);
+        })
+        .catch((error) => {
+          console.log(error, "err2");
+          // debugger;
+          props.loaderchange("false");
+          toast.error("Organization Name Already Exists");
+        });
+    } else {
+      
+      if (clientdata.org_admin == "") {
+        setOrgAdminEmailError("Email cannot be empty!");
+      }
+    }
   };
   const handleCloseModal = () => {
     setShowModal(false);
@@ -371,48 +586,76 @@ const ClientDetailsForm = (props) => {
                                 type="text"
                                 name="org_name"
                                 className="form-control"
-                                placeholder="Organization Name"
+                                placeholder="Organization Name *"
                                 class="form-control name_list"
                                 value={clientdata.org_name}
-                                onChange={(e) => {
-                                  setclientdata({
-                                    ...clientdata,
-                                    org_name: e.target.value,
-                                  });
-                                }}
+                                // onChange={(e) => {
+                                //   setclientdata({
+                                //     ...clientdata,
+                                //     org_name: e.target.value,
+                                //   });
+                                // }}
+                                onChange={(e) => validateOrganizationName(e)}
                               />
+
+                              <div
+                                className={`${
+                                  organizationNameError ? "show" : "hide"
+                                }`}
+                                style={{ color: "red", fontSize: "12px" }}
+                              >
+                                {/* <WarningIcon /> */}
+                                &nbsp; Organization Name required!
+                              </div>
                             </div>
                             <div className="col-3">
                               <input
                                 type="text"
                                 name="org_domain"
                                 className="form-control"
-                                placeholder="Organization Domain"
+                                placeholder="Domain *"
                                 class="form-control name_email"
                                 value={clientdata.org_domain}
-                                onChange={(e) => {
-                                  setclientdata({
-                                    ...clientdata,
-                                    org_domain: e.target.value,
-                                  });
-                                }}
+                                // onChange={(e) => {
+                                //   setclientdata({
+                                //     ...clientdata,
+                                //     org_domain: e.target.value,
+                                //   });
+                                // }}
+                                onChange={(e) => validateDomain(e)}
                               />
+                              <div
+                                className={`${domainError ? "show" : "hide"}`}
+                                style={{ color: "red", fontSize: "12px" }}
+                              >
+                                {/* <WarningIcon /> */}
+                                &nbsp; Domain required!
+                              </div>
                             </div>
+
                             <div className="col-3">
                               <input
                                 type="text"
                                 name="org_key"
                                 className="form-control"
-                                placeholder="Organization Key"
+                                placeholder="Code *"
                                 class="form-control name_email"
                                 value={clientdata.org_key}
-                                onChange={(e) => {
-                                  setclientdata({
-                                    ...clientdata,
-                                    org_key: e.target.value,
-                                  });
-                                }}
+                                // onChange={(e) => {
+                                //   setclientdata({
+                                //     ...clientdata,
+                                //     org_key: e.target.value,
+                                //   });
+                                // }}
+                                onChange={(e) => validateCode(e)}
                               />
+                              <div
+                                className={`${codeError ? "show" : "hide"}`}
+                                style={{ color: "red", fontSize: "12px" }}
+                              >
+                                {/* <WarningIcon /> */}
+                                &nbsp; Code required!
+                              </div>
                             </div>
                           </div>
                           <div className="col-2 title">Store Details:</div>
@@ -428,22 +671,46 @@ const ClientDetailsForm = (props) => {
                                       type="text"
                                       name="store_name"
                                       className="form-control"
-                                      placeholder="Store Name"
+                                      placeholder="Store Name *"
                                       class="form-control name_list"
                                       value={ele.store_name}
-                                      onChange={(e) => changedata(e, index)}
+                                      // onChange={(e) => changedata(e, index)}
+                                      onChange={(e) =>
+                                        validateStoreName(e, index)
+                                      }
                                     />
+                                    <div
+                                      className={`${
+                                        storeNameError ? "show" : "hide"
+                                      }`}
+                                      style={{ color: "red", fontSize: "12px" }}
+                                    >
+                                      {/* <WarningIcon /> */}
+                                      &nbsp; Store Name required!
+                                    </div>
                                   </div>
                                   <div className="col-3">
                                     <input
                                       type="email"
                                       name="store_email"
                                       className="form-control"
-                                      placeholder="Store Email"
+                                      placeholder="Store Email *"
                                       class="form-control name_email"
                                       value={ele.store_email}
-                                      onChange={(e) => changedata(e, index)}
+                                      // onChange={(e) => changedata(e, index)}
+                                      onChange={(e) =>
+                                        validateStoreEmail(e, index)
+                                      }
                                     />
+                                    <div
+                                      className={`${
+                                        storeMailError ? "show" : "hide"
+                                      }`}
+                                      style={{ color: "red", fontSize: "12px" }}
+                                    >
+                                      {/* <WarningIcon /> */}
+                                      &nbsp; {storeMailError}
+                                    </div>
                                   </div>
                                   <div className="col-3">
                                     <input
@@ -510,32 +777,52 @@ const ClientDetailsForm = (props) => {
                                 type="text"
                                 name="con_name"
                                 className="form-control"
-                                placeholder="Client Contact Name"
+                                placeholder="Customer Contact Name *"
                                 class="form-control name_list"
                                 value={clientdata.con_name}
-                                onChange={(e) => {
-                                  setclientdata({
-                                    ...clientdata,
-                                    con_name: e.target.value,
-                                  });
-                                }}
+                                // onChange={(e) => {
+                                //   setclientdata({
+                                //     ...clientdata,
+                                //     con_name: e.target.value,
+                                //   });
+                                // }}
+                                onChange={(e) => validateCustomerName(e)}
                               />
+                              <div
+                                className={`${
+                                  customerNameError ? "show" : "hide"
+                                }`}
+                                style={{ color: "red", fontSize: "12px" }}
+                              >
+                                {/* <WarningIcon /> */}
+                                &nbsp; Customer Name required!
+                              </div>
                             </div>
                             <div className="col-3">
                               <input
                                 type="email"
                                 name="con_email"
                                 className="form-control"
-                                placeholder="Client Contact Email"
+                                placeholder="Customer Contact Email *"
                                 class="form-control name_email"
                                 value={clientdata.con_email}
-                                onChange={(e) => {
-                                  setclientdata({
-                                    ...clientdata,
-                                    con_email: e.target.value,
-                                  });
-                                }}
+                                // onChange={(e) => {
+                                //   setclientdata({
+                                //     ...clientdata,
+                                //     con_email: e.target.value,
+                                //   });
+                                // }}
+                                onChange={(e) => validateEmail(e)}
                               />
+                              <div
+                                className={`${
+                                  customerEmailError ? "show" : "hide"
+                                }`}
+                                style={{ color: "red", fontSize: "12px" }}
+                              >
+                                {/* <WarningIcon /> */}
+                                &nbsp; {customerEmailError}
+                              </div>
                             </div>
                           </div>
 
@@ -565,7 +852,13 @@ const ClientDetailsForm = (props) => {
                                   alt="Image"
                                 />
                               ) : (
-                                <p style={{ margin: 0, padding: 10 }}>
+                                <p
+                                  style={{
+                                    margin: 0,
+                                    padding: 5,
+                                    marginRight: 8,
+                                  }}
+                                >
                                   Upload Logo:
                                 </p>
                               )}
@@ -583,7 +876,7 @@ const ClientDetailsForm = (props) => {
                                   component="label"
                                 >
                                   <p>
-                                    Upload Image
+                                    Upload Logo
                                     <input
                                       type="file"
                                       hidden
@@ -634,7 +927,7 @@ const ClientDetailsForm = (props) => {
                           <section className="modal-main">
                             <div className="modal-header">
                               <h5 className="modal-title-modal2">
-                                Who Should Receive the Domain and Key ?
+                                Who Should Receive the Domain and Credentials ?
                               </h5>
                               <button
                                 type="button"
@@ -669,7 +962,11 @@ const ClientDetailsForm = (props) => {
                                       >
                                         <div className="modal2-email-wrap">
                                           <label className="email-label">
-                                            Email :
+                                            Email{" "}
+                                            <span style={{ color: "red" }}>
+                                              *{" "}
+                                            </span>{" "}
+                                            :
                                           </label>
                                           <input
                                             type="email"
@@ -678,13 +975,29 @@ const ClientDetailsForm = (props) => {
                                             // placeholder="Email"
                                             class="form-control name_email"
                                             value={clientdata.org_admin}
-                                            onChange={(e) => {
-                                              setclientdata({
-                                                ...clientdata,
-                                                org_admin: e.target.value,
-                                              });
-                                            }}
+                                            style={{ marginLeft: "2px" }}
+                                            // onChange={(e) => {
+                                            //   setclientdata({
+                                            //     ...clientdata,
+                                            //     org_admin: e.target.value,
+                                            //   });
+                                            // }}
+                                            onChange={(e) => validateOrgEmail(e)}
                                           />
+                                        </div>
+                                        <div
+                                          className={`${
+                                            orgAdminEmailError ? "show" : "hide"
+                                          }`}
+                                          style={{
+                                            color: "red",
+                                            fontSize: "12px",
+                                            textAlign: "left",
+                                            paddingLeft: "66px",
+                                          }}
+                                        >
+                                          {/* <WarningIcon /> */}
+                                          &nbsp; {orgAdminEmailError}
                                         </div>
                                       </form>
                                     </div>
@@ -694,7 +1007,7 @@ const ClientDetailsForm = (props) => {
                                         class="btn btn-success"
                                         name="submit"
                                         id="Save"
-                                        value="Save"
+                                        value="Send"
                                         onClick={handleSave}
                                       ></input>
                                     </div>

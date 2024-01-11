@@ -1,4 +1,5 @@
 import logo from "../../assets/images/logo4.png";
+import textlogo from "../../assets/images/skg-new-logo.svg"
 import profileimage from "../../assets/images/patient.png";
 import "../style/maincompstyle/navbar.scss";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
@@ -65,15 +66,16 @@ function Navbar(props) {
             <img
               className="header_img"
               style={{
-                width: " 204px",
-                height: "50px",
-                padding: "1px",
-                marginRight: "33px",
+                // width: " 204px",
+                // height: "50px",
+                // padding: "1px",
+                // marginRight: "33px",
+                
               }}
-              src={logo}
+              src={textlogo}
             ></img>
           ) : (
-            <img src={logo}></img>
+            <img src={logo} style={{background: "transparent"}}></img>
           )}
         </div>
         <div className="navmenu">

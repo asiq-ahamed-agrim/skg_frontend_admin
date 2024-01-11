@@ -21,10 +21,26 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Client from "./components/pages/Clientdetails";
 import { ToastContainer } from "react-toastify";
+import StorePage from "./components/pages/StorePage";
 
-import ClientDetailsForm from "./components/pages/Clientdetails";
+function App(props) {
+  useEffect(() => {
+    handleChnage("1");
+  }, []);
 
-function App() {
+  const handleChnage = (e) => {
+    var browserZoomLevel = Math.round(
+      (window.outerWidth / window.innerWidth) * 100
+    );
+    // console.log(browserZoomLevel, window.innerHeight, window.innerWidth);
+    var doc = document.getElementsByClassName("App");
+    let zoom = (window.innerWidth / 1700) * 105;
+    // console.log(Math.round(zoom));
+    doc[0].style.zoom = `${Math.round(zoom)}%`;
+  };
+
+  window.addEventListener("resize", handleChnage);
+
   const Error = useNavigate();
   const popup = useSelector((state) => state.counter.popupalert);
   const loaderdata = useSelector((state) => state.counter.loader);
@@ -142,7 +158,18 @@ function App() {
                 }
                 path="/"
               ></Route>
-              
+
+              <Route
+                element={
+                  <StorePage
+                    loaderchange={loaderchange}
+                    popupalert={popupalert}
+                    popuptext={popuptext}
+                  />
+                }
+                path="/storepage"
+              ></Route>
+
               <>
                 <Route
                   element={<ErrorPage errorstatus={errorstatus} />}

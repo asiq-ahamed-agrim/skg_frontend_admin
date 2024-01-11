@@ -5,9 +5,10 @@ const initialState = {
   loader: "false",
   popupalert: "false",
   clientaddstatevalue:"",
+  origanisationid:"",
 
 
-  editadminuser: "",
+  // editadminuser: "",
   editadminuserid: "",
   editdoctoruser: "",
   patientid: "",
@@ -57,11 +58,12 @@ export const counterSlice = createSlice({
     },
 
 
-    ///
-    editadminuser: (state, action) => {
-      state.edituser = action.payload;
+    origanisationid: (state, action) => {
+      state.origanisationid = action.payload;
       // console.log(state.edituser,"kdsjh")
     },
+
+    ////
     editadminuserid: (state, action) => {
       state.edituserid = action.payload;
       // console.log(state.edituserid,"kdsjh")
@@ -153,9 +155,8 @@ export const {
   loader,
   popupalert,
   clientaddstate,
+  origanisationid,
 
-
-  editadminuser,
   editadminuserid,
   patientid,
   speciality,

@@ -1,7 +1,7 @@
 import "../style/page/report.scss";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { clientaddstate } from "../redux/reducer/counterslice";
+import { clientaddstate, origanisationid } from "../redux/reducer/counterslice";
 import { useEffect, useState, useMemo } from "react";
 import { clientdata, clientapprove, CustomerDetails } from "../../text/apidata";
 import BasicTable from "../maincomponent/reacttable/table";
@@ -9,6 +9,8 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import { NavLink } from "react-router-dom";
 import noimage1 from "../../assets/images/noimage.png";
 import ClientDetailsForm from "../form/clientdetailsfrom";
+import StorePage from "./StorePage"; // Import the StorePage component
+import { useNavigate } from "react-router-dom";
 
 import $ from "jquery";
 function Client(props) {
@@ -18,6 +20,8 @@ function Client(props) {
     },
   };
 
+  const navigate = useNavigate();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [dtpageindex, setdtPageindex] = useState(1);
   const [dtpagesize, setdtPagesize] = useState(10);
@@ -26,6 +30,7 @@ function Client(props) {
   const [popup, setpopup] = useState(false);
   const [filter, setfilter] = useState("pending");
   const [status, setstatus] = useState("");
+  const [orgid, setorgid] = useState("");
 
   const [approvedata, setapprovedata] = useState({
     org_id: "",
@@ -35,16 +40,22 @@ function Client(props) {
   const dispatch = useDispatch();
 
   const [customerdetails, setcustomerdetails] = useState([]);
+  const [customerdetails2, setcustomerdetails2] = useState(false);
+
+  const [organizationIds, setOrganizationIds] = useState([]);
 
   const sideactive = useSelector((state) => state.counter.sidebarnav);
   const clientstate = useSelector((state) => state.counter.clientaddstatevalue);
   console.log(clientstate);
+
   const handleSubmit = (event) => {
     event.preventDefault();
   };
 
-  // get api
+  //parent get api
   useEffect(() => {
+    props.loaderchange("true");
+
     axios({
       method: "get",
       url: CustomerDetails,
@@ -56,14 +67,20 @@ function Client(props) {
         page_size: dtpagesize,
         search: searchQuery,
         // is_active:isactivefilterdata
-
       },
     })
       .then((res) => {
         console.log(res.data, "cdres", res.data.data.pagination.total);
         setcustomerdetails(res.data.data.data);
         setdatacount(res.data.data.pagination.total);
-        // props.loaderchange("true");
+        props.loaderchange("false");
+        setcustomerdetails2(false);
+
+        // const organizations = res.data.data.data;
+        // const organizationIds = organizations.map((org) => org.organization_id);
+        // setOrganizationIds(organizationIds);
+        // console.log(organizationIds, "doi");
+        // debugger;
       })
       .catch((error) => {
         console.log(error, "error");
@@ -74,7 +91,14 @@ function Client(props) {
         // }, 2000);
         props.loaderchange("false");
       });
-  }, [dtpageindex, dtpagesize]);
+  }, [dtpageindex, dtpagesize, customerdetails2]);
+
+  const handleStore = (organizationId) => {
+    // localStorage.setItem('organizationId', organizationId);
+    console.log(organizationId, "id");
+    dispatch(origanisationid(organizationId));
+    navigate("/storepage");
+  };
 
   useEffect(() => {
     if (popup == false) {
@@ -123,7 +147,7 @@ function Client(props) {
           props.loaderchange("false");
           props.popupalert("true");
           setpopup(false);
-          props.popuptext("Client Approved");
+          props.popuptext("Customer Approved");
           setTimeout(() => {
             props.popupalert("false");
           }, 2000);
@@ -158,7 +182,7 @@ function Client(props) {
           props.loaderchange("false");
           props.popupalert("true");
           setpopup(false);
-          props.popuptext("Client Rejected");
+          props.popuptext("Customer Rejected");
           setTimeout(() => {
             props.popupalert("false");
           }, 2000);
@@ -198,14 +222,18 @@ function Client(props) {
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={row.row.original.organization_name}
               >
-                {String(row.row.original.organization_name)}
+                <p
+                  onClick={() => handleStore(row.row.original.organization_id)}
+                >
+                  <a href="" style={{color: "black", textDecoration: 'none'}}>{String(row.row.original.organization_name)}</a>
+                </p>
               </p>
             </>
           );
         },
       },
       {
-        Header: "Origination Key",
+        Header: "Code",
         accessor: "",
         Cell: (row) => {
           return (
@@ -221,7 +249,7 @@ function Client(props) {
         },
       },
       {
-        Header: "Origination Subdomain",
+        Header: "Subdomain",
         accessor: "",
 
         Cell: (row) => {
@@ -257,6 +285,7 @@ function Client(props) {
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={row.row.original.contact_person}
                 className="status"
+                style={{ fontWeight: "400" }}
               >
                 {row.row.original.contact_person}
               </p>
@@ -275,6 +304,7 @@ function Client(props) {
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={row.row.original.cp_email}
                 className="status"
+                style={{ fontWeight: "400" }}
               >
                 {row.row.original.cp_email}
               </p>
@@ -293,6 +323,16 @@ function Client(props) {
   const pageindex = (arg) => {
     setdtPageindex(arg);
   };
+  const loaderchangechild = (arg) => {
+    // console.log(arg,"jkh")
+    props.loaderchange(arg);
+  };
+  const popupalertchild = (arg) => {
+    props.popupalert(arg);
+  };
+  const popuptextchild = (arg) => {
+    props.popuptext(arg);
+  };
 
   return (
     <>
@@ -300,8 +340,9 @@ function Client(props) {
         <div class="page-header-PO">
           <div class="row">
             <div class="col-sm-7 col-auto">
-              <h3 class="page-title">Customer Details</h3>
+              <h3 class="page-title">Organization Details</h3>
             </div>
+
             <div class="col-sm-5 col">
               <a
                 onClick={(e) => {
@@ -320,6 +361,32 @@ function Client(props) {
               </a>
             </div>
           </div>
+
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <NavLink
+                style={{ textDecoration: "none", color: "#333333" }}
+                to={"/"}
+                // onClick={(e) => {
+                //   dispatch(getSideBarfilesActions("Client"));
+                // }}
+              >
+                Org /
+              </NavLink>
+            </li>
+            {/* <li class="breadcrumb-item">
+              <NavLink
+                style={{ textDecoration: "none", color: "#333333" }}
+                to={"/storepage"}
+                // onClick={(e) => {
+                //   dispatch(getSideBarfilesActions("Client"));
+                // }}
+              >
+                Store Details Page
+              </NavLink>
+            </li> */}
+            {/* <li class="breadcrumb-item active">Client Profile </li> */}
+          </ul>
         </div>
         <div className="row">
           <div className="col-md-12 mt-3">
@@ -434,7 +501,12 @@ function Client(props) {
         />
       </div>
       {clientstate == "ClientCreate" || clientstate == "ClientEdit" ? (
-        <ClientDetailsForm />
+        <ClientDetailsForm
+          setcustomerdetails2={setcustomerdetails2}
+          loaderchange={loaderchangechild}
+          popupalert={popupalertchild}
+          popuptext={popuptextchild}
+        />
       ) : (
         ""
       )}
@@ -473,6 +545,7 @@ function Client(props) {
                 </div>
               </div>
             </div>
+            {/* <StorePage organizationIds={organizationIds} /> */}
           </div>
         </>
       )}

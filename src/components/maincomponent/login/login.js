@@ -131,7 +131,7 @@ function Login(props) {
           data: formData,
         })
           .then((res) => {
-            debugger
+            // debugger
             console.log(res, "res", res.data.session.token.access);
             localStorage.setItem("token", res.data.session.token.access);
             localStorage.setItem("login", "false");
@@ -144,8 +144,8 @@ function Login(props) {
             }, 3000);
           })
           .catch((error) => {
-            debugger
-            console.log(error);
+            // debugger
+            console.log(error, "err");
 
             props.loaderchange("false");
             props.popupalert("true");
@@ -284,14 +284,14 @@ function Login(props) {
                       </Button>
                     </div>
                   </form>
-                  <div className="text-center forgotpass">
+                  {/* <div className="text-center forgotpass">
                     <a
                       href=""
                       style={{ color: "#a0a0a0", textDecoration: "none" }}
                     >
                       Forgot Password?
                     </a>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

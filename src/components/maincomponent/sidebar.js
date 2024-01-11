@@ -76,7 +76,7 @@ function SideBar() {
       icon: (
         <PersonRoundedIcon style={{ padding: "10px", fontSize: "46px" }} />
       ),
-      text: "Client Details",
+      text: "Org Management",
       class:
         "doctorsidebar" +
         `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,

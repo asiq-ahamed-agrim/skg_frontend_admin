@@ -31,6 +31,7 @@
     flex-flow: column;
 
     max-height: 800px;
+    padding: 20px;
 
     .Clientform-headerclass {
       width: calc(100% - 0px);
@@ -81,6 +82,30 @@ form {
     overflow-y: auto;
     overflow-x: hidden;
 
+    .hide {
+      display: none;
+    }
+
+    .show {
+      display: block;
+      text-align: left;
+    }
+
+    svg {
+      // color: red;
+      width: 15px;
+      height: 15px;
+    }
+
+    .activate {
+      -webkit-text-security: none;
+    }
+
+    .notactivate {
+      -webkit-text-security: disc;
+      color: #7a7a7a;
+    }
+
     .store-wrap {
       max-height: 270px;
       padding: 3px;
@@ -101,6 +126,7 @@ form {
 
     textarea {
       height: 0%;
+      padding: 5px;
       // border: 1px solid;
     }
 
@@ -117,7 +143,7 @@ form {
 
   .file-upload-wrap {
     margin-bottom: 0px;
-    padding-left: 0  !important;
+    padding-left: 0 !important;
     padding-bottom: 0px !important;
   }
   .doctorupload {
@@ -237,7 +263,6 @@ form {
   }
 }
 
-
 .modal {
   position: fixed;
   top: 0;
@@ -289,5 +314,19 @@ form {
     width: 20%;
     margin-bottom: 0px;
   }
+}
 
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+  text-align: left;
+}
+
+svg {
+  // color: red;
+  width: 15px;
+  height: 15px;
 }
