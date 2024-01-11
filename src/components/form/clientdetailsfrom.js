@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import validator from "validator";
 import WarningIcon from "@mui/icons-material/Warning";
+import EmailIcon from '@mui/icons-material/Email';
 
 const ClientDetailsForm = (props) => {
   const [clientdata, setclientdata] = useState({
@@ -33,7 +34,11 @@ const ClientDetailsForm = (props) => {
     org_admin: "",
   });
 
-  console.log(clientdata.store_info[0]?.store_email, "mmm");
+  console.log(
+    clientdata.store_info[0].store_name,
+    "mmm",
+    clientdata.store_info[0]?.store_email
+  );
 
   // validtion state
   const [organizationNameError, setOrganizationNameError] = useState(false);
@@ -76,35 +81,109 @@ const ClientDetailsForm = (props) => {
   const clientstate = useSelector((state) => state.counter.clientaddstatevalue);
   const dispatch = useDispatch();
 
+  const [initialStoreInfoLength, setInitialStoreInfoLength] = useState(1);
+
   // validation function
-  const validateOrganizationName = (e) => {
-    const orgname = e.target.value;
+  // const validateOrganizationName = (e) => {
+  //   const orgname = e.target.value;
 
-    if (validator.isEmpty(orgname.trim())) {
-      setOrganizationNameError("*Org Name cannot be empty!");
+  //   if (validator.isEmpty(orgname.trim())) {
+  //     setOrganizationNameError("*Org Name cannot be empty!");
+  //   } else {
+  //     setOrganizationNameError("");
+  //   }
+
+  //   setclientdata((prevState) => ({
+  //     ...prevState,
+  //     org_name: orgname,
+  //   }));
+  // };
+
+  const validateOrganizationName = (subdomain) => {
+    // Ensure that the subdomain is a string
+    if (typeof subdomain === "string" || subdomain instanceof String) {
+      setclientdata((prevState) => ({
+        ...prevState,
+        org_name: subdomain,
+      }));
+      setOrganizationNameError(subdomain.trim() === "");
+
+      console.log(subdomain, "onon");
+      debugger;
+
+      if (validator.isEmpty(subdomain.trim())) {
+        setOrganizationNameError("*Org Name cannot be empty!");
+      } else {
+        setOrganizationNameError("");
+      }
     } else {
-      setOrganizationNameError("");
+      console.error("Invalid subdomain");
     }
-
-    setclientdata((prevState) => ({
-      ...prevState,
-      org_name: orgname,
-    }));
   };
+
+  // const validateDomain = (e) => {
+  //   const domain = e.target.value;
+
+  //   setclientdata({ ...clientdata, org_domain: domain });
+  //   setDomainError(domain.trim() === "");
+
+  //   // Extract the subdomain or domain name from the URL and update the organization name
+  //   const url = new URL(domain);
+  //   const subdomain = url.hostname.split(".")[0];
+
+  //   console.log(domain, "AAA", "BBB", url, "CCC", subdomain);
+  //   debugger;
+
+  //   if (validator.isEmpty(domain.trim())) {
+  //     setDomainError("*Domain cannot be empty!");
+  //   } else {
+  //     setDomainError("");
+  //   }
+
+  //   setclientdata((prevState) => ({
+  //     ...prevState,
+  //     org_domain: domain,
+  //   }));
+
+  //     // Pass the subdomain to validateOrganizationName function for updating the organization name
+  //     validateOrganizationName(subdomain);
+  // };
 
   const validateDomain = (e) => {
     const domain = e.target.value;
+    setclientdata({ ...clientdata, org_domain: domain });
+    setDomainError(domain.trim() === "");
 
     if (validator.isEmpty(domain.trim())) {
       setDomainError("*Domain cannot be empty!");
-    } else {
-      setDomainError("");
+      // Reset the organization name when the domain is empty
+      setclientdata((prevState) => ({
+        ...prevState,
+        org_name: "",
+      }));
+      return; // Skip further processing if the domain is empty
     }
 
-    setclientdata((prevState) => ({
-      ...prevState,
-      org_domain: domain,
-    }));
+    try {
+      // Attempt to construct a URL object
+      const url = new URL(domain);
+      const subdomain = url.hostname.split(".")[0];
+
+      console.log(domain, "AAA", "BBB", url, "CCC", subdomain);
+      debugger;
+
+      // Update the organization name
+      setclientdata((prevState) => ({
+        ...prevState,
+        org_domain: domain,
+      }));
+
+      // Pass the subdomain to validateOrganizationName function for updating the organization name
+      validateOrganizationName(subdomain);
+    } catch (error) {
+      console.error("Invalid URL:", error.message);
+      setDomainError("*Invalid URL");
+    }
   };
 
   const validateCode = (e) => {
@@ -264,6 +343,8 @@ const ClientDetailsForm = (props) => {
       };
     });
   };
+
+  const initialStoreInfoLengthRef = useRef(clientdata.store_info.length);
 
   const changedata = (e, index) => {
     console.log(e.target.name);
@@ -481,8 +562,6 @@ const ClientDetailsForm = (props) => {
     ) {
       setShowModal(true);
     } else {
-      // console.log(clientdata.store_info[0]?.store_email, "ccc");
-      // debugger;
       if (clientdata.org_name == "") {
         setOrganizationNameError("Organization Name cannot be empty!");
       }
@@ -535,7 +614,6 @@ const ClientDetailsForm = (props) => {
           toast.error("Organization Name Already Exists");
         });
     } else {
-      
       if (clientdata.org_admin == "") {
         setOrgAdminEmailError("Email cannot be empty!");
       }
@@ -567,7 +645,7 @@ const ClientDetailsForm = (props) => {
               </button>
             </div>
             <div class="modal-body" style={{ padding: "0 !important" }}>
-              <div class=" p-1" style={{ marginLeft: "15px" }}>
+              <div class=" p-1" style={{ marginLeft: "0px" }}>
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
@@ -579,14 +657,22 @@ const ClientDetailsForm = (props) => {
                         }}
                       >
                         <div className="form_parent">
-                          <div className="col-2 title">Organization:</div>
+                          <div
+                            className="col-2 title"
+                            style={{ paddingBottom: "3px" }}
+                          >
+                            Organization:
+                          </div>
                           <div className="row mb-2">
                             <div className="col-3">
+                              <label>
+                                Name <span style={{ color: "red" }}>*</span>
+                              </label>
                               <input
                                 type="text"
                                 name="org_name"
                                 className="form-control"
-                                placeholder="Organization Name *"
+                                placeholder="Name"
                                 class="form-control name_list"
                                 value={clientdata.org_name}
                                 // onChange={(e) => {
@@ -609,11 +695,14 @@ const ClientDetailsForm = (props) => {
                               </div>
                             </div>
                             <div className="col-3">
+                              <label>
+                                Domain <span style={{ color: "red" }}>*</span>
+                              </label>
                               <input
                                 type="text"
                                 name="org_domain"
                                 className="form-control"
-                                placeholder="Domain *"
+                                placeholder="Domain"
                                 class="form-control name_email"
                                 value={clientdata.org_domain}
                                 // onChange={(e) => {
@@ -634,11 +723,14 @@ const ClientDetailsForm = (props) => {
                             </div>
 
                             <div className="col-3">
+                              <label>
+                                Code <span style={{ color: "red" }}>*</span>
+                              </label>
                               <input
                                 type="text"
                                 name="org_key"
                                 className="form-control"
-                                placeholder="Code *"
+                                placeholder="Code"
                                 class="form-control name_email"
                                 value={clientdata.org_key}
                                 // onChange={(e) => {
@@ -658,20 +750,38 @@ const ClientDetailsForm = (props) => {
                               </div>
                             </div>
                           </div>
+
                           <div className="col-2 title">Store Details:</div>
                           <div className="store-wrap">
                             {clientdata.store_info.map((ele, index) => {
+                              const isNewlyAdded =
+                                index >= initialStoreInfoLengthRef.current;
+
                               return (
                                 <div
                                   className="row"
-                                  style={{ marginBottom: "0px" }}
+                                  style={{
+                                    marginBottom: "0px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                  }}
                                 >
                                   <div className="col-2">
+                                    <label
+                                      className={
+                                        !isNewlyAdded
+                                          ? "visible-label"
+                                          : "hidden-label"
+                                      }
+                                    >
+                                      Name{" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                    </label>
                                     <input
                                       type="text"
                                       name="store_name"
                                       className="form-control"
-                                      placeholder="Store Name *"
+                                      placeholder="Name"
                                       class="form-control name_list"
                                       value={ele.store_name}
                                       // onChange={(e) => changedata(e, index)}
@@ -690,11 +800,21 @@ const ClientDetailsForm = (props) => {
                                     </div>
                                   </div>
                                   <div className="col-3">
+                                    <label
+                                      className={
+                                        !isNewlyAdded
+                                          ? "visible-label"
+                                          : "hidden-label"
+                                      }
+                                    >
+                                      Email{" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                    </label>
                                     <input
                                       type="email"
                                       name="store_email"
                                       className="form-control"
-                                      placeholder="Store Email *"
+                                      placeholder="Email"
                                       class="form-control name_email"
                                       value={ele.store_email}
                                       // onChange={(e) => changedata(e, index)}
@@ -713,6 +833,15 @@ const ClientDetailsForm = (props) => {
                                     </div>
                                   </div>
                                   <div className="col-3">
+                                    <label
+                                      className={
+                                        !isNewlyAdded
+                                          ? "visible-label"
+                                          : "hidden-label"
+                                      }
+                                    >
+                                      Contact Person{" "}
+                                    </label>
                                     <input
                                       type="text"
                                       name="store_cp"
@@ -724,6 +853,15 @@ const ClientDetailsForm = (props) => {
                                     />
                                   </div>
                                   <div className="col-3">
+                                    <label
+                                      className={
+                                        !isNewlyAdded
+                                          ? "visible-label"
+                                          : "hidden-label"
+                                      }
+                                    >
+                                      Store Address{" "}
+                                    </label>
                                     <textarea
                                       type="text"
                                       name="store_address"
@@ -735,7 +873,13 @@ const ClientDetailsForm = (props) => {
                                   </div>
 
                                   {index == 0 && (
-                                    <div className="col-1">
+                                    <div
+                                      className="col-1"
+                                      style={{
+                                        height: "70px",
+                                        paddingTop: "25px",
+                                      }}
+                                    >
                                       <button
                                         type="button"
                                         name="add"
@@ -749,7 +893,13 @@ const ClientDetailsForm = (props) => {
                                     </div>
                                   )}
                                   {index != 0 && (
-                                    <div className="col-1">
+                                    <div
+                                      className="col-1"
+                                      style={{
+                                        height: "70px",
+                                        paddingTop: "15px",
+                                      }}
+                                    >
                                       <button
                                         type="button"
                                         name="add"
@@ -768,16 +918,23 @@ const ClientDetailsForm = (props) => {
                             })}
                           </div>
 
-                          <div className="col-2 title pt-0 mt-0">
+                          <div
+                            className="col-2 title pt-10 mt-0"
+                            style={{ paddingBottom: "3px" }}
+                          >
                             Contact Person:{" "}
                           </div>
+                          {/* <div className="store-wrap"> */}
                           <div className="row mb-2">
                             <div className="col-3">
+                              <label>
+                                Name <span style={{ color: "red" }}>*</span>
+                              </label>
                               <input
                                 type="text"
                                 name="con_name"
                                 className="form-control"
-                                placeholder="Customer Contact Name *"
+                                placeholder="Name"
                                 class="form-control name_list"
                                 value={clientdata.con_name}
                                 // onChange={(e) => {
@@ -799,11 +956,14 @@ const ClientDetailsForm = (props) => {
                               </div>
                             </div>
                             <div className="col-3">
+                              <label>
+                                Email <span style={{ color: "red" }}>*</span>
+                              </label>
                               <input
                                 type="email"
                                 name="con_email"
                                 className="form-control"
-                                placeholder="Customer Contact Email *"
+                                placeholder="Email"
                                 class="form-control name_email"
                                 value={clientdata.con_email}
                                 // onChange={(e) => {
@@ -824,6 +984,7 @@ const ClientDetailsForm = (props) => {
                                 &nbsp; {customerEmailError}
                               </div>
                             </div>
+                            {/* </div> */}
                           </div>
 
                           {/* file upload */}
@@ -982,7 +1143,9 @@ const ClientDetailsForm = (props) => {
                                             //     org_admin: e.target.value,
                                             //   });
                                             // }}
-                                            onChange={(e) => validateOrgEmail(e)}
+                                            onChange={(e) =>
+                                              validateOrgEmail(e)
+                                            }
                                           />
                                         </div>
                                         <div

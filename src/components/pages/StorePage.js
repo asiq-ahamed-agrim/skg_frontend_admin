@@ -1,3 +1,4 @@
+
 import "../style/page/report.scss";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -19,8 +20,18 @@ const StorePage = (props) => {
   };
   const dispatch = useDispatch();
 
+  const [activeTab, setActiveTab] = useState("tab1");
+
+  const handleTabClick = (tabname) => {
+    setActiveTab(tabname);
+  };
+
   const sideactive = useSelector((state) => state.counter.sidebarnav);
   const orgid = useSelector((state) => state.counter.origanisationid);
+  const orgname = useSelector((state) => state.counter.origanisationname);
+
+  console.log(orgid, "oi", orgname);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [dtpageindex, setdtPageindex] = useState(1);
   const [dtpagesize, setdtPagesize] = useState(10);
@@ -58,7 +69,6 @@ const StorePage = (props) => {
         console.log(res.data.data, "storedata");
         setstoredetails(res.data.data);
         props.loaderchange("false");
-        // setcustomerdetails2(false);
       })
       .catch((error) => {
         console.log(error, "error");
@@ -91,9 +101,8 @@ const StorePage = (props) => {
       .then((res) => {
         console.log(res.data.data.data, "orgdata");
         setorguserdata(res.data.data.data);
-        // setdatacount(res.data.data.pagination.total);
+        setdatacount(res.data.data.pagination.total);
         props.loaderchange("false");
-        // setcustomerdetails2(false);
       })
       .catch((error) => {
         console.log(error, "error");
@@ -166,7 +175,7 @@ const StorePage = (props) => {
         },
       },
       {
-        Header: "User Email",
+        Header: "Email",
         accessor: "",
         Cell: (row) => {
           return (
@@ -175,7 +184,7 @@ const StorePage = (props) => {
                 data-tooltip-id="my-tooltip"
                 data-tooltip-content={row.row.original.user_email}
               >
-                {row.row.original.user_email}
+                <a href="">{row.row.original.user_email}</a>
               </p>
             </>
           );
@@ -218,23 +227,23 @@ const StorePage = (props) => {
       <div class="page-header-PO">
         <div class="row">
           <div class="col-sm-7 col-auto">
-            <h3 class="page-title">Store Details</h3>
+            <h3 class="page-title">Organization: {orgname}</h3>
           </div>
           {/* <div class="col-sm-5 col">
               <a
-                onClick={(e) => {
-                  dispatch(clientaddstate("ClientCreate"));
-                }}
+                // onClick={(e) => {
+                //   dispatch(clientaddstate("ClientCreate"));
+                // }}
                 style={{
-                  backgroundColor: "#1b5a90",
-                  border: "1px solid #1b5a90",
-                  color: "white",
+                //   backgroundColor: "#1b5a90",
+                //   border: "1px solid #1b5a90",
+                  color: "black",
                 }}
-                type="button"
-                data-toggle="modal"
-                class="btn btn-primary float-right mt-2"
+                // type="button"
+                // data-toggle="modal"
+                class=" float-right mt-2"
               >
-                Create
+               Organization Name: {orgname}
               </a>
             </div> */}
 
@@ -247,7 +256,7 @@ const StorePage = (props) => {
                 //   dispatch(getSideBarfilesActions("Client"));
                 // }}
               >
-                Org
+                Org Management
               </NavLink>
             </li>
             <li class="breadcrumb-item">
@@ -258,7 +267,7 @@ const StorePage = (props) => {
                 //   dispatch(getSideBarfilesActions("Client"));
                 // }}
               >
-                Store Details Page
+                {orgname}
               </NavLink>
             </li>
             {/* <li class="breadcrumb-item active">Client Profile </li> */}
@@ -267,52 +276,103 @@ const StorePage = (props) => {
       </div>
 
       <div className="row">
-        {storedetails.map((store, index) => (
-          <div key={index} className="col-md-4 mt-3">
-            <div className="card" style={{ borderRadius: "15px" }}>
-              <div
-                className="card-body"
-                style={{
-                  padding: "1.5rem",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
+        {/* tabs */}
+
+        <div className="inner-tabs">
+          <div className="subnavbar">
+            <div
+              className={`tab ${activeTab === "tab1" ? "active-tab-line" : ""}`}
+            >
+              <button
+                className={activeTab === "tab1" ? "active" : ""}
+                onClick={() => handleTabClick("tab1")}
               >
-                <div className="store-details-wrap">
-                  <p className="store-desc">
-                    <b>Store Name : </b> {store.name}
-                  </p>
-                  <p className="store-desc">
-                    <b>Email : </b> {store.email}
-                  </p>
-                  <p className="store-desc">
-                    <b>Contact Person : </b> {store.c_person}
-                  </p>
-                  <p className="store-desc">
-                    <b>Address : </b> {store.address}
-                  </p>
-                </div>
-                <div className="store-action">
-                  <button className="action-btn">
-                    <EditIcon />
-                  </button>
-                </div>
-              </div>
+                User
+              </button>
+            </div>
+            <div
+              className={`tab ${activeTab === "tab2" ? "active-tab-line" : ""}`}
+            >
+              <button
+                className={activeTab === "tab2" ? "active" : ""}
+                onClick={() => handleTabClick("tab2")}
+              >
+                Store
+              </button>
+            </div>
+            <div
+              className={`tab ${activeTab === "tab3" ? "active-tab-line" : ""}`}
+            >
+              <button
+                className={activeTab === "tab3" ? "active" : ""}
+                onClick={() => handleTabClick("tab3")}
+              >
+                Product
+              </button>
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="table-responsive">
-        <BasicTable
-          columns={columns}
-          data={orguserdata}
-          pagesize={pagesize}
-          pageindex={pageindex}
-          dtpagesize={dtpagesize}
-          dtpageindex={dtpageindex}
-          datacount={datacount}
-        />
+          <div className="tab-content">
+            {activeTab === "tab1" && (
+              <div class="row govt-wrap">
+                <div className="table-responsive">
+                  <BasicTable
+                    columns={columns}
+                    data={orguserdata}
+                    pagesize={pagesize}
+                    pageindex={pageindex}
+                    dtpagesize={dtpagesize}
+                    dtpageindex={dtpageindex}
+                    datacount={datacount}
+                  />
+                </div>
+              </div>
+            )}
+            {activeTab === "tab2" && (
+              <div class="row govt-wrap">
+                {storedetails.map((store, index) => (
+                  <div key={index} className="col-md-4 mt-3">
+                    <div className="card" style={{ borderRadius: "15px" }}>
+                      <div
+                        className="card-body"
+                        style={{
+                          padding: "1.5rem",
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div className="store-details-wrap">
+                          <p className="store-desc">
+                            <b>Store Name : </b> {store.name}
+                          </p>
+                          <p className="store-desc">
+                            <b>Email : </b> {store.email}
+                          </p>
+                          <p className="store-desc">
+                            <b>Contact Person : </b> {store.c_person}
+                          </p>
+                          <p className="store-desc">
+                            <b>Address : </b> {store.address}
+                          </p>
+                        </div>
+                        <div className="store-action">
+                          <button className="action-btn">
+                            <EditIcon />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {activeTab === "tab3" && (
+              <div class="row govt-wrap" style={{ textAlign: "center" }}>
+                <p style={{ textAlign: "center" }}>No Data</p>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* email second modal */}

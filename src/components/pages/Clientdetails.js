@@ -1,7 +1,11 @@
 import "../style/page/report.scss";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { clientaddstate, origanisationid } from "../redux/reducer/counterslice";
+import {
+  clientaddstate,
+  origanisationid,
+  origanisationname,
+} from "../redux/reducer/counterslice";
 import { useEffect, useState, useMemo } from "react";
 import { clientdata, clientapprove, CustomerDetails } from "../../text/apidata";
 import BasicTable from "../maincomponent/reacttable/table";
@@ -11,6 +15,7 @@ import noimage1 from "../../assets/images/noimage.png";
 import ClientDetailsForm from "../form/clientdetailsfrom";
 import StorePage from "./StorePage"; // Import the StorePage component
 import { useNavigate } from "react-router-dom";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 import $ from "jquery";
 function Client(props) {
@@ -47,6 +52,27 @@ function Client(props) {
   const sideactive = useSelector((state) => state.counter.sidebarnav);
   const clientstate = useSelector((state) => state.counter.clientaddstatevalue);
   console.log(clientstate);
+
+  // const handleCopyClick = (text) => {
+  //   debugger
+  //   const textarea = document.createElement("textarea");
+  //   textarea.value = text;
+  //   document.body.appendChild(textarea);
+  //   textarea.select();
+  //   document.execCommand("copy");
+  //   document.body.removeChild(textarea);
+  // };
+
+  const handleCopyClick = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        console.log("Text successfully copied to clipboard");
+      })
+      .catch((err) => {
+        console.error("Unable to copy text to clipboard", err);
+      });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -93,10 +119,10 @@ function Client(props) {
       });
   }, [dtpageindex, dtpagesize, customerdetails2]);
 
-  const handleStore = (organizationId) => {
-    // localStorage.setItem('organizationId', organizationId);
+  const handleStore = (organizationId, name) => {
     console.log(organizationId, "id");
     dispatch(origanisationid(organizationId));
+    dispatch(origanisationname(name));
     navigate("/storepage");
   };
 
@@ -223,9 +249,22 @@ function Client(props) {
                 data-tooltip-content={row.row.original.organization_name}
               >
                 <p
-                  onClick={() => handleStore(row.row.original.organization_id)}
+                  onClick={() =>
+                    handleStore(
+                      row.row.original.organization_id,
+                      row.row.original.organization_name
+                    )
+                  }
                 >
-                  <a href="" style={{color: "black", textDecoration: 'none'}}>{String(row.row.original.organization_name)}</a>
+                  <NavLink
+                    style={{ textDecoration: "none", color: "#333333" }}
+                    to={"/storepage"}
+                    // onClick={(e) => {
+                    //   dispatch(getSideBarfilesActions("Client"));
+                    // }}
+                  >
+                    <a href=""> {String(row.row.original.organization_name)}</a>
+                  </NavLink>
                 </p>
               </p>
             </>
@@ -260,15 +299,24 @@ function Client(props) {
                 data-tooltip-content={row.row.original.organization_domain}
                 className="status"
                 style={{
-                  color:
-                    row.row.original.contact_person != "pending"
-                      ? "green"
-                      : "red",
+                  fontWeight: "400",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "start",
+                  gap: "3px",
                 }}
               >
-                <a href={row.row.original.organization_domain}>
+                <span
+                  className="copy-icon"
+                  onClick={() =>
+                    handleCopyClick(row.row.original.organization_domain)
+                  }
+                >
+                  <ContentCopyIcon />
+                </span>
+                <span className="subdomain-url">
                   {row.row.original.organization_domain}
-                </a>
+                </span>
               </p>
             </>
           );
@@ -340,7 +388,7 @@ function Client(props) {
         <div class="page-header-PO">
           <div class="row">
             <div class="col-sm-7 col-auto">
-              <h3 class="page-title">Organization Details</h3>
+              <h3 class="page-title">Organization List</h3>
             </div>
 
             <div class="col-sm-5 col">
@@ -371,7 +419,7 @@ function Client(props) {
                 //   dispatch(getSideBarfilesActions("Client"));
                 // }}
               >
-                Org /
+                Org Management /
               </NavLink>
             </li>
             {/* <li class="breadcrumb-item">

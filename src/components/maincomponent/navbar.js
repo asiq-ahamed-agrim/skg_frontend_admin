@@ -1,5 +1,5 @@
 import logo from "../../assets/images/logo4.png";
-import textlogo from "../../assets/images/skg-new-logo.svg"
+import textlogo from "../../assets/images/skg-new-logo.svg";
 import profileimage from "../../assets/images/patient.png";
 import "../style/maincompstyle/navbar.scss";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
@@ -65,17 +65,18 @@ function Navbar(props) {
           {sideactive ? (
             <img
               className="header_img"
-              style={{
-                // width: " 204px",
-                // height: "50px",
-                // padding: "1px",
-                // marginRight: "33px",
-                
-              }}
+              style={
+                {
+                  // width: " 204px",
+                  // height: "50px",
+                  // padding: "1px",
+                  // marginRight: "33px",
+                }
+              }
               src={textlogo}
             ></img>
           ) : (
-            <img src={logo} style={{background: "transparent"}}></img>
+            <img src={logo} style={{ background: "transparent" }}></img>
           )}
         </div>
         <div className="navmenu">
@@ -106,7 +107,9 @@ function Navbar(props) {
           <img src={profileimage} className="image nav_profile_get"></img>
           <div className="name nav_profile_get">
             <span className="name nav_profile_get">
-              {user_details&&user_details.username!=undefined?user_details.username:""}
+              {user_details && user_details.username != undefined
+                ? user_details.username
+                : ""}
             </span>
           </div>
         </div>
@@ -135,17 +138,37 @@ function Navbar(props) {
       )}
       {logoutpopup && (
         <div className="nav_profile nav_profile_get">
-          <div className="inner_profile">
+          {/* <div className="inner_profile">
             <div>
               <img src={profileimage} className="image1"></img>
             </div>
             <div className="user_details1">
-              <p className="heading">User: <span className="data">{user_details&&user_details.username!=undefined?user_details.username:""}</span></p>
-              <p className="heading">Location:<span className="data">{user_details&&user_details.location!=undefined?user_details.location:""}</span></p>
-              <p className="heading">Role:<span className="data">{user_details&&user_details.role!=undefined?user_details.role:""}</span></p>
-
+              <p className="heading">
+                User:{" "}
+                <span className="data">
+                  {user_details && user_details.username != undefined
+                    ? user_details.username
+                    : ""}
+                </span>
+              </p>
+              <p className="heading">
+                Location:
+                <span className="data">
+                  {user_details && user_details.location != undefined
+                    ? user_details.location
+                    : ""}
+                </span>
+              </p>
+              <p className="heading">
+                Role:
+                <span className="data">
+                  {user_details && user_details.role != undefined
+                    ? user_details.role
+                    : ""}
+                </span>
+              </p>
             </div>
-          </div>
+          </div> */}
           <div className="sign_out">
             <button
               className="sign_out_button  btn btn-primary"

@@ -4,9 +4,9 @@ const initialState = {
   sidebar: "Client Details",
   loader: "false",
   popupalert: "false",
-  clientaddstatevalue:"",
-  origanisationid:"",
-
+  clientaddstatevalue: "",
+  origanisationid: "",
+  origanisationname: "",
 
   // editadminuser: "",
   editadminuserid: "",
@@ -24,12 +24,12 @@ const initialState = {
   productorderid: "",
   Investigation: "",
   Investigationid: "",
-  packages:"",
-  packagesid:"",
-  Pharmacylistissue:"",
-Pharmacylistissueid:"",
-videobannerstate:"",
-userdata:"",
+  packages: "",
+  packagesid: "",
+  Pharmacylistissue: "",
+  Pharmacylistissueid: "",
+  videobannerstate: "",
+  userdata: "",
 };
 export const counterSlice = createSlice({
   name: "counterSlice",
@@ -51,15 +51,18 @@ export const counterSlice = createSlice({
       state.popupalert = action.payload;
       // console.log(state.popupalert,"kdsjh")
     },
-    
+
     clientaddstate: (state, action) => {
       state.clientaddstatevalue = action.payload;
       // console.log(state.edituser,"kdsjh")
     },
 
-
     origanisationid: (state, action) => {
       state.origanisationid = action.payload;
+      // console.log(state.edituser,"kdsjh")
+    },
+    origanisationname: (state, action) => {
+      state.origanisationname = action.payload;
       // console.log(state.edituser,"kdsjh")
     },
 
@@ -141,11 +144,6 @@ export const counterSlice = createSlice({
     userdata: (state, action) => {
       state.userdata = action.payload;
     },
-
-
-
-
-
   },
 });
 
@@ -156,6 +154,7 @@ export const {
   popupalert,
   clientaddstate,
   origanisationid,
+  origanisationname,
 
   editadminuserid,
   patientid,
@@ -174,9 +173,9 @@ export const {
   packages,
   packagesid,
   Pharmacylistissue,
-Pharmacylistissueid,
-videobannerstate,
-userdata,
+  Pharmacylistissueid,
+  videobannerstate,
+  userdata,
 } = counterSlice.actions;
 
 export default counterSlice.reducer;

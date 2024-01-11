@@ -112,6 +112,9 @@ form {
       // border: 1px solid;
       overflow-y: auto;
       overflow-x: hidden;
+
+      padding-top: 0px;
+      padding-left: 0px;
     }
 
     .title {
@@ -122,10 +125,21 @@ form {
       line-height: 1.5 !important;
       font-family: "Mada", sans-serif;
       font-weight: 500 !important;
+
+      padding-bottom: 0px;
+    }
+
+    .visible-label {
+      display: block;
+    }
+
+    .hidden-label {
+      display: none;
     }
 
     textarea {
-      height: 0%;
+      // height: 0%;
+      height: 0px;
       padding: 5px;
       // border: 1px solid;
     }
@@ -327,6 +341,6 @@ form {
 
 svg {
   // color: red;
-  width: 15px;
-  height: 15px;
+  width: 80px;
+  height: 80px;
 }
