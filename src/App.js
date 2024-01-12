@@ -24,22 +24,22 @@ import { ToastContainer } from "react-toastify";
 import StorePage from "./components/pages/StorePage";
 
 function App(props) {
-  useEffect(() => {
-    handleChnage("1");
-  }, []);
+  // useEffect(() => {
+  //   handleChnage("1");
+  // }, []);
 
-  const handleChnage = (e) => {
-    var browserZoomLevel = Math.round(
-      (window.outerWidth / window.innerWidth) * 100
-    );
-    // console.log(browserZoomLevel, window.innerHeight, window.innerWidth);
-    var doc = document.getElementsByClassName("App");
-    let zoom = (window.innerWidth / 1700) * 105;
-    // console.log(Math.round(zoom));
-    doc[0].style.zoom = `${Math.round(zoom)}%`;
-  };
+  // const handleChnage = (e) => {
+  //   var browserZoomLevel = Math.round(
+  //     (window.outerWidth / window.innerWidth) * 100
+  //   );
+  //   // console.log(browserZoomLevel, window.innerHeight, window.innerWidth);
+  //   var doc = document.getElementsByClassName("App");
+  //   let zoom = (window.innerWidth / 1700) * 105;
+  //   // console.log(Math.round(zoom));
+  //   doc[0].style.zoom = `${Math.round(zoom)}%`;
+  // };
 
-  window.addEventListener("resize", handleChnage);
+  // window.addEventListener("resize", handleChnage);
 
   const Error = useNavigate();
   const popup = useSelector((state) => state.counter.popupalert);

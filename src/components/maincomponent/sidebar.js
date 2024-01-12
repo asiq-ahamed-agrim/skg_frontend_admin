@@ -20,6 +20,10 @@ import ReportIcon from "@mui/icons-material/Report";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
+import BusinessIcon from '@mui/icons-material/Business';
+import StoreIcon from '@mui/icons-material/Store';
+
+
 function SideBar() {
   var list = [];
   var list2 = [];
@@ -74,7 +78,7 @@ function SideBar() {
       name: "ClientDetails",
       link: "/",
       icon: (
-        <PersonRoundedIcon style={{ padding: "10px", fontSize: "46px" }} />
+        <StoreIcon style={{ padding: "10px", fontSize: "46px" }} />
       ),
       text: "Org Management",
       class:

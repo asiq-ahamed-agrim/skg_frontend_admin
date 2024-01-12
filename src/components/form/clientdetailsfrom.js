@@ -110,7 +110,6 @@ const ClientDetailsForm = (props) => {
   //     setOrganizationNameError(subdomain.trim() === "");
 
   //     console.log(subdomain, "onon");
-  //     debugger;
 
   //     if (validator.isEmpty(subdomain.trim())) {
   //       setOrganizationNameError("*Org Name cannot be empty!");
@@ -118,7 +117,6 @@ const ClientDetailsForm = (props) => {
   //       setOrganizationNameError("");
   //     }
   //   } else {
-  //     debugger
   //     console.error("Invalid subdomain");
   //   }
   // };
@@ -165,7 +163,6 @@ const ClientDetailsForm = (props) => {
   //   const subdomain = url.hostname.split(".")[0];
 
   //   console.log(domain, "AAA", "BBB", url, "CCC", subdomain);
-  //   debugger;
 
   //   if (validator.isEmpty(domain.trim())) {
   //     setDomainError("*Domain cannot be empty!");
@@ -200,10 +197,14 @@ const ClientDetailsForm = (props) => {
     try {
       // Attempt to construct a URL object
       const url = new URL(domain);
-      const subdomain = url.hostname.split(".")[0];
+      let subdomain = "";
+      if (url.hostname.startsWith("www")) {
+        subdomain = url.hostname.split(".")[1];
+      } else {
+        subdomain = url.hostname.split(".")[0];
+      }
 
       console.log(domain, "AAA", "BBB", url, "CCC", subdomain);
-      debugger;
 
       // Update the organization name
       setclientdata((prevState) => ({
@@ -420,12 +421,10 @@ const ClientDetailsForm = (props) => {
 
   function getCroppedImg(a, crop, fileName) {
     const canvas = document.createElement("canvas");
-    console.log(canvas);
-    // if(crop&&crop.width!=undefined&&crop.width!=''){
     const image = document.getElementById("localimg");
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
-    console.log(crop);
+    console.log(crop, "crop");
     if (crop) {
       canvas.width = crop.width;
       canvas.height = crop.height;
@@ -462,7 +461,7 @@ const ClientDetailsForm = (props) => {
 
     // const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     // const pixels = imageData.data;
-    // const backgroundColor = [255, 255, 255,255]; // RGBA values for the background color
+    // const backgroundColor = [255, 255, 255, 255]; // RGBA values for the background color
     // for (let i = 0; i < pixels.length; i += 4) {
     //   // Check if the pixel is transparent (alpha channel is 0)
     //   if (pixels[i + 3] === 0) {
@@ -474,27 +473,27 @@ const ClientDetailsForm = (props) => {
     //   }
     // }
     // ctx.putImageData(imageData, 0, 0);
-    var dArr = [-1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1], // offset array
-      s = 100, // thickness scale
-      i = 0, // iterator
-      x = 5, // final position
-      y = 5;
+    // var dArr = [-1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1], // offset array
+    //   s = 100, // thickness scale
+    //   i = 0, // iterator
+    //   x = 5, // final position
+    //   y = 5;
 
-    // draw images at offsets from the array scaled by s
-    for (; i < dArr.length; i += 2)
-      ctx.drawImage(image, x + dArr[i] * s, y + dArr[i + 1] * s);
+    // // draw images at offsets from the array scaled by s
+    // for (; i < dArr.length; i += 2)
+    //   ctx.drawImage(image, x + dArr[i] * s, y + dArr[i + 1] * s);
 
-    // fill with color
-    ctx.globalCompositeOperation = "source-in";
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // // fill with color
+    // ctx.globalCompositeOperation = "source-in";
+    // ctx.fillStyle = "white";
+    // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // draw original image in normal mode
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(image, x, y);
-    // console.log(image1)
+    // // draw original image in normal mode
+    // ctx.globalCompositeOperation = "source-over";
+    // ctx.fillStyle = "white";
+    // ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // ctx.drawImage(image, x, y);
+    // // console.log(image1)
 
     return new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
@@ -503,8 +502,8 @@ const ClientDetailsForm = (props) => {
           console.error("Canvas is empty");
           return;
         }
-        const croppedFile = new File([blob], "croppedimg.png", {
-          type: "image/png",
+        const croppedFile = new File([blob], "croppedimg.jpg", {
+          type: "image/jpeg",
         });
         if (CroppImageViewCount == 1) {
           setFile((oldArray) => [
@@ -575,7 +574,6 @@ const ClientDetailsForm = (props) => {
   };
   const selectedImage = (e) => {
     console.log(e.target.files[0], "ppp");
-    debugger;
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       reader.addEventListener("load", () => setImgsrc(reader.result));
@@ -626,7 +624,6 @@ const ClientDetailsForm = (props) => {
 
       async function uploadimage() {
         console.log(clientdata, "asyn");
-        debugger;
 
         if (preurl && preurl.length > 0) {
           const resp = await fetch(preurl, {
@@ -662,7 +659,6 @@ const ClientDetailsForm = (props) => {
           })
           .catch((error) => {
             console.log(error, "err2");
-            // debugger;
             props.loaderchange("false");
             toast.error("Organization Name Already Exists");
           });

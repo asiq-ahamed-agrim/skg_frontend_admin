@@ -131,7 +131,6 @@ function Login(props) {
           data: formData,
         })
           .then((res) => {
-            // debugger
             console.log(res, "res", res.data.session.token.access);
             localStorage.setItem("token", res.data.session.token.access);
             localStorage.setItem("login", "false");
@@ -144,7 +143,6 @@ function Login(props) {
             }, 3000);
           })
           .catch((error) => {
-            // debugger
             console.log(error, "err");
 
             props.loaderchange("false");
