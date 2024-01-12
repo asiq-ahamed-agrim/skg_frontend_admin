@@ -1,9 +1,9 @@
 
-// const baseurl = "http://122.186.126.218:8001";
-// const baseurl = "http://122.186.126.218:8023";
-// const baseurl ="http://43.205.101.135:8000"
 
-const baseurl = "http://192.168.1.28:8005";
+
+// const baseurl = "http://192.168.1.28:8005";
+const baseurl = "https://user.agrim.no/";
+
 
 export const loginapi = baseurl+"/adminlogin/";
 
@@ -28,7 +28,6 @@ export const basetime=baseurl+"/doctor/basetime/v3/";
 
 export const appoinment =baseurl+"/appointment/v1/";
 
-export const presignedurl=baseurl+"/media/presignedurl/";
 
 export const doctimeslot=baseurl+"/doctor/getslotsdoctor/";
 
@@ -145,6 +144,9 @@ export const pharmacyrequestput=baseurl+"/editpharmacart/"
 
 export const generatereportpharmacy =baseurl+"/finalbillamount/"
 
+
+// export const presignedurl="https://api.saveallnations.com/awspresignedurl";
+export const presignedurl=baseurl+"/get_presigned";
 
 
 

@@ -13,7 +13,6 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import { NavLink } from "react-router-dom";
 import noimage1 from "../../assets/images/noimage.png";
 import ClientDetailsForm from "../form/clientdetailsfrom";
-import StorePage from "./StorePage"; // Import the StorePage component
 import { useNavigate } from "react-router-dom";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
@@ -35,7 +34,6 @@ function Client(props) {
   const [popup, setpopup] = useState(false);
   const [filter, setfilter] = useState("pending");
   const [status, setstatus] = useState("");
-  const [orgid, setorgid] = useState("");
 
   const [approvedata, setapprovedata] = useState({
     org_id: "",
@@ -47,26 +45,16 @@ function Client(props) {
   const [customerdetails, setcustomerdetails] = useState([]);
   const [customerdetails2, setcustomerdetails2] = useState(false);
 
-  const [organizationIds, setOrganizationIds] = useState([]);
-
   const sideactive = useSelector((state) => state.counter.sidebarnav);
   const clientstate = useSelector((state) => state.counter.clientaddstatevalue);
   console.log(clientstate);
 
-  // const handleCopyClick = (text) => {
-  //   debugger
-  //   const textarea = document.createElement("textarea");
-  //   textarea.value = text;
-  //   document.body.appendChild(textarea);
-  //   textarea.select();
-  //   document.execCommand("copy");
-  //   document.body.removeChild(textarea);
-  // };
 
   const handleCopyClick = (text) => {
     navigator.clipboard
       .writeText(text)
       .then(() => {
+        // props.popuptext("Text successfully copied to clipboard");
         console.log("Text successfully copied to clipboard");
       })
       .catch((err) => {
@@ -102,11 +90,7 @@ function Client(props) {
         props.loaderchange("false");
         setcustomerdetails2(false);
 
-        // const organizations = res.data.data.data;
-        // const organizationIds = organizations.map((org) => org.organization_id);
-        // setOrganizationIds(organizationIds);
-        // console.log(organizationIds, "doi");
-        // debugger;
+       
       })
       .catch((error) => {
         console.log(error, "error");
@@ -593,7 +577,6 @@ function Client(props) {
                 </div>
               </div>
             </div>
-            {/* <StorePage organizationIds={organizationIds} /> */}
           </div>
         </>
       )}

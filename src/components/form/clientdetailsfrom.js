@@ -14,13 +14,15 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import validator from "validator";
 import WarningIcon from "@mui/icons-material/Warning";
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
+import { ContactSupportOutlined } from "@mui/icons-material";
 
 const ClientDetailsForm = (props) => {
   const [clientdata, setclientdata] = useState({
     org_name: "",
     org_domain: "",
     org_key: "",
+    org_logo: "",
     store_info: [
       {
         store_name: "",
@@ -60,6 +62,7 @@ const ClientDetailsForm = (props) => {
   const [imgfile, setimgfile] = useState();
   const [imgtype, setimgtype] = useState();
   const [url, setUrl] = useState();
+
   const [alert, setalert] = useState(false);
   const [file, setFile] = useState([]);
 
@@ -78,10 +81,7 @@ const ClientDetailsForm = (props) => {
   const imgRef = useRef(null);
   const [crop, setCrop] = useState();
 
-  const clientstate = useSelector((state) => state.counter.clientaddstatevalue);
   const dispatch = useDispatch();
-
-  const [initialStoreInfoLength, setInitialStoreInfoLength] = useState(1);
 
   // validation function
   // const validateOrganizationName = (e) => {
@@ -99,26 +99,59 @@ const ClientDetailsForm = (props) => {
   //   }));
   // };
 
-  const validateOrganizationName = (subdomain) => {
-    // Ensure that the subdomain is a string
-    if (typeof subdomain === "string" || subdomain instanceof String) {
-      setclientdata((prevState) => ({
-        ...prevState,
-        org_name: subdomain,
-      }));
-      setOrganizationNameError(subdomain.trim() === "");
+  // const validateOrganizationName = (subdomain) => {
+  //   // Ensure that the subdomain is a string
+  //   if (typeof subdomain === "string" || subdomain instanceof String) {
 
-      console.log(subdomain, "onon");
-      debugger;
+  //     setclientdata((prevState) => ({
+  //       ...prevState,
+  //       org_name: subdomain,
+  //     }));
+  //     setOrganizationNameError(subdomain.trim() === "");
 
-      if (validator.isEmpty(subdomain.trim())) {
+  //     console.log(subdomain, "onon");
+  //     debugger;
+
+  //     if (validator.isEmpty(subdomain.trim())) {
+  //       setOrganizationNameError("*Org Name cannot be empty!");
+  //     } else {
+  //       setOrganizationNameError("");
+  //     }
+  //   } else {
+  //     debugger
+  //     console.error("Invalid subdomain");
+  //   }
+  // };
+
+  const validateOrganizationName = (input) => {
+    let orgName = input;
+
+    if (input.target) {
+      // If input comes from an event (e.g., input field), use e.target.value
+      orgName = input.target.value;
+
+      if (validator.isEmpty(orgName.trim())) {
+        setOrganizationNameError("*Org Name cannot be empty!");
+      } else {
+        setOrganizationNameError("");
+      }
+    } else if (typeof input === "string" || input instanceof String) {
+      // If input is a string (e.g., from some other source), use the provided value
+      setOrganizationNameError(input.trim() === "");
+
+      if (validator.isEmpty(input.trim())) {
         setOrganizationNameError("*Org Name cannot be empty!");
       } else {
         setOrganizationNameError("");
       }
     } else {
-      console.error("Invalid subdomain");
+      console.error("Invalid input");
     }
+
+    setclientdata((prevState) => ({
+      ...prevState,
+      org_name: orgName,
+    }));
   };
 
   // const validateDomain = (e) => {
@@ -492,34 +525,33 @@ const ClientDetailsForm = (props) => {
 
           var val = Math.floor(1000 + Math.random() * 9000);
           var url = {
-            multiple_files: [
-              {
-                ["filename"]:
-                  "assestsfortesting" +
-                  "/" +
-                  String(val) +
-                  String(croppedFile.name).replace(/ +/g, ""),
-                // ["file_type"]: e.target.files[0].type,
-                ["file_type"]: croppedFile.type,
-              },
-            ],
+            ["filename"]:
+              "test" +
+              "/" +
+              String(val) +
+              String(croppedFile.name).replace(/ +/g, ""),
+            // ["file_type"]: e.target.files[0].type,
+            ["file_type"]: croppedFile.type,
           };
 
           setTimeout(() => {
-            console.log(url);
+            console.log(url, presignedurl, "preurl");
+
             axios({
               method: "post",
               url: presignedurl,
               data: url,
+
               headers: {
-                Authorization: "Bearer " + localStorage.getItem("token") + "",
+                Authorization: localStorage.getItem("token"),
               },
             })
               .then((res) => {
-                setpreurl(String(res.data.data));
-                setcreatspeciality({
-                  ...creatspeciality,
-                  speciality_image: String(res.data.data).split("?")[0],
+                setpreurl(res.data.data.data.url);
+                console.log(res.data.data.data.url, "purl");
+                setclientdata({
+                  ...clientdata,
+                  org_logo: res.data.data.data.url.split("?")[0],
                 });
               })
               .catch((error) => {
@@ -542,7 +574,8 @@ const ClientDetailsForm = (props) => {
     const url = await getCroppedImg(imgRef.current, c, "newfile.jpeg");
   };
   const selectedImage = (e) => {
-    console.log(e.target.files[0]);
+    console.log(e.target.files[0], "ppp");
+    debugger;
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
       reader.addEventListener("load", () => setImgsrc(reader.result));
@@ -590,29 +623,51 @@ const ClientDetailsForm = (props) => {
     if (clientdata.org_admin != "") {
       console.log(clientdata, "clientdata");
       props.loaderchange("true");
-      axios({
-        method: "post",
-        url: ClientCreate,
-        data: clientdata,
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-        .then((res) => {
-          console.log(res);
 
-          dispatch(clientaddstate(""));
-          props.loaderchange("false");
-          toast.success("Customer Created Successfully");
+      async function uploadimage() {
+        console.log(clientdata, "asyn");
+        debugger;
 
-          props.setcustomerdetails2(true);
+        if (preurl && preurl.length > 0) {
+          const resp = await fetch(preurl, {
+            method: "PUT",
+            body: imgfile,
+            headers: {
+              // "Authorization": "Bearer " + localStorage.getItem("token") + "",
+              "Content-Type": imgtype,
+              "X-Amz-ACL": "public-read",
+            },
+          }).catch((err) => {
+            console.log(err);
+            return null;
+          });
+        }
+
+        axios({
+          method: "post",
+          url: ClientCreate,
+          data: clientdata,
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
         })
-        .catch((error) => {
-          console.log(error, "err2");
-          // debugger;
-          props.loaderchange("false");
-          toast.error("Organization Name Already Exists");
-        });
+          .then((res) => {
+            console.log(res);
+
+            dispatch(clientaddstate(""));
+            props.loaderchange("false");
+            toast.success("Customer Created Successfully");
+
+            props.setcustomerdetails2(true);
+          })
+          .catch((error) => {
+            console.log(error, "err2");
+            // debugger;
+            props.loaderchange("false");
+            toast.error("Organization Name Already Exists");
+          });
+      }
+      uploadimage();
     } else {
       if (clientdata.org_admin == "") {
         setOrgAdminEmailError("Email cannot be empty!");
@@ -1035,14 +1090,16 @@ const ClientDetailsForm = (props) => {
                                   className="doctorupload"
                                   variant="contained"
                                   component="label"
+                                  style={{ cursor: "pointer" }}
                                 >
-                                  <p>
+                                  <p style={{ cursor: "pointer" }}>
                                     Upload Logo
                                     <input
                                       type="file"
                                       hidden
                                       accept="image/png, image/jpeg"
                                       onChange={(e) => handleFiles(e)}
+                                      style={{ cursor: "pointer" }}
                                     />
                                   </p>
                                 </Button>
