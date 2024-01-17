@@ -54,10 +54,12 @@ function Client(props) {
     navigator.clipboard
       .writeText(text)
       .then(() => {
+        debugger
         // props.popuptext("Text successfully copied to clipboard");
         console.log("Text successfully copied to clipboard");
       })
       .catch((err) => {
+        debugger
         console.error("Unable to copy text to clipboard", err);
       });
   };
@@ -89,7 +91,6 @@ function Client(props) {
         setdatacount(res.data.data.pagination.total);
         props.loaderchange("false");
         setcustomerdetails2(false);
-
        
       })
       .catch((error) => {

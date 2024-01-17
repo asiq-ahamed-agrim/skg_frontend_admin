@@ -459,42 +459,6 @@ const ClientDetailsForm = (props) => {
       );
     }
 
-    // const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    // const pixels = imageData.data;
-    // const backgroundColor = [255, 255, 255, 255]; // RGBA values for the background color
-    // for (let i = 0; i < pixels.length; i += 4) {
-    //   // Check if the pixel is transparent (alpha channel is 0)
-    //   if (pixels[i + 3] === 0) {
-    //     // Set the pixel to the background color
-    //     pixels[i] = backgroundColor[0]; // Red
-    //     pixels[i + 1] = backgroundColor[1]; // Green
-    //     pixels[i + 2] = backgroundColor[2]; // Blue
-    //     pixels[i + 3] = backgroundColor[3]; // Alpha
-    //   }
-    // }
-    // ctx.putImageData(imageData, 0, 0);
-    // var dArr = [-1, -1, 0, -1, 1, -1, -1, 0, 1, 0, -1, 1, 0, 1, 1, 1], // offset array
-    //   s = 100, // thickness scale
-    //   i = 0, // iterator
-    //   x = 5, // final position
-    //   y = 5;
-
-    // // draw images at offsets from the array scaled by s
-    // for (; i < dArr.length; i += 2)
-    //   ctx.drawImage(image, x + dArr[i] * s, y + dArr[i + 1] * s);
-
-    // // fill with color
-    // ctx.globalCompositeOperation = "source-in";
-    // ctx.fillStyle = "white";
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // // draw original image in normal mode
-    // ctx.globalCompositeOperation = "source-over";
-    // ctx.fillStyle = "white";
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
-    // ctx.drawImage(image, x, y);
-    // // console.log(image1)
-
     return new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
         if (!blob) {
@@ -572,6 +536,7 @@ const ClientDetailsForm = (props) => {
     console.log(c);
     const url = await getCroppedImg(imgRef.current, c, "newfile.jpeg");
   };
+
   const selectedImage = (e) => {
     console.log(e.target.files[0], "ppp");
     if (e.target.files && e.target.files.length > 0) {
@@ -619,7 +584,7 @@ const ClientDetailsForm = (props) => {
 
   const handleSave = () => {
     if (clientdata.org_admin != "") {
-      console.log(clientdata, "clientdata");
+      // console.log(clientdata, "clientdata");
       props.loaderchange("true");
 
       async function uploadimage() {
@@ -679,10 +644,7 @@ const ClientDetailsForm = (props) => {
         <div className="parent-Clientform">
           <div className="create-Clientform card">
             <div class="modal-header">
-              <h5 class="modal-title">
-                {/* {clientstate} */}
-                Customer Creation
-              </h5>
+              <h5 class="modal-title">Customer Creation</h5>
               <button
                 type="button"
                 class="close"
@@ -708,8 +670,11 @@ const ClientDetailsForm = (props) => {
                         }}
                       >
                         <div className="form_parent">
+                          <div className="form_parent_inner">
+
+
                           <div
-                            className="col-2 title"
+                            className="col-8 title"
                             style={{ paddingBottom: "3px" }}
                           >
                             Organization:
@@ -802,7 +767,7 @@ const ClientDetailsForm = (props) => {
                             </div>
                           </div>
 
-                          <div className="col-2 title">Store Details:</div>
+                          <div className="col-8 title">Store Details:</div>
                           <div className="store-wrap">
                             {clientdata.store_info.map((ele, index) => {
                               const isNewlyAdded =
@@ -970,7 +935,7 @@ const ClientDetailsForm = (props) => {
                           </div>
 
                           <div
-                            className="col-2 title pt-10 mt-0"
+                            className="col-8 title pt-10 mt-0"
                             style={{ paddingBottom: "3px" }}
                           >
                             Contact Person:{" "}
@@ -1118,6 +1083,8 @@ const ClientDetailsForm = (props) => {
                               )}
                             </>
                           </div>
+
+                          </div>
                         </div>
                         <div className="submit-btn-wrap">
                           <input
@@ -1166,7 +1133,7 @@ const ClientDetailsForm = (props) => {
                                     style={{ paddingLeft: "0px" }}
                                   >
                                     <div
-                                      className="col-10 form-group"
+                                      className="col-12 form-group"
                                       style={{ paddingLeft: "0px" }}
                                     >
                                       <form

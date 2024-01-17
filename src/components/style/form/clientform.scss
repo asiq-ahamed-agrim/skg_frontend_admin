@@ -18,6 +18,17 @@
 }
 
 .parent-Clientform {
+
+  border-radius: 4px;
+  margin: auto;
+  width: 1300px;
+
+   @media screen and (min-width: 250px) and (max-width: 768px) {
+    width: 100%;
+    // border: 1px solid blue;
+    overflow-x: hidden;
+  }
+
   .create-Clientform {
     width: calc(100% - 0px);
     background-color: white;
@@ -63,11 +74,11 @@
   display: none !important;
 }
 
-.parent-Clientform {
-  border-radius: 4px;
-  margin: auto;
-  width: 1300px;
-}
+// .parent-Clientform {
+//   border-radius: 4px;
+//   margin: auto;
+//   width: 1300px;
+// }
 
 form {
   input {
@@ -81,6 +92,20 @@ form {
     // max-height: 400px;
     overflow-y: auto;
     overflow-x: hidden;
+
+    @media screen and (min-width: 250px) and (max-width: 768px) {
+      // width: 1300px;
+      // border: 1px solid red;
+      overflow-x: scroll;
+    }
+    .form_parent_inner {
+      @media screen and (min-width: 250px) and (max-width: 768px) {
+        width: 800px;
+        // border: 1px solid green;
+        // overflow-x: auto;
+
+      }
+    }
 
     .hide {
       display: none;
@@ -283,17 +308,17 @@ form {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5); // Semi-transparent background
   z-index: 9999;
   display: none;
-}
 
-.display-block {
-  display: block;
-}
+  &.display-block {
+    display: block;
+  }
 
-.display-none {
-  display: none;
+  &.display-none {
+    display: none;
+  }
 }
 
 .modal-main {
