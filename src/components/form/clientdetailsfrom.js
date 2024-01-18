@@ -614,12 +614,11 @@ const ClientDetailsForm = (props) => {
           },
         })
           .then((res) => {
-            console.log(res);
+            console.log(res, "clires", props.loaderchange("false"));
 
             dispatch(clientaddstate(""));
             props.loaderchange("false");
             toast.success("Customer Created Successfully");
-
             props.setcustomerdetails2(true);
           })
           .catch((error) => {
@@ -671,419 +670,416 @@ const ClientDetailsForm = (props) => {
                       >
                         <div className="form_parent">
                           <div className="form_parent_inner">
-
-
-                          <div
-                            className="col-8 title"
-                            style={{ paddingBottom: "3px" }}
-                          >
-                            Organization:
-                          </div>
-                          <div className="row mb-2">
-                            <div className="col-3">
-                              <label>
-                                Name <span style={{ color: "red" }}>*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="org_name"
-                                className="form-control"
-                                placeholder="Name"
-                                class="form-control name_list"
-                                value={clientdata.org_name}
-                                // onChange={(e) => {
-                                //   setclientdata({
-                                //     ...clientdata,
-                                //     org_name: e.target.value,
-                                //   });
-                                // }}
-                                onChange={(e) => validateOrganizationName(e)}
-                              />
-
-                              <div
-                                className={`${
-                                  organizationNameError ? "show" : "hide"
-                                }`}
-                                style={{ color: "red", fontSize: "12px" }}
-                              >
-                                {/* <WarningIcon /> */}
-                                &nbsp; Organization Name required!
-                              </div>
+                            <div
+                              className="col-8 title"
+                              style={{ paddingBottom: "3px" }}
+                            >
+                              Organization:
                             </div>
-                            <div className="col-3">
-                              <label>
-                                Domain <span style={{ color: "red" }}>*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="org_domain"
-                                className="form-control"
-                                placeholder="Domain"
-                                class="form-control name_email"
-                                value={clientdata.org_domain}
-                                // onChange={(e) => {
-                                //   setclientdata({
-                                //     ...clientdata,
-                                //     org_domain: e.target.value,
-                                //   });
-                                // }}
-                                onChange={(e) => validateDomain(e)}
-                              />
-                              <div
-                                className={`${domainError ? "show" : "hide"}`}
-                                style={{ color: "red", fontSize: "12px" }}
-                              >
-                                {/* <WarningIcon /> */}
-                                &nbsp; Domain required!
-                              </div>
-                            </div>
+                            <div className="row mb-2">
+                              <div className="col-3">
+                                <label>
+                                  Name <span style={{ color: "red" }}>*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  name="org_name"
+                                  className="form-control"
+                                  placeholder="Name"
+                                  class="form-control name_list"
+                                  value={clientdata.org_name}
+                                  // onChange={(e) => {
+                                  //   setclientdata({
+                                  //     ...clientdata,
+                                  //     org_name: e.target.value,
+                                  //   });
+                                  // }}
+                                  onChange={(e) => validateOrganizationName(e)}
+                                />
 
-                            <div className="col-3">
-                              <label>
-                                Code <span style={{ color: "red" }}>*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="org_key"
-                                className="form-control"
-                                placeholder="Code"
-                                class="form-control name_email"
-                                value={clientdata.org_key}
-                                // onChange={(e) => {
-                                //   setclientdata({
-                                //     ...clientdata,
-                                //     org_key: e.target.value,
-                                //   });
-                                // }}
-                                onChange={(e) => validateCode(e)}
-                              />
-                              <div
-                                className={`${codeError ? "show" : "hide"}`}
-                                style={{ color: "red", fontSize: "12px" }}
-                              >
-                                {/* <WarningIcon /> */}
-                                &nbsp; Code required!
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="col-8 title">Store Details:</div>
-                          <div className="store-wrap">
-                            {clientdata.store_info.map((ele, index) => {
-                              const isNewlyAdded =
-                                index >= initialStoreInfoLengthRef.current;
-
-                              return (
                                 <div
-                                  className="row"
-                                  style={{
-                                    marginBottom: "0px",
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
+                                  className={`${
+                                    organizationNameError ? "show" : "hide"
+                                  }`}
+                                  style={{ color: "red" }}
                                 >
-                                  <div className="col-2">
-                                    <label
-                                      className={
-                                        !isNewlyAdded
-                                          ? "visible-label"
-                                          : "hidden-label"
-                                      }
-                                    >
-                                      Name{" "}
-                                      <span style={{ color: "red" }}>*</span>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      name="store_name"
-                                      className="form-control"
-                                      placeholder="Name"
-                                      class="form-control name_list"
-                                      value={ele.store_name}
-                                      // onChange={(e) => changedata(e, index)}
-                                      onChange={(e) =>
-                                        validateStoreName(e, index)
-                                      }
-                                    />
-                                    <div
-                                      className={`${
-                                        storeNameError ? "show" : "hide"
-                                      }`}
-                                      style={{ color: "red", fontSize: "12px" }}
-                                    >
-                                      {/* <WarningIcon /> */}
-                                      &nbsp; Store Name required!
-                                    </div>
-                                  </div>
-                                  <div className="col-3">
-                                    <label
-                                      className={
-                                        !isNewlyAdded
-                                          ? "visible-label"
-                                          : "hidden-label"
-                                      }
-                                    >
-                                      Email{" "}
-                                      <span style={{ color: "red" }}>*</span>
-                                    </label>
-                                    <input
-                                      type="email"
-                                      name="store_email"
-                                      className="form-control"
-                                      placeholder="Email"
-                                      class="form-control name_email"
-                                      value={ele.store_email}
-                                      // onChange={(e) => changedata(e, index)}
-                                      onChange={(e) =>
-                                        validateStoreEmail(e, index)
-                                      }
-                                    />
-                                    <div
-                                      className={`${
-                                        storeMailError ? "show" : "hide"
-                                      }`}
-                                      style={{ color: "red", fontSize: "12px" }}
-                                    >
-                                      {/* <WarningIcon /> */}
-                                      &nbsp; {storeMailError}
-                                    </div>
-                                  </div>
-                                  <div className="col-3">
-                                    <label
-                                      className={
-                                        !isNewlyAdded
-                                          ? "visible-label"
-                                          : "hidden-label"
-                                      }
-                                    >
-                                      Contact Person{" "}
-                                    </label>
-                                    <input
-                                      type="text"
-                                      name="store_cp"
-                                      className="form-control"
-                                      placeholder="Contact Person"
-                                      class="form-control name_list"
-                                      value={ele.store_cp}
-                                      onChange={(e) => changedata(e, index)}
-                                    />
-                                  </div>
-                                  <div className="col-3">
-                                    <label
-                                      className={
-                                        !isNewlyAdded
-                                          ? "visible-label"
-                                          : "hidden-label"
-                                      }
-                                    >
-                                      Store Address{" "}
-                                    </label>
-                                    <textarea
-                                      type="text"
-                                      name="store_address"
-                                      placeholder="Store Address"
-                                      class="form-control total_amount"
-                                      value={ele.store_address}
-                                      onChange={(e) => changedata(e, index)}
-                                    />
-                                  </div>
+                                  {/* <WarningIcon /> */}
+                                  &nbsp; Organization Name required!
+                                </div>
+                              </div>
+                              <div className="col-3">
+                                <label>
+                                  Domain <span style={{ color: "red" }}>*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  name="org_domain"
+                                  className="form-control"
+                                  placeholder="Domain"
+                                  class="form-control name_email"
+                                  value={clientdata.org_domain}
+                                  // onChange={(e) => {
+                                  //   setclientdata({
+                                  //     ...clientdata,
+                                  //     org_domain: e.target.value,
+                                  //   });
+                                  // }}
+                                  onChange={(e) => validateDomain(e)}
+                                />
+                                <div
+                                  className={`${domainError ? "show" : "hide"}`}
+                                  style={{ color: "red" }}
+                                >
+                                  {/* <WarningIcon /> */}
+                                  &nbsp; Domain required!
+                                </div>
+                              </div>
 
-                                  {index == 0 && (
-                                    <div
-                                      className="col-1"
-                                      style={{
-                                        height: "70px",
-                                        paddingTop: "25px",
-                                      }}
-                                    >
-                                      <button
-                                        type="button"
-                                        name="add"
-                                        id="add"
-                                        class="btn add-more-btn"
-                                        onClick={() => addItemToList()}
-                                        disabled={index > 5 ? true : false}
-                                      >
-                                        <AddIcon />
-                                      </button>
-                                    </div>
-                                  )}
-                                  {index != 0 && (
-                                    <div
-                                      className="col-1"
-                                      style={{
-                                        height: "70px",
-                                        paddingTop: "15px",
-                                      }}
-                                    >
-                                      <button
-                                        type="button"
-                                        name="add"
-                                        id="add"
-                                        class="btn  remove-btn"
-                                        onClick={() =>
-                                          removeItemFromList(index)
+                              <div className="col-3">
+                                <label>
+                                  Code <span style={{ color: "red" }}>*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  name="org_key"
+                                  className="form-control"
+                                  placeholder="Code"
+                                  class="form-control name_email"
+                                  value={clientdata.org_key}
+                                  // onChange={(e) => {
+                                  //   setclientdata({
+                                  //     ...clientdata,
+                                  //     org_key: e.target.value,
+                                  //   });
+                                  // }}
+                                  onChange={(e) => validateCode(e)}
+                                />
+                                <div
+                                  className={`${codeError ? "show" : "hide"}`}
+                                  style={{ color: "red" }}
+                                >
+                                  {/* <WarningIcon /> */}
+                                  &nbsp; Code required!
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="col-8 title">Store Details:</div>
+                            <div className="store-wrap">
+                              {clientdata.store_info.map((ele, index) => {
+                                const isNewlyAdded =
+                                  index >= initialStoreInfoLengthRef.current;
+
+                                return (
+                                  <div
+                                    className="row"
+                                    style={{
+                                      marginBottom: "0px",
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <div className="col-2">
+                                      <label
+                                        className={
+                                          !isNewlyAdded
+                                            ? "visible-label"
+                                            : "hidden-label"
                                         }
                                       >
-                                        <RemoveIcon />
-                                      </button>
+                                        Name{" "}
+                                        <span style={{ color: "red" }}>*</span>
+                                      </label>
+                                      <input
+                                        type="text"
+                                        name="store_name"
+                                        className="form-control"
+                                        placeholder="Name"
+                                        class="form-control name_list"
+                                        value={ele.store_name}
+                                        // onChange={(e) => changedata(e, index)}
+                                        onChange={(e) =>
+                                          validateStoreName(e, index)
+                                        }
+                                      />
+                                      <div
+                                        className={`${
+                                          storeNameError ? "show" : "hide"
+                                        }`}
+                                        style={{ color: "red" }}
+                                      >
+                                        {/* <WarningIcon /> */}
+                                        &nbsp; Store Name required!
+                                      </div>
                                     </div>
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
+                                    <div className="col-3">
+                                      <label
+                                        className={
+                                          !isNewlyAdded
+                                            ? "visible-label"
+                                            : "hidden-label"
+                                        }
+                                      >
+                                        Email{" "}
+                                        <span style={{ color: "red" }}>*</span>
+                                      </label>
+                                      <input
+                                        type="email"
+                                        name="store_email"
+                                        className="form-control"
+                                        placeholder="Email"
+                                        class="form-control name_email"
+                                        value={ele.store_email}
+                                        // onChange={(e) => changedata(e, index)}
+                                        onChange={(e) =>
+                                          validateStoreEmail(e, index)
+                                        }
+                                      />
+                                      <div
+                                        className={`${
+                                          storeMailError ? "show" : "hide"
+                                        }`}
+                                        style={{ color: "red" }}
+                                      >
+                                        {/* <WarningIcon /> */}
+                                        &nbsp; {storeMailError}
+                                      </div>
+                                    </div>
+                                    <div className="col-3">
+                                      <label
+                                        className={
+                                          !isNewlyAdded
+                                            ? "visible-label"
+                                            : "hidden-label"
+                                        }
+                                      >
+                                        Contact Person{" "}
+                                      </label>
+                                      <input
+                                        type="text"
+                                        name="store_cp"
+                                        className="form-control"
+                                        placeholder="Contact Person"
+                                        class="form-control name_list"
+                                        value={ele.store_cp}
+                                        onChange={(e) => changedata(e, index)}
+                                      />
+                                    </div>
+                                    <div className="col-3">
+                                      <label
+                                        className={
+                                          !isNewlyAdded
+                                            ? "visible-label"
+                                            : "hidden-label"
+                                        }
+                                      >
+                                        Store Address{" "}
+                                      </label>
+                                      <textarea
+                                        type="text"
+                                        name="store_address"
+                                        placeholder="Store Address"
+                                        class="form-control total_amount"
+                                        value={ele.store_address}
+                                        onChange={(e) => changedata(e, index)}
+                                      />
+                                    </div>
 
-                          <div
-                            className="col-8 title pt-10 mt-0"
-                            style={{ paddingBottom: "3px" }}
-                          >
-                            Contact Person:{" "}
-                          </div>
-                          {/* <div className="store-wrap"> */}
-                          <div className="row mb-2">
-                            <div className="col-3">
-                              <label>
-                                Name <span style={{ color: "red" }}>*</span>
-                              </label>
-                              <input
-                                type="text"
-                                name="con_name"
-                                className="form-control"
-                                placeholder="Name"
-                                class="form-control name_list"
-                                value={clientdata.con_name}
-                                // onChange={(e) => {
-                                //   setclientdata({
-                                //     ...clientdata,
-                                //     con_name: e.target.value,
-                                //   });
-                                // }}
-                                onChange={(e) => validateCustomerName(e)}
-                              />
-                              <div
-                                className={`${
-                                  customerNameError ? "show" : "hide"
-                                }`}
-                                style={{ color: "red", fontSize: "12px" }}
-                              >
-                                {/* <WarningIcon /> */}
-                                &nbsp; Customer Name required!
-                              </div>
+                                    {index == 0 && (
+                                      <div
+                                        className="col-1"
+                                        style={{
+                                          height: "70px",
+                                          paddingTop: "25px",
+                                        }}
+                                      >
+                                        <button
+                                          type="button"
+                                          name="add"
+                                          id="add"
+                                          class="btn add-more-btn"
+                                          onClick={() => addItemToList()}
+                                          disabled={index > 5 ? true : false}
+                                        >
+                                          <AddIcon />
+                                        </button>
+                                      </div>
+                                    )}
+                                    {index != 0 && (
+                                      <div
+                                        className="col-1"
+                                        style={{
+                                          height: "70px",
+                                          paddingTop: "15px",
+                                        }}
+                                      >
+                                        <button
+                                          type="button"
+                                          name="add"
+                                          id="add"
+                                          class="btn  remove-btn"
+                                          onClick={() =>
+                                            removeItemFromList(index)
+                                          }
+                                        >
+                                          <RemoveIcon />
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
                             </div>
-                            <div className="col-3">
-                              <label>
-                                Email <span style={{ color: "red" }}>*</span>
-                              </label>
-                              <input
-                                type="email"
-                                name="con_email"
-                                className="form-control"
-                                placeholder="Email"
-                                class="form-control name_email"
-                                value={clientdata.con_email}
-                                // onChange={(e) => {
-                                //   setclientdata({
-                                //     ...clientdata,
-                                //     con_email: e.target.value,
-                                //   });
-                                // }}
-                                onChange={(e) => validateEmail(e)}
-                              />
-                              <div
-                                className={`${
-                                  customerEmailError ? "show" : "hide"
-                                }`}
-                                style={{ color: "red", fontSize: "12px" }}
-                              >
-                                {/* <WarningIcon /> */}
-                                &nbsp; {customerEmailError}
-                              </div>
-                            </div>
-                            {/* </div> */}
-                          </div>
 
-                          {/* file upload */}
-                          <div
-                            class="form-group col-md-6 p-4 pl-0 file-upload-wrap"
-                            style={{
-                              display: "flex",
-                              justifyContent: "start",
-                            }}
-                          >
-                            <>
-                              {url ? (
-                                <img
-                                  src={url}
-                                  onClick={(e) => {
-                                    window.open(url);
-                                  }}
-                                  className="pointer"
-                                  style={{
-                                    height: 115,
-                                    width: 115,
-                                    marginRight: 25,
-                                    borderRadius: "50%",
-                                    marginTop: "-20px",
-                                  }}
-                                  alt="Image"
+                            <div
+                              className="col-8 title pt-10 mt-0"
+                              style={{ paddingBottom: "3px" }}
+                            >
+                              Contact Person:{" "}
+                            </div>
+                            {/* <div className="store-wrap"> */}
+                            <div className="row mb-2">
+                              <div className="col-3">
+                                <label>
+                                  Name <span style={{ color: "red" }}>*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  name="con_name"
+                                  className="form-control"
+                                  placeholder="Name"
+                                  class="form-control name_list"
+                                  value={clientdata.con_name}
+                                  // onChange={(e) => {
+                                  //   setclientdata({
+                                  //     ...clientdata,
+                                  //     con_name: e.target.value,
+                                  //   });
+                                  // }}
+                                  onChange={(e) => validateCustomerName(e)}
                                 />
-                              ) : (
-                                <p
-                                  style={{
-                                    margin: 0,
-                                    padding: 5,
-                                    marginRight: 8,
-                                  }}
+                                <div
+                                  className={`${
+                                    customerNameError ? "show" : "hide"
+                                  }`}
+                                  style={{ color: "red" }}
                                 >
-                                  Upload Logo:
-                                </p>
-                              )}
+                                  {/* <WarningIcon /> */}
+                                  &nbsp; Customer Name required!
+                                </div>
+                              </div>
+                              <div className="col-3">
+                                <label>
+                                  Email <span style={{ color: "red" }}>*</span>
+                                </label>
+                                <input
+                                  type="email"
+                                  name="con_email"
+                                  className="form-control"
+                                  placeholder="Email"
+                                  class="form-control name_email"
+                                  value={clientdata.con_email}
+                                  // onChange={(e) => {
+                                  //   setclientdata({
+                                  //     ...clientdata,
+                                  //     con_email: e.target.value,
+                                  //   });
+                                  // }}
+                                  onChange={(e) => validateEmail(e)}
+                                />
+                                <div
+                                  className={`${
+                                    customerEmailError ? "show" : "hide"
+                                  }`}
+                                  style={{ color: "red" }}
+                                >
+                                  {/* <WarningIcon /> */}
+                                  &nbsp; {customerEmailError}
+                                </div>
+                              </div>
+                              {/* </div> */}
+                            </div>
 
-                              {/* <ReactFileReader
+                            {/* file upload */}
+                            <div
+                              class="form-group col-md-6 p-4 pl-0 file-upload-wrap"
+                              style={{
+                                display: "flex",
+                                justifyContent: "start",
+                              }}
+                            >
+                              <>
+                                {url ? (
+                                  <img
+                                    src={url}
+                                    onClick={(e) => {
+                                      window.open(url);
+                                    }}
+                                    className="pointer"
+                                    style={{
+                                      height: 115,
+                                      width: 115,
+                                      marginRight: 25,
+                                      borderRadius: "50%",
+                                      marginTop: "-20px",
+                                    }}
+                                    alt="Image"
+                                  />
+                                ) : (
+                                  <p
+                                    style={{
+                                      margin: 0,
+                                      padding: 5,
+                                      marginRight: 8,
+                                    }}
+                                  >
+                                    Upload Logo:
+                                  </p>
+                                )}
+
+                                {/* <ReactFileReader
                   fileTypes={[".png", ".jpg"]}
                   base64={"true"}
                   handleFiles={handleFiles}
                 > */}
 
-                              {!url ? (
-                                <Button
-                                  className="doctorupload"
-                                  variant="contained"
-                                  component="label"
-                                  style={{ cursor: "pointer" }}
-                                >
-                                  <p style={{ cursor: "pointer" }}>
-                                    Upload Logo
-                                    <input
-                                      type="file"
-                                      hidden
-                                      accept="image/png, image/jpeg"
-                                      onChange={(e) => handleFiles(e)}
-                                      style={{ cursor: "pointer" }}
-                                    />
-                                  </p>
-                                </Button>
-                              ) : (
-                                <></>
-                              )}
+                                {!url ? (
+                                  <Button
+                                    className="doctorupload"
+                                    variant="contained"
+                                    component="label"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    <p style={{ cursor: "pointer" }}>
+                                      Upload Logo
+                                      <input
+                                        type="file"
+                                        hidden
+                                        accept="image/png, image/jpeg"
+                                        onChange={(e) => handleFiles(e)}
+                                        style={{ cursor: "pointer" }}
+                                      />
+                                    </p>
+                                  </Button>
+                                ) : (
+                                  <></>
+                                )}
 
-                              {/* </ReactFileReader> */}
-                              {url ? (
-                                <Button
-                                  className="remove"
-                                  variant="contained"
-                                  onClick={(e) => cancel(e)}
-                                >
-                                  {" "}
-                                  <p>Remove Image</p>
-                                </Button>
-                              ) : (
-                                <></>
-                              )}
-                            </>
-                          </div>
-
+                                {/* </ReactFileReader> */}
+                                {url ? (
+                                  <Button
+                                    className="remove"
+                                    variant="contained"
+                                    onClick={(e) => cancel(e)}
+                                  >
+                                    {" "}
+                                    <p>Remove Image</p>
+                                  </Button>
+                                ) : (
+                                  <></>
+                                )}
+                              </>
+                            </div>
                           </div>
                         </div>
                         <div className="submit-btn-wrap">

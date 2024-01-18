@@ -18,12 +18,11 @@
 }
 
 .parent-Clientform {
-
   border-radius: 4px;
   margin: auto;
   width: 1300px;
 
-   @media screen and (min-width: 250px) and (max-width: 768px) {
+  @media screen and (min-width: 250px) and (max-width: 768px) {
     width: 100%;
     // border: 1px solid blue;
     overflow-x: hidden;
@@ -103,7 +102,6 @@ form {
         width: 800px;
         // border: 1px solid green;
         // overflow-x: auto;
-
       }
     }
 
@@ -114,6 +112,11 @@ form {
     .show {
       display: block;
       text-align: left;
+      font-size: 12px;
+
+      @media screen and (min-width: 250px) and (max-width: 968px) {
+        font-size: 11px;
+      }
     }
 
     svg {

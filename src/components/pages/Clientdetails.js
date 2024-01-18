@@ -49,19 +49,48 @@ function Client(props) {
   const clientstate = useSelector((state) => state.counter.clientaddstatevalue);
   console.log(clientstate);
 
+  // const handleCopyClick = (text) => {
+  //   if (navigator.clipboard && navigator.clipboard.writeText) {
+  //     navigator.clipboard
+  //       .writeText(text)
+  //       .then(() => {
+  //         debugger;
+  //         console.log("Text successfully copied to clipboard");
+  //       })
+  //       .catch((err) => {
+  //         debugger;
+  //         console.error("Unable to copy text to clipboard", err);
+  //       });
+  //   } else {
+  //     // Handle the case where clipboard API is not available
+  //     console.error("Clipboard API not supported");
+  //   }
+  // };
 
   const handleCopyClick = (text) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        debugger
-        // props.popuptext("Text successfully copied to clipboard");
-        console.log("Text successfully copied to clipboard");
-      })
-      .catch((err) => {
-        debugger
-        console.error("Unable to copy text to clipboard", err);
-      });
+    if (navigator.clipboard) {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          console.log("Text successfully copied to clipboard");
+        })
+        .catch((err) => {
+          console.error("Unable to copy text to clipboard", err);
+        });
+    } else {
+      // Fallback for browsers that don't support the Clipboard API
+      try {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        console.log("Text successfully copied to clipboard (fallback)");
+      } catch (err) {
+        console.error("Copying text to clipboard not supported", err);
+      }
+    }
   };
 
   const handleSubmit = (event) => {
@@ -91,7 +120,6 @@ function Client(props) {
         setdatacount(res.data.data.pagination.total);
         props.loaderchange("false");
         setcustomerdetails2(false);
-       
       })
       .catch((error) => {
         console.log(error, "error");

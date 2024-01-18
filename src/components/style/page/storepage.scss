@@ -125,8 +125,8 @@
   justify-content: left;
   align-items: center;
 
-   @media screen and (min-width: 250px) and (max-width: 600px) {
-  display: block;  
+  @media screen and (min-width: 250px) and (max-width: 350px) {
+    display: block;
   }
 
   .email-label {
@@ -134,9 +134,19 @@
     font-weight: 400;
     width: 25%;
     margin-bottom: 0px;
-  }
 
- 
+    @media screen and (min-width: 270px) and (max-width: 370px) {
+      width: 38%;
+    }
+
+    @media screen and (min-width: 370px) and (max-width: 470px) {
+      width: 35%;
+    }
+
+    @media screen and (min-width: 470px) and (max-width: 600px) {
+      width: 30%;
+    }
+  }
 }
 
 // Tabs
@@ -218,11 +228,23 @@
   .tab-content {
     margin-top: 10px;
 
-    .govt-wrap {
+    .org-wrap {
       margin: 0 auto;
       width: 100%;
       // border: 1px solid;
       // padding: 30px;
+
+      .title {
+        font-size: 17px;
+        padding: 10px;
+        padding-left: 0px;
+  
+        line-height: 1.5 !important;
+        font-family: "Mada", sans-serif;
+        font-weight: 500 !important;
+  
+        padding-bottom: 0px;
+      }
 
       .card-container-aff {
         // max-width: 300px;
@@ -267,6 +289,62 @@
               }
             }
           }
+        }
+      }
+
+
+      // product modal
+      .product-modal-main {
+        position: fixed;
+        background: white;
+        width: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border-radius: 25px;
+      
+        @media screen and (min-width: 250px) and (max-width: 400px) {
+          width: 99%;
+        }
+        @media screen and (min-width: 400px) and (max-width: 600px) {
+          width: 90%;
+        }
+        @media screen and (min-width: 600px) and (max-width: 800px) {
+          width: 75%;
+        }
+      
+        @media screen and (min-width: 800px) and (max-width: 1100px) {
+          width: 55%;
+        }
+      
+        @media screen and (min-width: 1100px) and (max-width: 1600px) {
+          width: 47%;
+        }
+        .modal-header {
+          .product-modal-title-modal2 {
+          }
+        }
+      
+        .modal-body {
+          .product-modal2-body-inner {
+            // border: 1px solid red;
+            .product-form-group {
+              // border: 1px solid;
+              width: 100%;
+      
+              @media screen and (min-width: 300px) and (max-width: 1000px) {
+                width: 100%;
+              }
+            }
+          }
+        }
+        .product-submit-btn {
+          // border: 1px solid;
+          display: flex;
+          justify-content: end;
+          align-items: baseline;
+          margin-top: 20px;
         }
       }
     }
