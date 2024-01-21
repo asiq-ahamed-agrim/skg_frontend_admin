@@ -36,11 +36,7 @@ const ClientDetailsForm = (props) => {
     org_admin: "",
   });
 
-  console.log(
-    clientdata.store_info[0].store_name,
-    "mmm",
-    clientdata.store_info[0]?.store_email
-  );
+  console.log("mmm", clientdata.store_info[0]?.org_admin);
 
   // validtion state
   const [organizationNameError, setOrganizationNameError] = useState(false);
@@ -352,7 +348,7 @@ const ClientDetailsForm = (props) => {
           ...clientdata.store_info,
           {
             store_name: "",
-            store_email: "",
+            org_admin: "",
             store_address: "",
             store_cp: "",
           },
@@ -547,12 +543,13 @@ const ClientDetailsForm = (props) => {
   };
 
   const handleSubmit = () => {
+    debugger;
     if (
       clientdata.org_name != "" &&
       clientdata.org_domain != "" &&
       clientdata.org_key != "" &&
       clientdata.store_info[0].store_name != "" &&
-      clientdata.store_info[0]?.store_email != "" &&
+      clientdata.store_info[0]?.org_admin != "" &&
       clientdata.con_name != "" &&
       clientdata.con_email != ""
     ) {
@@ -570,7 +567,7 @@ const ClientDetailsForm = (props) => {
       if (clientdata.store_info[0].store_name == "") {
         setStoreNameError("Store Name cannot be empty!");
       }
-      if (clientdata.store_info[0]?.store_email == "") {
+      if (clientdata.store_info[0]?.org_admin == "") {
         setStoreMailError("Email cannot be empty!");
       }
       if (clientdata.con_name == "") {
@@ -583,57 +580,59 @@ const ClientDetailsForm = (props) => {
   };
 
   const handleSave = () => {
-    if (clientdata.org_admin != "") {
-      // console.log(clientdata, "clientdata");
-      props.loaderchange("true");
+    debugger;
+    // if (clientdata.org_admin != "") {
+    console.log(clientdata, "clientdata");
+    props.loaderchange("true");
 
-      async function uploadimage() {
-        console.log(clientdata, "asyn");
+    async function uploadimage() {
+      console.log(clientdata, "asyn");
 
-        if (preurl && preurl.length > 0) {
-          const resp = await fetch(preurl, {
-            method: "PUT",
-            body: imgfile,
-            headers: {
-              // "Authorization": "Bearer " + localStorage.getItem("token") + "",
-              "Content-Type": imgtype,
-              "X-Amz-ACL": "public-read",
-            },
-          }).catch((err) => {
-            console.log(err);
-            return null;
-          });
-        }
-
-        axios({
-          method: "post",
-          url: ClientCreate,
-          data: clientdata,
+      if (preurl && preurl.length > 0) {
+        const resp = await fetch(preurl, {
+          method: "PUT",
+          body: imgfile,
           headers: {
-            Authorization: localStorage.getItem("token"),
+            // "Authorization": "Bearer " + localStorage.getItem("token") + "",
+            "Content-Type": imgtype,
+            "X-Amz-ACL": "public-read",
           },
-        })
-          .then((res) => {
-            console.log(res, "clires", props.loaderchange("false"));
+        }).catch((err) => {
+          console.log(err);
+          return null;
+        });
+      }
 
-            dispatch(clientaddstate(""));
-            props.loaderchange("false");
-            toast.success("Customer Created Successfully");
-            props.setcustomerdetails2(true);
-          })
-          .catch((error) => {
-            console.log(error, "err2");
-            props.loaderchange("false");
-            toast.error("Organization Name Already Exists");
-          });
-      }
-      uploadimage();
-    } else {
-      if (clientdata.org_admin == "") {
-        setOrgAdminEmailError("Email cannot be empty!");
-      }
+      axios({
+        method: "post",
+        url: ClientCreate,
+        data: clientdata,
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        .then((res) => {
+          console.log(res, "clires", props.loaderchange("false"));
+
+          dispatch(clientaddstate(""));
+          props.loaderchange("false");
+          toast.success("Customer Created Successfully");
+          props.setcustomerdetails2(true);
+        })
+        .catch((error) => {
+          console.log(error, "err2");
+          props.loaderchange("false");
+          toast.error("Organization Name Already Exists");
+        });
     }
+    uploadimage();
+    // } else {
+    //   if (clientdata.org_admin == "") {
+    //     setOrgAdminEmailError("Email cannot be empty!");
+    //   }
+    // }
   };
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -825,11 +824,11 @@ const ClientDetailsForm = (props) => {
                                       </label>
                                       <input
                                         type="email"
-                                        name="store_email"
+                                        name="org_admin"
                                         className="form-control"
                                         placeholder="Email"
                                         class="form-control name_email"
-                                        value={ele.store_email}
+                                        value={ele.org_admin}
                                         // onChange={(e) => changedata(e, index)}
                                         onChange={(e) =>
                                           validateStoreEmail(e, index)
@@ -1089,7 +1088,8 @@ const ClientDetailsForm = (props) => {
                             name="submit"
                             id="submit"
                             value="Submit"
-                            onClick={handleSubmit}
+                            // onClick={handleSubmit}
+                            onClick={handleSave}
                           ></input>
                         </div>
 
@@ -1187,7 +1187,7 @@ const ClientDetailsForm = (props) => {
                                         name="submit"
                                         id="Save"
                                         value="Send"
-                                        onClick={handleSave}
+                                        // onClick={handleSave}
                                       ></input>
                                     </div>
                                   </div>

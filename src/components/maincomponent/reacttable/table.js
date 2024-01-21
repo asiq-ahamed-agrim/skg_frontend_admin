@@ -91,7 +91,7 @@ function BasicTable(props) {
 
   return (
     <>
-      <div className="row" style={{width:"100%",padding:"5px"}}>
+      <div className="row" style={{ width: "100%", padding: "5px" }}>
         <div className="col-md-9">
           {props.datacount > 10 ? (
             <div
@@ -193,7 +193,10 @@ function BasicTable(props) {
         <div className="col-md-3">
           {props.isactive == true ? (
             <div className="w-100 rounded d-flex">
-              <label class="form-label mb-0 align-self-center mr-2" style={{width:"100px"}}>
+              <label
+                class="form-label mb-0 align-self-center mr-2"
+                style={{ width: "100px" }}
+              >
                 Is Active
               </label>
 
@@ -221,7 +224,7 @@ function BasicTable(props) {
           )}
         </div>
       </div>
-      <table {...getTableProps()}>
+      <table {...getTableProps()} style={{ textAlign: "left" }}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -245,15 +248,16 @@ function BasicTable(props) {
                     } else if (props.stateid == "1") {
                       props.settrackorderidp(row.original.id);
                       props.settrackorderstatep(true);
-                    }
-                    else if(props.stateid == "2"){
+                    } else if (props.stateid == "2") {
                       props.setorderdata(row.original);
                       props.setorderstate(true);
                     }
                   }}
                   style={{
                     cursor:
-                      props.stateid == "0" || props.stateid == "1" || props.stateid == "2"
+                      props.stateid == "0" ||
+                      props.stateid == "1" ||
+                      props.stateid == "2"
                         ? "pointer"
                         : "",
                   }}
@@ -292,10 +296,9 @@ function BasicTable(props) {
                 style={{ border: "none" }}
                 onClick={() => {
                   previousPage();
-                  if(props.id=="spe"||props.id=="sym"){
-                    props.setsno(props.sno-10)
+                  if (props.id == "spe" || props.id == "sym") {
+                    props.setsno(props.sno - 10);
                   }
-
                 }}
                 disabled={pageIndex == 1}
               >
@@ -316,8 +319,8 @@ function BasicTable(props) {
                 className="btn btn prim"
                 onClick={() => {
                   nextPage();
-                  if(props.id=="spe"||props.id=="sym"){
-                    props.setsno(props.sno+10)
+                  if (props.id == "spe" || props.id == "sym") {
+                    props.setsno(props.sno + 10);
                   }
                 }}
                 disabled={

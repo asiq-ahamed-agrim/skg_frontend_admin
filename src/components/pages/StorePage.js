@@ -44,17 +44,36 @@ const StorePage = (props) => {
   const [dtpagesize, setdtPagesize] = useState(10);
   const [datacount, setdatacount] = useState();
 
+  // const [searchQuery2, setSearchQuery2] = useState("");
+  // const [dtpageindex2, setdtPageindex2] = useState(1);
+  // const [dtpagesize2, setdtPagesize2] = useState(10);
+  // const [datacount2, setdatacount2] = useState();
+
   const [popup, setpopup] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const [storedetails, setstoredetails] = useState([]);
+
+  const [editstoredetails, seteditstoredetails] = useState({
+    name: "",
+    email: "",
+    c_person: "",
+    address: "",
+    store_id: "",
+  });
+
+  console.log(storedetails.name, "sese");
+
   const [orguserdata, setorguserdata] = useState([]);
   console.log(orgid);
 
   // product list
   const [productList, setProductList] = useState([]);
+  console.log(productList, "plpl");
+  // debugger;
   const [showProductModal, setProductModal] = useState(false);
   const [showProductEditModal, setProductEditModal] = useState(false);
+  const [storeEditModal, setstoreEditModal] = useState(false);
 
   const [preurl, setpreurl] = useState();
   const [imgfile, setimgfile] = useState();
@@ -84,7 +103,64 @@ const StorePage = (props) => {
   const [productDescError, setproductDescError] = useState("");
   const [customerdetails3, setcustomerdetails3] = useState(false);
 
-  // child get api store details
+  // edit prdouct
+  // const [editproduct, seteditproduct] = useState({
+  //   name: productList.product_name,
+  //   sku: productList.product_sku,
+  //   desc: productList.product_desc,
+  //   logo: productList.product_logo,
+  //   org_id: orgid,
+  // });
+
+  // const [editproduct, seteditproduct] = useState({
+  //   name: productList.product_name,
+  //   sku: "",
+  //   desc: "",
+  //   logo: "",
+  //   org_id: orgid,
+  // });
+
+  // useEffect(() => {
+  //   console.log("eded:", editproduct);
+  //   seteditproduct({
+  //     name: editproduct.product_name,
+  //     sku: editproduct.sku,
+  //     desc: editproduct.desc,
+  //     logo: editproduct.logo,
+  //     org_id: editproduct.org_id,
+  //   });
+  // }, []);
+
+  const selectedProductId = productList[0]?.product_id;
+
+  const [editproduct, seteditproduct] = useState({
+    name: productList[0]?.product_name,
+    sku: productList[0]?.product_sku,
+    desc: productList[0]?.product_desc,
+    logo: productList[0]?.product_logo,
+    org_id: selectedProductId,
+  });
+
+  console.log(
+    "editproduct:",
+    // editproduct,
+    // productList[0]?.product_id
+    selectedProductId
+  );
+
+  useEffect(() => {
+    seteditproduct({
+      name: productList[0]?.product_name || "",
+      sku: productList[0]?.product_sku || "",
+      desc: productList[0]?.product_desc || "",
+      logo: productList[0]?.product_logo || "",
+      org_id: selectedProductId,
+    });
+  }, [productList, orgid, selectedProductId]);
+
+  // console.log("updated editproduct:", editproduct);
+
+  // get api store details
   useEffect(() => {
     props.loaderchange("true");
 
@@ -112,6 +188,13 @@ const StorePage = (props) => {
         props.loaderchange("false");
       });
   }, []);
+
+  useEffect(() => {
+    // Log the "name" property of each object in storedetails
+    storedetails.map((item) => {
+      console.log(item.name, "sese");
+    });
+  }, [storedetails]);
 
   //   org_user
   useEffect(() => {
@@ -174,10 +257,12 @@ const StorePage = (props) => {
 
   const pagesize = (arg) => {
     setdtPagesize(arg);
+    // setdtPagesize2(arg);
   };
 
   const pageindex = (arg) => {
     setdtPageindex(arg);
+    // setdtPageindex2(arg);
   };
 
   const handleSubmit = () => {
@@ -463,6 +548,31 @@ const StorePage = (props) => {
   const columnsProduct = useMemo(
     () => [
       {
+        Header: "Image",
+        accessor: "",
+
+        Cell: (row) => {
+          return (
+            <>
+              <p
+                data-tooltip-id="my-tooltip"
+                data-tooltip-content={row.row.original.product_logo}
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  window.open(row.row.original.product_logo, "_blank")
+                }
+              >
+                <img
+                  src={row.row.original.product_logo}
+                  alt="Product Image"
+                  className="product-image"
+                />
+              </p>
+            </>
+          );
+        },
+      },
+      {
         Header: "Name",
         accessor: "",
 
@@ -615,6 +725,14 @@ const StorePage = (props) => {
       });
   }, [dtpageindex, dtpagesize, customerdetails3]);
 
+  // store edit function
+  const handleStoreEdit = () => {
+    setstoreEditModal(true);
+  };
+  const handleStoreEditCloseModal = () => {
+    setstoreEditModal(false);
+  };
+
   // product edit function
   const handleProductEdit = () => {
     setProductEditModal(true);
@@ -754,13 +872,190 @@ const StorePage = (props) => {
                             <b>Address : </b> {store.address}
                           </p>
                         </div>
-                        <div className="store-action">
+                        <div
+                          className="store-action"
+                          onClick={() => handleStoreEdit()}
+                        >
                           <button className="action-btn">
                             <EditIcon />
                           </button>
                         </div>
                       </div>
                     </div>
+                    {/* product edit modal */}
+                    <div
+                      className={
+                        storeEditModal
+                          ? "modal display-block"
+                          : "modal display-none"
+                      }
+                    >
+                      <section className="product-modal-main">
+                        <div className="modal-header">
+                          <h5 className="product-modal-title-modal2">
+                            Edit Store
+                          </h5>
+
+                          <button
+                            type="button"
+                            className="close"
+                            aria-label="Close"
+                            onClick={handleStoreEditCloseModal}
+                          >
+                            <i className="bi bi-x-lg"></i>
+                          </button>
+                        </div>
+                        <div
+                          className="modal-body"
+                          style={{ padding: "0 !important" }}
+                        >
+                          <div
+                            className="product-modal2-body-inner"
+                            style={{ marginLeft: "15px" }}
+                          >
+                            <div className="row">
+                              <div
+                                className="col-md-12"
+                                style={{ paddingLeft: "0px" }}
+                              >
+                                <div
+                                  className="col-12 product-form-group"
+                                  style={{ paddingLeft: "0px" }}
+                                >
+                                  <form
+                                    name="add_name"
+                                    id="add_name"
+                                    onSubmit={handleStoreEdit}
+                                  >
+                                    <div className="modal2-email-wrap">
+                                      <div className="row mb-2">
+                                        <div
+                                          className="col-6"
+                                          style={{ textAlign: "left" }}
+                                        >
+                                          <label>
+                                            Store Name{" "}
+                                            <span style={{ color: "red" }}>
+                                              *
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            name="name"
+                                            className="form-control"
+                                            placeholder="Name"
+                                            class="form-control name_list"
+                                            value={editstoredetails.name}
+                                            onChange={(e) =>
+                                              seteditstoredetails({
+                                                ...editstoredetails,
+                                                name: e.target.value,
+                                              })
+                                            }
+                                            // onChange={(e) => validateOrganizationName(e)}
+                                          />
+                                        </div>
+                                        <div
+                                          className="col-6"
+                                          style={{ textAlign: "left" }}
+                                        >
+                                          <label>
+                                            Email{" "}
+                                            <span style={{ color: "red" }}>
+                                              *
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="email"
+                                            name="email"
+                                            className="form-control"
+                                            placeholder="Email"
+                                            class="form-control name_email"
+                                            value={storedetails.email}
+                                            onChange={(e) =>
+                                              seteditstoredetails({
+                                                ...editstoredetails,
+                                                email: e.target.value,
+                                              })
+                                            }
+                                            // onChange={(e) => validateDomain(e)}
+                                          />
+                                        </div>
+
+                                        <div
+                                          className="col-6"
+                                          style={{ textAlign: "left" }}
+                                        >
+                                          <label>
+                                            Contact Person{" "}
+                                            <span style={{ color: "red" }}>
+                                              *
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            name="c_person"
+                                            className="form-control"
+                                            placeholder="Contact Person"
+                                            class="form-control name_email"
+                                            value={editproduct.c_person}
+                                            onChange={(e) =>
+                                              seteditstoredetails({
+                                                ...editstoredetails,
+                                                c_person: e.target.value,
+                                              })
+                                            }
+                                            // onChange={(e) => validateProductDesc(e)}
+                                          />
+                                        </div>
+
+                                        <div
+                                          className="col-6"
+                                          style={{ textAlign: "left" }}
+                                        >
+                                          <label>
+                                            Address{" "}
+                                            <span style={{ color: "red" }}>
+                                              *
+                                            </span>
+                                          </label>
+                                          <input
+                                            type="text"
+                                            name="address"
+                                            className="form-control"
+                                            placeholder="Address"
+                                            class="form-control name_email"
+                                            value={editproduct.address}
+                                            onChange={(e) =>
+                                              seteditstoredetails({
+                                                ...editstoredetails,
+                                                address: e.target.value,
+                                              })
+                                            }
+                                            // onChange={(e) => validateProductDesc(e)}
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </form>
+                                </div>
+                                <div className="product-submit-btn">
+                                  <input
+                                    type="submit"
+                                    class="btn btn-success"
+                                    name="submit"
+                                    id="Save"
+                                    value="Update"
+                                    // onClick={handleSave}
+                                  ></input>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                    {/* End of product edit  */}
                   </div>
                 ))}
               </div>
@@ -909,12 +1204,16 @@ const StorePage = (props) => {
                                         Description{" "}
                                         <span style={{ color: "red" }}>*</span>
                                       </label>
-                                      <input
+                                      <textarea
                                         type="text"
                                         name="desc"
-                                        className="form-control"
+                                        // className="form-control"
                                         placeholder="Description"
                                         class="form-control name_email"
+                                        style={{
+                                          height: "0px",
+                                          padding: "5px",
+                                        }}
                                         value={createproduct.desc}
                                         onChange={(e) => validateProductDesc(e)}
                                       />
@@ -961,7 +1260,7 @@ const StorePage = (props) => {
                                               marginRight: 8,
                                             }}
                                           >
-                                            Upload Logo:
+                                            Product Image:
                                           </p>
                                         )}
 
@@ -979,7 +1278,7 @@ const StorePage = (props) => {
                                             style={{ cursor: "pointer" }}
                                           >
                                             <p style={{ cursor: "pointer" }}>
-                                              Upload Logo
+                                              Upload Image
                                               <input
                                                 type="file"
                                                 hidden
@@ -1087,11 +1386,17 @@ const StorePage = (props) => {
                                       </label>
                                       <input
                                         type="text"
-                                        name="org_name"
+                                        name="name"
                                         className="form-control"
                                         placeholder="Name"
                                         class="form-control name_list"
-                                        // value={createproduct.org_name}
+                                        value={editproduct.name}
+                                        onChange={(e) =>
+                                          seteditproduct({
+                                            ...editproduct,
+                                            name: e.target.value,
+                                          })
+                                        }
                                         // onChange={(e) => validateOrganizationName(e)}
                                       />
 
@@ -1114,11 +1419,17 @@ const StorePage = (props) => {
                                       </label>
                                       <input
                                         type="text"
-                                        name="org_domain"
+                                        name="sku"
                                         className="form-control"
                                         placeholder="SKU"
                                         class="form-control name_email"
-                                        // value={createproduct.org_domain}
+                                        value={editproduct.sku}
+                                        onChange={(e) =>
+                                          seteditproduct({
+                                            ...editproduct,
+                                            sku: e.target.value,
+                                          })
+                                        }
                                         // onChange={(e) => validateDomain(e)}
                                       />
                                       {/* <div
@@ -1137,14 +1448,24 @@ const StorePage = (props) => {
                                         Description{" "}
                                         <span style={{ color: "red" }}>*</span>
                                       </label>
-                                      <input
+                                      <textarea
                                         type="text"
-                                        name="org_key"
-                                        className="form-control"
+                                        name="desc"
+                                        // className="form-control"
                                         placeholder="Description"
                                         class="form-control name_email"
-                                        // value={createproduct.org_key}
-                                        // onChange={(e) => validateCode(e)}
+                                        style={{
+                                          height: "0px",
+                                          padding: "5px",
+                                        }}
+                                        value={editproduct.desc}
+                                        onChange={(e) =>
+                                          seteditproduct({
+                                            ...editproduct,
+                                            desc: e.target.value,
+                                          })
+                                        }
+                                        // onChange={(e) => validateProductDesc(e)}
                                       />
                                       {/* <div
                                   className={`${codeError ? "show" : "hide"}`}
