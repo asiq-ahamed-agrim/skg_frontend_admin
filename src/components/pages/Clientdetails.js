@@ -384,6 +384,7 @@ function Client(props) {
   const pageindex = (arg) => {
     setdtPageindex(arg);
   };
+
   const loaderchangechild = (arg) => {
     // console.log(arg,"jkh")
     props.loaderchange(arg);
@@ -561,7 +562,8 @@ function Client(props) {
           }}
         />
       </div>
-      {clientstate == "ClientCreate" || clientstate == "ClientEdit" ? (
+      {/* {clientstate == "ClientCreate" || clientstate == "ClientEdit" ? ( */}
+      {clientstate == "ClientCreate" ? (
         <ClientDetailsForm
           setcustomerdetails2={setcustomerdetails2}
           loaderchange={loaderchangechild}

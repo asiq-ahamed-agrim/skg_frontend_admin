@@ -1,7 +1,7 @@
 import "../style/page/report.scss";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { clientaddstate } from "../redux/reducer/counterslice";
+import { clientaddstate, store_id } from "../redux/reducer/counterslice";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { StoreDetails, OrgUserDetails } from "../../text/apidata";
 import BasicTable from "../maincomponent/reacttable/table";
@@ -17,7 +17,7 @@ import "react-image-crop/dist/ReactCrop.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import validator from "validator";
-import { CreateProduct, getProductList } from "../../text/apidata";
+import { CreateProductData, getProductList } from "../../text/apidata";
 
 const StorePage = (props) => {
   const Token = {
@@ -36,18 +36,16 @@ const StorePage = (props) => {
   const sideactive = useSelector((state) => state.counter.sidebarnav);
   const orgid = useSelector((state) => state.counter.origanisationid);
   const orgname = useSelector((state) => state.counter.origanisationname);
-
   console.log(orgid, "oi", orgname);
+
+  const sid = useSelector((state) => state.counter.store_id);
+  console.log(sid, "siddd");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [dtpageindex, setdtPageindex] = useState(1);
   const [dtpagesize, setdtPagesize] = useState(10);
   const [datacount, setdatacount] = useState();
-
-  // const [searchQuery2, setSearchQuery2] = useState("");
-  // const [dtpageindex2, setdtPageindex2] = useState(1);
-  // const [dtpagesize2, setdtPagesize2] = useState(10);
-  // const [datacount2, setdatacount2] = useState();
+  const [datacount2, setdatacount2] = useState();
 
   const [popup, setpopup] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -62,7 +60,7 @@ const StorePage = (props) => {
     store_id: "",
   });
 
-  console.log(storedetails.name, "sese");
+  console.log(editstoredetails, "sted", storedetails);
 
   const [orguserdata, setorguserdata] = useState([]);
   console.log(orgid);
@@ -97,7 +95,7 @@ const StorePage = (props) => {
     logo: "",
     org_id: orgid,
   });
-
+  console.log(createproduct, "llllll");
   const [productNameError, setProductNameError] = useState("");
   const [productSkuError, setproductSkuError] = useState("");
   const [productDescError, setproductDescError] = useState("");
@@ -153,7 +151,7 @@ const StorePage = (props) => {
       name: productList[0]?.product_name || "",
       sku: productList[0]?.product_sku || "",
       desc: productList[0]?.product_desc || "",
-      logo: productList[0]?.product_logo || "",
+      // logo: productList[0]?.product_logo || "",
       org_id: selectedProductId,
     });
   }, [productList, orgid, selectedProductId]);
@@ -166,16 +164,17 @@ const StorePage = (props) => {
 
     axios({
       method: "get",
-      //   url: StoreDetails,
       url: `${StoreDetails}/${orgid}`,
-
       headers: {
         Authorization: localStorage.getItem("token"),
       },
     })
       .then((res) => {
-        console.log(res.data.data, "storedata");
+        console.log(res.data, "storedata");
         setstoredetails(res.data.data);
+        // Set initial state for editstoredetails
+        seteditstoredetails(res.data.data);
+
         props.loaderchange("false");
       })
       .catch((error) => {
@@ -189,14 +188,7 @@ const StorePage = (props) => {
       });
   }, []);
 
-  useEffect(() => {
-    // Log the "name" property of each object in storedetails
-    storedetails.map((item) => {
-      console.log(item.name, "sese");
-    });
-  }, [storedetails]);
-
-  //   org_user
+  // org_user
   useEffect(() => {
     props.loaderchange("true");
 
@@ -214,18 +206,13 @@ const StorePage = (props) => {
       },
     })
       .then((res) => {
-        console.log(res.data.data.data, "orgdata");
+        console.log(res.data.data, "orgdata");
         setorguserdata(res.data.data.data);
         setdatacount(res.data.data.pagination.total);
         props.loaderchange("false");
       })
       .catch((error) => {
         console.log(error, "error");
-        // props.popupalert("true");
-        // props.popuptext(error.response.data.status.message);
-        // setTimeout(() => {
-        //   props.popupalert("false");
-        // }, 2000);
         props.loaderchange("false");
       });
   }, [dtpageindex, dtpagesize]);
@@ -257,12 +244,10 @@ const StorePage = (props) => {
 
   const pagesize = (arg) => {
     setdtPagesize(arg);
-    // setdtPagesize2(arg);
   };
 
   const pageindex = (arg) => {
     setdtPageindex(arg);
-    // setdtPageindex2(arg);
   };
 
   const handleSubmit = () => {
@@ -342,7 +327,7 @@ const StorePage = (props) => {
   // product function
   const handleProductCreateModal = () => {
     setProductModal(true);
-    dispatch(clientaddstate("ClientCreate"));
+    // dispatch(clientaddstate("ClientCreate"));
   };
   const handleProductCloseModal = () => {
     setProductModal(false);
@@ -466,7 +451,7 @@ const StorePage = (props) => {
                   logo: res.data.data.data.url.split("?")[0],
                 });
 
-                console.log(res.data.data.data.url.split("?")[0], "uuu");
+                console.log(res.data.data.data.url.split("?")[0], "spliturl");
               })
               .catch((error) => {
                 debugger;
@@ -643,50 +628,56 @@ const StorePage = (props) => {
   );
 
   const handleProductCreate = () => {
-    props.loaderchange("true");
-    async function uploadimage() {
-      console.log(createproduct, "asyn", props.loaderchange("true"));
+    if (
+      createproduct.name != "" &&
+      createproduct.sku != "" &&
+      createproduct.desc != "" &&
+      createproduct.logo != ""
+    ) {
+      props.loaderchange("true");
+      async function uploadimage() {
+        console.log(createproduct, "asyn");
 
-      if (preurl && preurl.length > 0) {
-        const resp = await fetch(preurl, {
-          method: "PUT",
-          body: imgfile,
+        if (preurl && preurl.length > 0) {
+          const resp = await fetch(preurl, {
+            method: "PUT",
+            body: imgfile,
+            headers: {
+              // "Authorization": "Bearer " + localStorage.getItem("token") + "",
+              "Content-Type": imgtype,
+              "X-Amz-ACL": "public-read",
+            },
+          }).catch((err) => {
+            console.log(err);
+            return null;
+          });
+        }
+        axios({
+          method: "post",
+          url: CreateProductData,
+          data: createproduct,
           headers: {
-            // "Authorization": "Bearer " + localStorage.getItem("token") + "",
-            "Content-Type": imgtype,
-            "X-Amz-ACL": "public-read",
+            Authorization: localStorage.getItem("token"),
           },
-        }).catch((err) => {
-          console.log(err);
-          return null;
-        });
-      }
-      axios({
-        method: "post",
-        url: CreateProduct,
-        data: createproduct,
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-        .then((res) => {
-          console.log(res, "prores", props.loaderchange("true"));
-
-          props.loaderchange("false");
-
-          debugger;
-          toast.success("Product Created Successfully");
-          setProductModal(false);
-          setcustomerdetails3(true);
         })
-        .catch((error) => {
-          console.log(error, "err2");
-          // debugger;
-          props.loaderchange("false");
-          // toast.error("Organization Name Already Exists");
-        });
+          .then((res) => {
+            console.log(res, "prores");
+
+            props.loaderchange("false");
+            toast.success("Product Created Successfully");
+
+            setProductModal(false);
+            setcustomerdetails3(true);
+          })
+          .catch((error) => {
+            console.log(error, "err2");
+            // debugger;
+            props.loaderchange("false");
+            // toast.error("Organization Name Already Exists");
+          });
+      }
+      uploadimage();
     }
-    uploadimage();
   };
 
   // get product
@@ -707,12 +698,12 @@ const StorePage = (props) => {
       },
     })
       .then((res) => {
-        console.log(res.data.data.data, "prodata");
+        console.log(res.data.data, "prodata");
         if (res.data.data.data != undefined && res.data.data.data != "") {
           setProductList(res.data.data.data);
         }
         // setProductList(res.data.data.data);
-        setdatacount(res.data.data.pagination.total);
+        setdatacount2(res.data.data.pagination.total);
         props.loaderchange("false");
         setcustomerdetails3(false);
       })
@@ -882,7 +873,7 @@ const StorePage = (props) => {
                         </div>
                       </div>
                     </div>
-                    {/* product edit modal */}
+                    {/* store edit modal */}
                     <div
                       className={
                         storeEditModal
@@ -931,7 +922,10 @@ const StorePage = (props) => {
                                       <div className="row mb-2">
                                         <div
                                           className="col-6"
-                                          style={{ textAlign: "left" }}
+                                          style={{
+                                            textAlign: "left",
+                                            marginBottom: "15px",
+                                          }}
                                         >
                                           <label>
                                             Store Name{" "}
@@ -957,7 +951,10 @@ const StorePage = (props) => {
                                         </div>
                                         <div
                                           className="col-6"
-                                          style={{ textAlign: "left" }}
+                                          style={{
+                                            textAlign: "left",
+                                            marginBottom: "15px",
+                                          }}
                                         >
                                           <label>
                                             Email{" "}
@@ -971,7 +968,7 @@ const StorePage = (props) => {
                                             className="form-control"
                                             placeholder="Email"
                                             class="form-control name_email"
-                                            value={storedetails.email}
+                                            value={editstoredetails.email}
                                             onChange={(e) =>
                                               seteditstoredetails({
                                                 ...editstoredetails,
@@ -984,7 +981,10 @@ const StorePage = (props) => {
 
                                         <div
                                           className="col-6"
-                                          style={{ textAlign: "left" }}
+                                          style={{
+                                            textAlign: "left",
+                                            marginBottom: "15px",
+                                          }}
                                         >
                                           <label>
                                             Contact Person{" "}
@@ -998,7 +998,7 @@ const StorePage = (props) => {
                                             className="form-control"
                                             placeholder="Contact Person"
                                             class="form-control name_email"
-                                            value={editproduct.c_person}
+                                            value={editstoredetails.c_person}
                                             onChange={(e) =>
                                               seteditstoredetails({
                                                 ...editstoredetails,
@@ -1011,7 +1011,10 @@ const StorePage = (props) => {
 
                                         <div
                                           className="col-6"
-                                          style={{ textAlign: "left" }}
+                                          style={{
+                                            textAlign: "left",
+                                            marginBottom: "15px",
+                                          }}
                                         >
                                           <label>
                                             Address{" "}
@@ -1025,7 +1028,7 @@ const StorePage = (props) => {
                                             className="form-control"
                                             placeholder="Address"
                                             class="form-control name_email"
-                                            value={editproduct.address}
+                                            value={editstoredetails.address}
                                             onChange={(e) =>
                                               seteditstoredetails({
                                                 ...editstoredetails,
@@ -1088,7 +1091,7 @@ const StorePage = (props) => {
                     pageindex={pageindex}
                     dtpagesize={dtpagesize}
                     dtpageindex={dtpageindex}
-                    datacount={datacount}
+                    datacount={datacount2}
                   />
                 </div>
 
@@ -1581,66 +1584,6 @@ const StorePage = (props) => {
           </div>
         </div>
       </div>
-
-      {/* store edit modal */}
-      <div className={showModal ? "modal display-block" : "modal display-none"}>
-        <section className="modal-main">
-          <div className="modal-header">
-            <h5 className="modal-title-modal2">Edit Store Details</h5>
-            <button
-              type="button"
-              className="close"
-              aria-label="Close"
-              onClick={handleCloseModal}
-            >
-              <i className="bi bi-x-lg"></i>
-            </button>
-          </div>
-          <div className="modal-body" style={{ padding: "0 !important" }}>
-            <div className="modal2-body-inner" style={{ marginLeft: "15px" }}>
-              <div className="row">
-                <div className="col-md-12" style={{ paddingLeft: "0px" }}>
-                  <div
-                    className="col-10 form-group"
-                    style={{ paddingLeft: "0px" }}
-                  >
-                    <form name="add_name" id="add_name" onSubmit={handleSubmit}>
-                      <div className="modal2-email-wrap">
-                        <label className="email-label">Email :</label>
-                        <input
-                          type="email"
-                          name="org_admin"
-                          className="form-control-modal2"
-                          // placeholder="Email"
-                          class="form-control name_email"
-                          //   value={clientdata.org_admin}
-                          // onChange={(e) => {
-                          //   setclientdata({
-                          //     ...clientdata,
-                          //     org_admin: e.target.value,
-                          //   });
-                          // }}
-                        />
-                      </div>
-                    </form>
-                  </div>
-                  <div className="submit-btn-wrap-modal2">
-                    <input
-                      type="submit"
-                      class="btn btn-success"
-                      name="submit"
-                      id="Save"
-                      value="Send"
-                      // onClick={handleSave}
-                    ></input>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      {/* End of Modal */}
 
       {CroppImageView && (
         <div className="Cropper_Wrapper">

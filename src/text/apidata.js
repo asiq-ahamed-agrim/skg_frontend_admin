@@ -166,7 +166,7 @@ export const OrgUserDetails = baseurl + "/get_org_users/";
 
 
 // product
-export const CreateProduct = productbaseurl + "/create_product";
+export const CreateProductData = productbaseurl + "/create_product";
 
 
 export const getProductList = productbaseurl + "/get_products/";

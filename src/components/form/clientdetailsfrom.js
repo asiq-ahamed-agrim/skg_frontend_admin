@@ -62,7 +62,7 @@ const ClientDetailsForm = (props) => {
   const [alert, setalert] = useState(false);
   const [file, setFile] = useState([]);
 
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
 
   const [CroppImageView, setCroppImageView] = useState(false);
   const [CroppImageViewCount, setCroppImageViewCount] = useState(0);
@@ -542,18 +542,105 @@ const ClientDetailsForm = (props) => {
     }
   };
 
-  const handleSubmit = () => {
+  // const handleSubmit = () => {
+  //   debugger;
+  //   if (
+  //     clientdata.org_name != "" &&
+  //     clientdata.org_domain != "" &&
+  //     clientdata.org_key != "" &&
+  //     clientdata.store_info[0].store_name != "" &&
+  //     clientdata.store_info[0]?.org_admin != "" &&
+  //     clientdata.con_name != "" &&
+  //     clientdata.con_email != ""
+  //   ) {
+  //     // setShowModal(true);
+  //   } else {
+  //     if (clientdata.org_name == "") {
+  //       setOrganizationNameError("Organization Name cannot be empty!");
+  //     }
+  //     if (clientdata.org_domain == "") {
+  //       setDomainError("Domain cannot be empty!");
+  //     }
+  //     if (clientdata.org_key == "") {
+  //       setCodeError("Code cannot be empty!");
+  //     }
+  //     if (clientdata.store_info[0].store_name == "") {
+  //       setStoreNameError("Store Name cannot be empty!");
+  //     }
+  //     if (clientdata.store_info[0]?.org_admin == "") {
+  //       setStoreMailError("Email cannot be empty!");
+  //     }
+  //     if (clientdata.con_name == "") {
+  //       setCustomerNameError("Customer Name cannot be empty!");
+  //     }
+  //     if (clientdata.con_email == "") {
+  //       setCustomerEmailError("Email cannot be empty!");
+  //     }
+  //   }
+  // };
+
+  const handleSave = () => {
     debugger;
+    // if (clientdata.org_admin != "") {
     if (
       clientdata.org_name != "" &&
       clientdata.org_domain != "" &&
       clientdata.org_key != "" &&
       clientdata.store_info[0].store_name != "" &&
-      clientdata.store_info[0]?.org_admin != "" &&
+      // clientdata.store_info[0]?.org_admin != "" &&
+      clientdata.org_admin != "" &&
       clientdata.con_name != "" &&
       clientdata.con_email != ""
     ) {
-      setShowModal(true);
+      console.log(clientdata, "clientdata");
+      props.loaderchange("true");
+
+      async function uploadimage() {
+        console.log(clientdata, "asyn");
+
+        if (preurl && preurl.length > 0) {
+          const resp = await fetch(preurl, {
+            method: "PUT",
+            body: imgfile,
+            headers: {
+              // "Authorization": "Bearer " + localStorage.getItem("token") + "",
+              "Content-Type": imgtype,
+              "X-Amz-ACL": "public-read",
+            },
+          }).catch((err) => {
+            console.log(err);
+            return null;
+          });
+        }
+
+        axios({
+          method: "post",
+          url: ClientCreate,
+          data: clientdata,
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+          .then((res) => {
+            console.log(res, "clires", props.loaderchange("false"));
+
+            dispatch(clientaddstate(""));
+            props.loaderchange("false");
+            toast.success("Customer Created Successfully");
+            props.setcustomerdetails2(true);
+          })
+          .catch((error) => {
+            console.log(error, "err2");
+            props.loaderchange("false");
+            toast.error("Organization Name Already Exists");
+          });
+      }
+      uploadimage();
+      // } else {
+      //   if (clientdata.org_admin == "") {
+      //     setOrgAdminEmailError("Email cannot be empty!");
+      //   }
+      // }
     } else {
       if (clientdata.org_name == "") {
         setOrganizationNameError("Organization Name cannot be empty!");
@@ -567,7 +654,8 @@ const ClientDetailsForm = (props) => {
       if (clientdata.store_info[0].store_name == "") {
         setStoreNameError("Store Name cannot be empty!");
       }
-      if (clientdata.store_info[0]?.org_admin == "") {
+      // if (clientdata.store_info[0]?.org_admin == "") {
+      if (clientdata.org_admin == "") {
         setStoreMailError("Email cannot be empty!");
       }
       if (clientdata.con_name == "") {
@@ -579,63 +667,9 @@ const ClientDetailsForm = (props) => {
     }
   };
 
-  const handleSave = () => {
-    debugger;
-    // if (clientdata.org_admin != "") {
-    console.log(clientdata, "clientdata");
-    props.loaderchange("true");
-
-    async function uploadimage() {
-      console.log(clientdata, "asyn");
-
-      if (preurl && preurl.length > 0) {
-        const resp = await fetch(preurl, {
-          method: "PUT",
-          body: imgfile,
-          headers: {
-            // "Authorization": "Bearer " + localStorage.getItem("token") + "",
-            "Content-Type": imgtype,
-            "X-Amz-ACL": "public-read",
-          },
-        }).catch((err) => {
-          console.log(err);
-          return null;
-        });
-      }
-
-      axios({
-        method: "post",
-        url: ClientCreate,
-        data: clientdata,
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-        .then((res) => {
-          console.log(res, "clires", props.loaderchange("false"));
-
-          dispatch(clientaddstate(""));
-          props.loaderchange("false");
-          toast.success("Customer Created Successfully");
-          props.setcustomerdetails2(true);
-        })
-        .catch((error) => {
-          console.log(error, "err2");
-          props.loaderchange("false");
-          toast.error("Organization Name Already Exists");
-        });
-    }
-    uploadimage();
-    // } else {
-    //   if (clientdata.org_admin == "") {
-    //     setOrgAdminEmailError("Email cannot be empty!");
-    //   }
-    // }
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+  // const handleCloseModal = () => {
+  //   setShowModal(false);
+  // };
   return (
     <>
       <div className="maincontainer">
@@ -702,7 +736,6 @@ const ClientDetailsForm = (props) => {
                                   }`}
                                   style={{ color: "red" }}
                                 >
-                                  {/* <WarningIcon /> */}
                                   &nbsp; Organization Name required!
                                 </div>
                               </div>
@@ -729,7 +762,6 @@ const ClientDetailsForm = (props) => {
                                   className={`${domainError ? "show" : "hide"}`}
                                   style={{ color: "red" }}
                                 >
-                                  {/* <WarningIcon /> */}
                                   &nbsp; Domain required!
                                 </div>
                               </div>
@@ -757,7 +789,6 @@ const ClientDetailsForm = (props) => {
                                   className={`${codeError ? "show" : "hide"}`}
                                   style={{ color: "red" }}
                                 >
-                                  {/* <WarningIcon /> */}
                                   &nbsp; Code required!
                                 </div>
                               </div>
@@ -807,7 +838,6 @@ const ClientDetailsForm = (props) => {
                                         }`}
                                         style={{ color: "red" }}
                                       >
-                                        {/* <WarningIcon /> */}
                                         &nbsp; Store Name required!
                                       </div>
                                     </div>
@@ -840,7 +870,6 @@ const ClientDetailsForm = (props) => {
                                         }`}
                                         style={{ color: "red" }}
                                       >
-                                        {/* <WarningIcon /> */}
                                         &nbsp; {storeMailError}
                                       </div>
                                     </div>
@@ -963,7 +992,6 @@ const ClientDetailsForm = (props) => {
                                   }`}
                                   style={{ color: "red" }}
                                 >
-                                  {/* <WarningIcon /> */}
                                   &nbsp; Customer Name required!
                                 </div>
                               </div>
@@ -992,7 +1020,6 @@ const ClientDetailsForm = (props) => {
                                   }`}
                                   style={{ color: "red" }}
                                 >
-                                  {/* <WarningIcon /> */}
                                   &nbsp; {customerEmailError}
                                 </div>
                               </div>
@@ -1094,7 +1121,7 @@ const ClientDetailsForm = (props) => {
                         </div>
 
                         {/* email second modal */}
-                        <div
+                        {/* <div
                           className={
                             showModal
                               ? "modal display-block"
@@ -1149,16 +1176,11 @@ const ClientDetailsForm = (props) => {
                                             type="email"
                                             name="org_admin"
                                             className="form-control-modal2"
-                                            // placeholder="Email"
+                                            placeholder="Email"
                                             class="form-control name_email"
                                             value={clientdata.org_admin}
                                             style={{ marginLeft: "2px" }}
-                                            // onChange={(e) => {
-                                            //   setclientdata({
-                                            //     ...clientdata,
-                                            //     org_admin: e.target.value,
-                                            //   });
-                                            // }}
+                                          
                                             onChange={(e) =>
                                               validateOrgEmail(e)
                                             }
@@ -1175,7 +1197,6 @@ const ClientDetailsForm = (props) => {
                                             paddingLeft: "66px",
                                           }}
                                         >
-                                          {/* <WarningIcon /> */}
                                           &nbsp; {orgAdminEmailError}
                                         </div>
                                       </form>
@@ -1187,7 +1208,7 @@ const ClientDetailsForm = (props) => {
                                         name="submit"
                                         id="Save"
                                         value="Send"
-                                        // onClick={handleSave}
+                                        onClick={handleSave}
                                       ></input>
                                     </div>
                                   </div>
@@ -1195,7 +1216,7 @@ const ClientDetailsForm = (props) => {
                               </div>
                             </div>
                           </section>
-                        </div>
+                        </div> */}
                         {/* End of Modal */}
                       </form>
                     </div>

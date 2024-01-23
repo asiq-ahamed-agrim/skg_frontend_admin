@@ -7,6 +7,7 @@ const initialState = {
   clientaddstatevalue: "",
   origanisationid: "",
   origanisationname: "",
+  store_id: "",
 
   // editadminuser: "",
   editadminuserid: "",
@@ -61,9 +62,17 @@ export const counterSlice = createSlice({
       state.origanisationid = action.payload;
       // console.log(state.edituser,"kdsjh")
     },
+
     origanisationname: (state, action) => {
       state.origanisationname = action.payload;
-      // console.log(state.edituser,"kdsjh")
+      // console.log(state,"oooo")
+      // debugger
+    },
+
+    store_id: (state, action) => {
+      state.store_id = action.payload;
+      console.log(state, "ssss");
+      // debugger;
     },
 
     ////
@@ -155,6 +164,7 @@ export const {
   clientaddstate,
   origanisationid,
   origanisationname,
+  store_id,
 
   editadminuserid,
   patientid,
