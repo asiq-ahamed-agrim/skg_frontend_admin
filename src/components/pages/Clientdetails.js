@@ -133,10 +133,11 @@ function Client(props) {
   }, [dtpageindex, dtpagesize, customerdetails2]);
 
   const handleStore = (organizationId, name) => {
-    console.log(organizationId, "id");
     dispatch(origanisationid(organizationId));
     dispatch(origanisationname(name));
     navigate("/storepage");
+
+    console.log(organizationId, "oioi");
   };
 
   useEffect(() => {

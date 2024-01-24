@@ -7,7 +7,8 @@ const initialState = {
   clientaddstatevalue: "",
   origanisationid: "",
   origanisationname: "",
-  store_id: "",
+  storeid: "",
+  productid: "",
 
   // editadminuser: "",
   editadminuserid: "",
@@ -69,10 +70,13 @@ export const counterSlice = createSlice({
       // debugger
     },
 
-    store_id: (state, action) => {
-      state.store_id = action.payload;
-      console.log(state, "ssss");
-      // debugger;
+    setStoreId: (state, action) => {
+      state.storeid = action.payload;
+      // console.log(state, "ssss");
+    },
+
+    setProductId: (state, action) => {
+      state.productid = action.payload;
     },
 
     ////
@@ -164,7 +168,8 @@ export const {
   clientaddstate,
   origanisationid,
   origanisationname,
-  store_id,
+  setStoreId,
+  setProductId,
 
   editadminuserid,
   patientid,

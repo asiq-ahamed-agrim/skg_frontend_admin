@@ -1,7 +1,7 @@
 import "../style/page/report.scss";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { clientaddstate, store_id } from "../redux/reducer/counterslice";
+import { setStoreId, setProductId } from "../redux/reducer/counterslice";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { StoreDetails, OrgUserDetails } from "../../text/apidata";
 import BasicTable from "../maincomponent/reacttable/table";
@@ -17,7 +17,11 @@ import "react-image-crop/dist/ReactCrop.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import validator from "validator";
-import { CreateProductData, getProductList } from "../../text/apidata";
+import {
+  CreateProductData,
+  getProductList,
+  EditProductData,
+} from "../../text/apidata";
 
 const StorePage = (props) => {
   const Token = {
@@ -36,10 +40,13 @@ const StorePage = (props) => {
   const sideactive = useSelector((state) => state.counter.sidebarnav);
   const orgid = useSelector((state) => state.counter.origanisationid);
   const orgname = useSelector((state) => state.counter.origanisationname);
-  console.log(orgid, "oi", orgname);
+  console.log(orgid, "oid", orgname);
 
-  const sid = useSelector((state) => state.counter.store_id);
+  const sid = useSelector((state) => state.counter.storeid);
   console.log(sid, "siddd");
+
+  const pid = useSelector((state) => state.counter.productid);
+  console.log(pid, "pidd");
 
   const [searchQuery, setSearchQuery] = useState("");
   const [dtpageindex, setdtPageindex] = useState(1);
@@ -48,7 +55,6 @@ const StorePage = (props) => {
   const [datacount2, setdatacount2] = useState();
 
   const [popup, setpopup] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   const [storedetails, setstoredetails] = useState([]);
 
@@ -57,7 +63,7 @@ const StorePage = (props) => {
     email: "",
     c_person: "",
     address: "",
-    store_id: "",
+    store_id: sid,
   });
 
   console.log(editstoredetails, "sted", storedetails);
@@ -67,16 +73,31 @@ const StorePage = (props) => {
 
   // product list
   const [productList, setProductList] = useState([]);
-  console.log(productList, "plpl");
+
+  const [productList2, setProductList2] = useState({
+    name: "",
+    sku: "",
+    desc: "",
+    logo: "",
+    org_id: orgid,
+  });
+
+  console.log(productList, "pppppp", productList2);
   // debugger;
   const [showProductModal, setProductModal] = useState(false);
   const [showProductEditModal, setProductEditModal] = useState(false);
   const [storeEditModal, setstoreEditModal] = useState(false);
 
   const [preurl, setpreurl] = useState();
+  const [preurl2, setpreurl2] = useState();
+
   const [imgfile, setimgfile] = useState();
   const [imgtype, setimgtype] = useState();
   const [url, setUrl] = useState();
+
+  const [url2, setUrl2] = useState();
+
+  console.log(url, "uuuuu", url2);
 
   const [alert, setalert] = useState(false);
   const [file, setFile] = useState([]);
@@ -95,68 +116,12 @@ const StorePage = (props) => {
     logo: "",
     org_id: orgid,
   });
-  console.log(createproduct, "llllll");
+  console.log(createproduct, "prolist");
+
   const [productNameError, setProductNameError] = useState("");
   const [productSkuError, setproductSkuError] = useState("");
   const [productDescError, setproductDescError] = useState("");
   const [customerdetails3, setcustomerdetails3] = useState(false);
-
-  // edit prdouct
-  // const [editproduct, seteditproduct] = useState({
-  //   name: productList.product_name,
-  //   sku: productList.product_sku,
-  //   desc: productList.product_desc,
-  //   logo: productList.product_logo,
-  //   org_id: orgid,
-  // });
-
-  // const [editproduct, seteditproduct] = useState({
-  //   name: productList.product_name,
-  //   sku: "",
-  //   desc: "",
-  //   logo: "",
-  //   org_id: orgid,
-  // });
-
-  // useEffect(() => {
-  //   console.log("eded:", editproduct);
-  //   seteditproduct({
-  //     name: editproduct.product_name,
-  //     sku: editproduct.sku,
-  //     desc: editproduct.desc,
-  //     logo: editproduct.logo,
-  //     org_id: editproduct.org_id,
-  //   });
-  // }, []);
-
-  const selectedProductId = productList[0]?.product_id;
-
-  const [editproduct, seteditproduct] = useState({
-    name: productList[0]?.product_name,
-    sku: productList[0]?.product_sku,
-    desc: productList[0]?.product_desc,
-    logo: productList[0]?.product_logo,
-    org_id: selectedProductId,
-  });
-
-  console.log(
-    "editproduct:",
-    // editproduct,
-    // productList[0]?.product_id
-    selectedProductId
-  );
-
-  useEffect(() => {
-    seteditproduct({
-      name: productList[0]?.product_name || "",
-      sku: productList[0]?.product_sku || "",
-      desc: productList[0]?.product_desc || "",
-      // logo: productList[0]?.product_logo || "",
-      org_id: selectedProductId,
-    });
-  }, [productList, orgid, selectedProductId]);
-
-  // console.log("updated editproduct:", editproduct);
 
   // get api store details
   useEffect(() => {
@@ -187,6 +152,17 @@ const StorePage = (props) => {
         props.loaderchange("false");
       });
   }, []);
+
+  // store edit function
+  const handleStoreEdit = (storeID) => {
+    setstoreEditModal(true);
+    dispatch(setStoreId(storeID));
+    console.log(storeID, "sisi");
+  };
+
+  const handleStoreEditCloseModal = () => {
+    setstoreEditModal(false);
+  };
 
   // org_user
   useEffect(() => {
@@ -248,13 +224,6 @@ const StorePage = (props) => {
 
   const pageindex = (arg) => {
     setdtPageindex(arg);
-  };
-
-  const handleSubmit = () => {
-    setShowModal(true);
-  };
-  const handleCloseModal = () => {
-    setShowModal(false);
   };
 
   const columns = useMemo(
@@ -329,6 +298,7 @@ const StorePage = (props) => {
     setProductModal(true);
     // dispatch(clientaddstate("ClientCreate"));
   };
+
   const handleProductCloseModal = () => {
     setProductModal(false);
   };
@@ -341,10 +311,25 @@ const StorePage = (props) => {
     setalert(true);
   };
 
+  const handleFiles2 = (e) => {
+    selectedImage(e);
+    setCroppImageViewCount(2);
+    setCroppImageView(true);
+    setalert(true);
+  };
+
   const cancel = (e) => {
     setUrl("");
     setcreateproduct({
       ...createproduct,
+      logo: "",
+    });
+  };
+
+  const cancel2 = (e) => {
+    setUrl2("");
+    setProductList2({
+      ...productList2,
       logo: "",
     });
   };
@@ -433,7 +418,7 @@ const StorePage = (props) => {
           };
 
           setTimeout(() => {
-            console.log(presignedurl, "preurl");
+            console.log(presignedurl, "prseurl");
 
             axios({
               method: "post",
@@ -458,7 +443,62 @@ const StorePage = (props) => {
                 console.log(error);
               });
           }, 500);
+        } else {
+          setFile((oldArray) => [
+            ...oldArray,
+            String(URL.createObjectURL(croppedFile)),
+          ]);
+          // setimgfile((oldArray) => [...oldArray, croppedFile]);
+          // setimgtype((oldArray) => [...oldArray, croppedFile.type]);
+          console.log(croppedFile);
+          setimgfile(croppedFile);
+          setimgtype(croppedFile.type);
+          var file = croppedFile;
+          var reader = new FileReader();
+          reader.onloadend = function () {
+            setUrl2(reader.result);
+          };
+          reader.readAsDataURL(file);
+
+          var val = Math.floor(1000 + Math.random() * 9000);
+          var url = {
+            ["filename"]:
+              "test" +
+              "/" +
+              String(val) +
+              String(croppedFile.name).replace(/ +/g, ""),
+            // ["file_type"]: e.target.files[0].type,
+            ["file_type"]: croppedFile.type,
+          };
+
+          setTimeout(() => {
+            console.log(presignedurl, "preusrl");
+
+            axios({
+              method: "post",
+              url: presignedurl,
+              data: url,
+              headers: {
+                Authorization: localStorage.getItem("token"),
+              },
+            })
+              .then((res) => {
+                console.log(res.data.data.data.url, "purl");
+                setpreurl2(res.data.data.data.url)
+                setProductList2({
+                  ...productList2,
+                  logo: res.data.data.data.url.split("?")[0],
+                });
+
+                console.log(res.data.data.data.url.split("?")[0], "spliturl");
+              })
+              .catch((error) => {
+                debugger;
+                console.log(error);
+              });
+          }, 500);
         }
+
         blob.name = fileName;
         setCroppImageView(false);
         let fileUrl = window.URL.createObjectURL(blob);
@@ -470,7 +510,7 @@ const StorePage = (props) => {
   }
 
   const setCompletedCrop = async (c) => {
-    console.log(c);
+    console.log(c, "cccc");
     const url = await getCroppedImg(imgRef.current, c, "newfile.jpeg");
   };
 
@@ -483,7 +523,7 @@ const StorePage = (props) => {
     }
   };
 
-  // product validation
+  // create product validation
   const validateProductName = (e) => {
     const productname = e.target.value;
 
@@ -526,6 +566,52 @@ const StorePage = (props) => {
     setcreateproduct((prevState) => ({
       ...prevState,
       desc: productdesc,
+    }));
+  };
+
+  // edit product validation
+  const validateEditProductName = (e) => {
+    const editproductname = e.target.value;
+
+    if (validator.isEmpty(editproductname.trim())) {
+      setProductNameError("*Product Name cannot be empty!");
+    } else {
+      setProductNameError("");
+    }
+
+    setProductList2((prevProductList) => ({
+      ...prevProductList,
+      name: editproductname,
+    }));
+  };
+
+  const validateEditProductSku = (e) => {
+    const editproductsku = e.target.value;
+
+    if (validator.isEmpty(editproductsku.trim())) {
+      setproductSkuError("*SKU cannot be empty!");
+    } else {
+      setproductSkuError("");
+    }
+
+    setProductList2((prevProductList) => ({
+      ...prevProductList,
+      sku: editproductsku,
+    }));
+  };
+
+  const validateEditProductDesc = (e) => {
+    const editproductdesc = e.target.value;
+
+    if (validator.isEmpty(editproductdesc.trim())) {
+      setproductDescError("*Description cannot be empty!");
+    } else {
+      setproductDescError("");
+    }
+
+    setProductList2((prevProductList) => ({
+      ...prevProductList,
+      desc: editproductdesc,
     }));
   };
 
@@ -615,7 +701,13 @@ const StorePage = (props) => {
               <button
                 className="action-btn"
                 style={{ border: "none", background: "none" }}
-                onClick={() => handleProductEdit(row)}
+                onClick={(e) =>
+                  handleProductEdit(
+                    row.row.original.product_id,
+                    row.row.original,
+                    e
+                  )
+                }
               >
                 <EditIcon />
               </button>
@@ -702,7 +794,6 @@ const StorePage = (props) => {
         if (res.data.data.data != undefined && res.data.data.data != "") {
           setProductList(res.data.data.data);
         }
-        // setProductList(res.data.data.data);
         setdatacount2(res.data.data.pagination.total);
         props.loaderchange("false");
         setcustomerdetails3(false);
@@ -716,18 +807,75 @@ const StorePage = (props) => {
       });
   }, [dtpageindex, dtpagesize, customerdetails3]);
 
-  // store edit function
-  const handleStoreEdit = () => {
-    setstoreEditModal(true);
-  };
-  const handleStoreEditCloseModal = () => {
-    setstoreEditModal(false);
+  // product edit function
+  const handleProductEdit = (e, item) => {
+    setProductEditModal(true);
+    dispatch(setProductId(e));
+    setUrl2(item.product_logo);
+    console.log(item, "iittt");
+    setProductList2({
+      ...productList2,
+      name: item.product_name,
+      sku: item.product_sku,
+      desc: item.product_desc,
+      logo: item.product_logo,
+      org_id: orgid,
+    });
   };
 
-  // product edit function
-  const handleProductEdit = () => {
-    setProductEditModal(true);
+  const handleProductUpdate = () => {
+    // if (
+    //   createproduct.name != "" &&
+    //   createproduct.sku != "" &&
+    //   createproduct.desc != "" &&
+    //   createproduct.logo != ""
+    // ) {
+    props.loaderchange("true");
+    async function uploadimage() {
+      console.log(productList2, "ededed");
+
+      if (preurl2 && preurl2.length > 0) {
+        const resp = await fetch(preurl2, {
+          method: "PUT",
+          body: imgfile,
+          headers: {
+            "Content-Type": imgtype,
+            "X-Amz-ACL": "public-read",
+          },
+        }).catch((err) => {
+          console.log(err);
+          return null;
+        });
+      }
+      axios({
+        method: "put",
+        url: EditProductData + pid,
+        data: productList2,
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        .then((res) => {
+          console.log(res, "produpd");
+          debugger;
+
+          props.loaderchange("false");
+          toast.success("Product Updated Successfully");
+
+          setProductEditModal(false);
+          setcustomerdetails3(true);
+        })
+        .catch((error) => {
+          console.log(error, "err2");
+          debugger;
+          props.loaderchange("false");
+          // toast.error("Organization Name Already Exists");
+        });
+    }
+    uploadimage();
+    // }
   };
+
   const handleProductEditCloseModal = () => {
     setProductEditModal(false);
   };
@@ -865,7 +1013,7 @@ const StorePage = (props) => {
                         </div>
                         <div
                           className="store-action"
-                          onClick={() => handleStoreEdit()}
+                          onClick={() => handleStoreEdit(store.store_id)}
                         >
                           <button className="action-btn">
                             <EditIcon />
@@ -1267,12 +1415,6 @@ const StorePage = (props) => {
                                           </p>
                                         )}
 
-                                        {/* <ReactFileReader
-                                      fileTypes={[".png", ".jpg"]}
-                                      base64={"true"}
-                                      handleFiles={handleFiles}
-                                    > */}
-
                                         {!url ? (
                                           <Button
                                             className="doctorupload"
@@ -1295,7 +1437,6 @@ const StorePage = (props) => {
                                           <></>
                                         )}
 
-                                        {/* </ReactFileReader> */}
                                         {url ? (
                                           <Button
                                             className="remove"
@@ -1375,7 +1516,9 @@ const StorePage = (props) => {
                               <form
                                 name="add_name"
                                 id="add_name"
-                                onSubmit={handleProductEdit}
+                                onSubmit={(e) => {
+                                  e.preventDefault();
+                                }}
                               >
                                 <div className="modal2-email-wrap">
                                   <div className="row mb-2">
@@ -1393,24 +1536,17 @@ const StorePage = (props) => {
                                         className="form-control"
                                         placeholder="Name"
                                         class="form-control name_list"
-                                        value={editproduct.name}
+                                        value={productList2.name}
                                         onChange={(e) =>
-                                          seteditproduct({
-                                            ...editproduct,
-                                            name: e.target.value,
-                                          })
+                                          validateEditProductName(e)
                                         }
-                                        // onChange={(e) => validateOrganizationName(e)}
                                       />
 
-                                      {/* <div
-                                  className={`${
-                                    organizationNameError ? "show" : "hide"
-                                  }`}
-                                  style={{ color: "red" }}
-                                >
-                                  &nbsp; Organization Name required!
-                                </div> */}
+                                      {productNameError && (
+                                        <div style={{ color: "red" }}>
+                                          {productNameError}
+                                        </div>
+                                      )}
                                     </div>
                                     <div
                                       className="col-4"
@@ -1426,21 +1562,16 @@ const StorePage = (props) => {
                                         className="form-control"
                                         placeholder="SKU"
                                         class="form-control name_email"
-                                        value={editproduct.sku}
+                                        value={productList2.sku}
                                         onChange={(e) =>
-                                          seteditproduct({
-                                            ...editproduct,
-                                            sku: e.target.value,
-                                          })
+                                          validateEditProductSku(e)
                                         }
-                                        // onChange={(e) => validateDomain(e)}
                                       />
-                                      {/* <div
-                                  className={`${domainError ? "show" : "hide"}`}
-                                  style={{ color: "red" }}
-                                >
-                                  &nbsp; Domain required!
-                                </div> */}
+                                      {productSkuError && (
+                                        <div style={{ color: "red" }}>
+                                          {productSkuError}
+                                        </div>
+                                      )}
                                     </div>
 
                                     <div
@@ -1461,21 +1592,16 @@ const StorePage = (props) => {
                                           height: "0px",
                                           padding: "5px",
                                         }}
-                                        value={editproduct.desc}
+                                        value={productList2.desc}
                                         onChange={(e) =>
-                                          seteditproduct({
-                                            ...editproduct,
-                                            desc: e.target.value,
-                                          })
+                                          validateEditProductDesc(e)
                                         }
-                                        // onChange={(e) => validateProductDesc(e)}
                                       />
-                                      {/* <div
-                                  className={`${codeError ? "show" : "hide"}`}
-                                  style={{ color: "red" }}
-                                >
-                                  &nbsp; Code required!
-                                </div> */}
+                                      {productDescError && (
+                                        <div style={{ color: "red" }}>
+                                          {productDescError}
+                                        </div>
+                                      )}
                                     </div>
 
                                     {/* file upload */}
@@ -1487,9 +1613,9 @@ const StorePage = (props) => {
                                       }}
                                     >
                                       <>
-                                        {url ? (
+                                        {url2 ? (
                                           <img
-                                            src={url}
+                                            src={url2}
                                             onClick={(e) => {
                                               window.open(url);
                                             }}
@@ -1501,7 +1627,7 @@ const StorePage = (props) => {
                                               borderRadius: "50%",
                                               marginTop: "-20px",
                                             }}
-                                            alt="Image"
+                                            alt="Imagel"
                                           />
                                         ) : (
                                           <p
@@ -1515,13 +1641,7 @@ const StorePage = (props) => {
                                           </p>
                                         )}
 
-                                        {/* <ReactFileReader
-                                      fileTypes={[".png", ".jpg"]}
-                                      base64={"true"}
-                                      handleFiles={handleFiles}
-                                    > */}
-
-                                        {!url ? (
+                                        {!url2 ? (
                                           <Button
                                             className="doctorupload"
                                             variant="contained"
@@ -1534,7 +1654,9 @@ const StorePage = (props) => {
                                                 type="file"
                                                 hidden
                                                 accept="image/png, image/jpeg"
-                                                onChange={(e) => handleFiles(e)}
+                                                onChange={(e) =>
+                                                  handleFiles2(e)
+                                                }
                                                 style={{ cursor: "pointer" }}
                                               />
                                             </p>
@@ -1543,12 +1665,11 @@ const StorePage = (props) => {
                                           <></>
                                         )}
 
-                                        {/* </ReactFileReader> */}
-                                        {url ? (
+                                        {url2 ? (
                                           <Button
                                             className="remove"
                                             variant="contained"
-                                            onClick={(e) => cancel(e)}
+                                            onClick={(e) => cancel2(e)}
                                           >
                                             {" "}
                                             <p>Remove Image</p>
@@ -1569,7 +1690,7 @@ const StorePage = (props) => {
                                 name="submit"
                                 id="Save"
                                 value="Update"
-                                // onClick={handleSave}
+                                onClick={handleProductUpdate}
                               ></input>
                             </div>
                           </div>
