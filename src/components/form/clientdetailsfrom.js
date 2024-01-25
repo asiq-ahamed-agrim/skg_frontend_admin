@@ -36,7 +36,7 @@ const ClientDetailsForm = (props) => {
     org_admin: "",
   });
 
-  console.log("mmm", clientdata.store_info[0]?.org_admin);
+  console.log(clientdata.con_email, "mmm", clientdata.org_admin);
 
   // validtion state
   const [organizationNameError, setOrganizationNameError] = useState(false);
@@ -50,6 +50,7 @@ const ClientDetailsForm = (props) => {
   const [customerEmailError, setCustomerEmailError] = useState(false);
 
   const [orgAdminEmailError, setOrgAdminEmailError] = useState(false);
+
   // const [orgemail, setorgemail] = useState({
   //   org_admin: ""
   // })
@@ -314,6 +315,7 @@ const ClientDetailsForm = (props) => {
     setclientdata({
       ...clientdata,
       [name]: value,
+      org_admin: value,
     });
     if (validator.isEmpty(email)) {
       setCustomerEmailError("Email Cannot be empty!");
@@ -348,7 +350,7 @@ const ClientDetailsForm = (props) => {
           ...clientdata.store_info,
           {
             store_name: "",
-            org_admin: "",
+            store_email: "",
             store_address: "",
             store_cp: "",
           },
@@ -543,7 +545,6 @@ const ClientDetailsForm = (props) => {
   };
 
   // const handleSubmit = () => {
-  //   debugger;
   //   if (
   //     clientdata.org_name != "" &&
   //     clientdata.org_domain != "" &&
@@ -580,15 +581,12 @@ const ClientDetailsForm = (props) => {
   // };
 
   const handleSave = () => {
-    debugger;
-    // if (clientdata.org_admin != "") {
     if (
       clientdata.org_name != "" &&
       clientdata.org_domain != "" &&
       clientdata.org_key != "" &&
       clientdata.store_info[0].store_name != "" &&
-      // clientdata.store_info[0]?.org_admin != "" &&
-      clientdata.org_admin != "" &&
+      clientdata.store_info[0].store_email != "" &&
       clientdata.con_name != "" &&
       clientdata.con_email != ""
     ) {
@@ -636,11 +634,6 @@ const ClientDetailsForm = (props) => {
           });
       }
       uploadimage();
-      // } else {
-      //   if (clientdata.org_admin == "") {
-      //     setOrgAdminEmailError("Email cannot be empty!");
-      //   }
-      // }
     } else {
       if (clientdata.org_name == "") {
         setOrganizationNameError("Organization Name cannot be empty!");
@@ -654,8 +647,7 @@ const ClientDetailsForm = (props) => {
       if (clientdata.store_info[0].store_name == "") {
         setStoreNameError("Store Name cannot be empty!");
       }
-      // if (clientdata.store_info[0]?.org_admin == "") {
-      if (clientdata.org_admin == "") {
+      if (clientdata.store_info[0].store_email == "") {
         setStoreMailError("Email cannot be empty!");
       }
       if (clientdata.con_name == "") {
@@ -712,6 +704,33 @@ const ClientDetailsForm = (props) => {
                             <div className="row mb-2">
                               <div className="col-3">
                                 <label>
+                                  Domain <span style={{ color: "red" }}>*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  name="org_domain"
+                                  className="form-control"
+                                  placeholder="Domain"
+                                  class="form-control name_email"
+                                  value={clientdata.org_domain}
+                                  // onChange={(e) => {
+                                  //   setclientdata({
+                                  //     ...clientdata,
+                                  //     org_domain: e.target.value,
+                                  //   });
+                                  // }}
+                                  onChange={(e) => validateDomain(e)}
+                                />
+                                <div
+                                  className={`${domainError ? "show" : "hide"}`}
+                                  style={{ color: "red" }}
+                                >
+                                  &nbsp; Domain required!
+                                </div>
+                              </div>
+
+                              <div className="col-3">
+                                <label>
                                   Name <span style={{ color: "red" }}>*</span>
                                 </label>
                                 <input
@@ -737,32 +756,6 @@ const ClientDetailsForm = (props) => {
                                   style={{ color: "red" }}
                                 >
                                   &nbsp; Organization Name required!
-                                </div>
-                              </div>
-                              <div className="col-3">
-                                <label>
-                                  Domain <span style={{ color: "red" }}>*</span>
-                                </label>
-                                <input
-                                  type="text"
-                                  name="org_domain"
-                                  className="form-control"
-                                  placeholder="Domain"
-                                  class="form-control name_email"
-                                  value={clientdata.org_domain}
-                                  // onChange={(e) => {
-                                  //   setclientdata({
-                                  //     ...clientdata,
-                                  //     org_domain: e.target.value,
-                                  //   });
-                                  // }}
-                                  onChange={(e) => validateDomain(e)}
-                                />
-                                <div
-                                  className={`${domainError ? "show" : "hide"}`}
-                                  style={{ color: "red" }}
-                                >
-                                  &nbsp; Domain required!
                                 </div>
                               </div>
 
@@ -854,11 +847,11 @@ const ClientDetailsForm = (props) => {
                                       </label>
                                       <input
                                         type="email"
-                                        name="org_admin"
+                                        name="store_email"
                                         className="form-control"
                                         placeholder="Email"
                                         class="form-control name_email"
-                                        value={ele.org_admin}
+                                        value={ele.store_email}
                                         // onChange={(e) => changedata(e, index)}
                                         onChange={(e) =>
                                           validateStoreEmail(e, index)
@@ -978,12 +971,6 @@ const ClientDetailsForm = (props) => {
                                   placeholder="Name"
                                   class="form-control name_list"
                                   value={clientdata.con_name}
-                                  // onChange={(e) => {
-                                  //   setclientdata({
-                                  //     ...clientdata,
-                                  //     con_name: e.target.value,
-                                  //   });
-                                  // }}
                                   onChange={(e) => validateCustomerName(e)}
                                 />
                                 <div
@@ -1006,12 +993,6 @@ const ClientDetailsForm = (props) => {
                                   placeholder="Email"
                                   class="form-control name_email"
                                   value={clientdata.con_email}
-                                  // onChange={(e) => {
-                                  //   setclientdata({
-                                  //     ...clientdata,
-                                  //     con_email: e.target.value,
-                                  //   });
-                                  // }}
                                   onChange={(e) => validateEmail(e)}
                                 />
                                 <div

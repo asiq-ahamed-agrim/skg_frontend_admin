@@ -49,24 +49,6 @@ function Client(props) {
   const clientstate = useSelector((state) => state.counter.clientaddstatevalue);
   console.log(clientstate);
 
-  // const handleCopyClick = (text) => {
-  //   if (navigator.clipboard && navigator.clipboard.writeText) {
-  //     navigator.clipboard
-  //       .writeText(text)
-  //       .then(() => {
-  //         debugger;
-  //         console.log("Text successfully copied to clipboard");
-  //       })
-  //       .catch((err) => {
-  //         debugger;
-  //         console.error("Unable to copy text to clipboard", err);
-  //       });
-  //   } else {
-  //     // Handle the case where clipboard API is not available
-  //     console.error("Clipboard API not supported");
-  //   }
-  // };
-
   const handleCopyClick = (text) => {
     if (navigator.clipboard) {
       navigator.clipboard

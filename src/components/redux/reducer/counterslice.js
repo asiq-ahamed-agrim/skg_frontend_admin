@@ -67,7 +67,6 @@ export const counterSlice = createSlice({
     origanisationname: (state, action) => {
       state.origanisationname = action.payload;
       // console.log(state,"oooo")
-      // debugger
     },
 
     setStoreId: (state, action) => {

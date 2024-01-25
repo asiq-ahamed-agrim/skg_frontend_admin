@@ -83,7 +83,6 @@ const StorePage = (props) => {
   });
 
   console.log(productList, "pppppp", productList2);
-  // debugger;
   const [showProductModal, setProductModal] = useState(false);
   const [showProductEditModal, setProductEditModal] = useState(false);
   const [storeEditModal, setstoreEditModal] = useState(false);
@@ -123,6 +122,37 @@ const StorePage = (props) => {
   const [productDescError, setproductDescError] = useState("");
   const [customerdetails3, setcustomerdetails3] = useState(false);
 
+  // org_user
+  useEffect(() => {
+    props.loaderchange("true");
+
+    axios({
+      method: "get",
+      url: OrgUserDetails + orgid,
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+      params: {
+        page: dtpageindex,
+        page_size: dtpagesize,
+        search: searchQuery,
+        // is_active:isactivefilterdata
+      },
+    })
+      .then((res) => {
+        console.log(res.data.data, "orgdata");
+        if (res.data.data.data != undefined && res.data.data.data != "") {
+          setorguserdata(res.data.data.data);
+        }
+        setdatacount(res.data.data.pagination.total);
+        props.loaderchange("false");
+      })
+      .catch((error) => {
+        console.log(error, "error");
+        props.loaderchange("false");
+      });
+  }, [dtpageindex, dtpagesize]);
+
   // get api store details
   useEffect(() => {
     props.loaderchange("true");
@@ -136,7 +166,9 @@ const StorePage = (props) => {
     })
       .then((res) => {
         console.log(res.data, "storedata");
-        setstoredetails(res.data.data);
+        if (res.data.data != undefined && res.data.data != "") {
+          setstoredetails(res.data.data);
+        }
         // Set initial state for editstoredetails
         seteditstoredetails(res.data.data);
 
@@ -163,35 +195,6 @@ const StorePage = (props) => {
   const handleStoreEditCloseModal = () => {
     setstoreEditModal(false);
   };
-
-  // org_user
-  useEffect(() => {
-    props.loaderchange("true");
-
-    axios({
-      method: "get",
-      url: OrgUserDetails + orgid,
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
-      params: {
-        page: dtpageindex,
-        page_size: dtpagesize,
-        search: searchQuery,
-        // is_active:isactivefilterdata
-      },
-    })
-      .then((res) => {
-        console.log(res.data.data, "orgdata");
-        setorguserdata(res.data.data.data);
-        setdatacount(res.data.data.pagination.total);
-        props.loaderchange("false");
-      })
-      .catch((error) => {
-        console.log(error, "error");
-        props.loaderchange("false");
-      });
-  }, [dtpageindex, dtpagesize]);
 
   useEffect(() => {
     if (popup == false) {
@@ -439,7 +442,6 @@ const StorePage = (props) => {
                 console.log(res.data.data.data.url.split("?")[0], "spliturl");
               })
               .catch((error) => {
-                debugger;
                 console.log(error);
               });
           }, 500);
@@ -484,7 +486,7 @@ const StorePage = (props) => {
             })
               .then((res) => {
                 console.log(res.data.data.data.url, "purl");
-                setpreurl2(res.data.data.data.url)
+                setpreurl2(res.data.data.data.url);
                 setProductList2({
                   ...productList2,
                   logo: res.data.data.data.url.split("?")[0],
@@ -493,7 +495,6 @@ const StorePage = (props) => {
                 console.log(res.data.data.data.url.split("?")[0], "spliturl");
               })
               .catch((error) => {
-                debugger;
                 console.log(error);
               });
           }, 500);
@@ -763,7 +764,6 @@ const StorePage = (props) => {
           })
           .catch((error) => {
             console.log(error, "err2");
-            // debugger;
             props.loaderchange("false");
             // toast.error("Organization Name Already Exists");
           });
@@ -857,7 +857,6 @@ const StorePage = (props) => {
       })
         .then((res) => {
           console.log(res, "produpd");
-          debugger;
 
           props.loaderchange("false");
           toast.success("Product Updated Successfully");
@@ -867,7 +866,6 @@ const StorePage = (props) => {
         })
         .catch((error) => {
           console.log(error, "err2");
-          debugger;
           props.loaderchange("false");
           // toast.error("Organization Name Already Exists");
         });
