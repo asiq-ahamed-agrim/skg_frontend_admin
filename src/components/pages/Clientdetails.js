@@ -112,7 +112,11 @@ function Client(props) {
         // }, 2000);
         props.loaderchange("false");
       });
-  }, [dtpageindex, dtpagesize, customerdetails2]);
+  }, [dtpageindex, dtpagesize, customerdetails2, searchQuery]);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
   const handleStore = (organizationId, name) => {
     dispatch(origanisationid(organizationId));
@@ -227,9 +231,9 @@ function Client(props) {
     });
   });
 
-  const capitalizeFirstLetter = (word) => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  };
+  // const capitalizeFirstLetter = (word) => {
+  //   return word.charAt(0).toUpperCase() + word.slice(1);
+  // };
 
   const columns = useMemo(
     () => [
@@ -286,7 +290,6 @@ function Client(props) {
       {
         Header: "Subdomain",
         accessor: "",
-
         Cell: (row) => {
           return (
             <>
@@ -321,7 +324,6 @@ function Client(props) {
       {
         Header: "Contact Person",
         accessor: "",
-
         Cell: (row) => {
           return (
             <>
@@ -456,13 +458,14 @@ function Client(props) {
                           e.preventDefault();
                         }
                       }}
-                      onInput={(e) => {
-                        if (e.target.value.length <= "100") {
-                          setSearchQuery(e.target.value);
-                        } else {
-                          e.preventDefault();
-                        }
-                      }}
+                      // onInput={(e) => {
+                      //   if (e.target.value.length <= "100") {
+                      //     setSearchQuery(e.target.value);
+                      //   } else {
+                      //     e.preventDefault();
+                      //   }
+                      // }}
+                      onChange={handleSearch}
                       // onKeyDown={(e)=>{if(e.which=="32"){
                       //   e.preventDefault()
                       // }}}
