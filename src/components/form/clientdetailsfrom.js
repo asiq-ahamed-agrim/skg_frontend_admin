@@ -74,6 +74,9 @@ const ClientDetailsForm = (props) => {
     featured_product: false,
     is_active: false,
   });
+
+  
+
   const [imgsrc, setImgsrc] = useState();
   const imgRef = useRef(null);
   const [crop, setCrop] = useState();
