@@ -2,7 +2,7 @@
 const baseurl = "https://user.agrim.no/";
 // const productbaseurl = "http://192.168.1.28:8005";
 
-const productbaseurl = "https://product.agrim.no/";
+const productbaseurl = "https://product.agrim.no";
 
 export const loginapi = baseurl + "/adminlogin/";
 
