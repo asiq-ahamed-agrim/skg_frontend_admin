@@ -1,6 +1,8 @@
 // const baseurl = "http://192.168.1.28:8005";
 const baseurl = "https://user.agrim.no/";
-const productbaseurl = "http://192.168.1.28:8005";
+// const productbaseurl = "http://192.168.1.28:8005";
+
+const productbaseurl = "https://product.agrim.no/";
 
 export const loginapi = baseurl + "/adminlogin/";
 
@@ -164,37 +166,12 @@ export const StoreDetails = baseurl + "/get_org_stores";
 
 export const OrgUserDetails = baseurl + "/get_org_users/";
 
-
 // product
 export const CreateProductData = productbaseurl + "/create_product";
-export const EditProductData = productbaseurl +"/update_products/";
 
-
+export const EditProductData = productbaseurl + "/update_products/";
 
 export const getProductList = productbaseurl + "/get_products/";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
