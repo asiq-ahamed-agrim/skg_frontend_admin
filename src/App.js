@@ -22,6 +22,8 @@ import { useNavigate } from "react-router-dom";
 import Client from "./components/pages/Clientdetails";
 import { ToastContainer } from "react-toastify";
 import StorePage from "./components/pages/StorePage";
+import YourOrder from "./components/pages/YourOrder";
+import YourOrderItem from "./components/pages/YourOrderItem";
 
 function App(props) {
   // useEffect(() => {
@@ -168,6 +170,28 @@ function App(props) {
                   />
                 }
                 path="/storepage"
+              ></Route>
+
+              <Route
+                element={
+                  <YourOrder
+                    loaderchange={loaderchange}
+                    popupalert={popupalert}
+                    popuptext={popuptext}
+                  />
+                }
+                path="/yourorders"
+              ></Route>
+
+              <Route
+                element={
+                  <YourOrderItem
+                    loaderchange={loaderchange}
+                    popupalert={popupalert}
+                    popuptext={popuptext}
+                  />
+                }
+                path="/yourorderitem"
               ></Route>
 
               <>

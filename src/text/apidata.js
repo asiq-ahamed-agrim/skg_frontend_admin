@@ -173,6 +173,9 @@ export const EditProductData = productbaseurl + "/update_products/";
 
 export const getProductList = productbaseurl + "/get_products/";
 
+export const getYourOrdersList = productbaseurl + "/get_all_order";
+
+export const getYourOrdersItem = productbaseurl + "/get_order_items/";
 
 
 

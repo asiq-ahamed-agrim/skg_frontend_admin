@@ -6,7 +6,11 @@ import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import { useSelector, useDispatch } from "react-redux";
-import { sidenav,productorderid,productorder } from "../redux/reducer/counterslice";
+import {
+  sidenav,
+  productorderid,
+  productorder,
+} from "../redux/reducer/counterslice";
 import { sidebar, dvtabs } from "../redux/reducer/counterslice";
 import $ from "jquery";
 import SickIcon from "@mui/icons-material/Sick";
@@ -20,9 +24,8 @@ import ReportIcon from "@mui/icons-material/Report";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
-import BusinessIcon from '@mui/icons-material/Business';
-import StoreIcon from '@mui/icons-material/Store';
-
+import BusinessIcon from "@mui/icons-material/Business";
+import StoreIcon from "@mui/icons-material/Store";
 
 function SideBar() {
   var list = [];
@@ -77,10 +80,17 @@ function SideBar() {
     {
       name: "ClientDetails",
       link: "/",
-      icon: (
-        <StoreIcon style={{ padding: "10px", fontSize: "46px" }} />
-      ),
+      icon: <StoreIcon style={{ padding: "10px", fontSize: "46px" }} />,
       text: "Org Management",
+      class:
+        "doctorsidebar" +
+        `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
+    },
+    {
+      name: "OrderDetails",
+      link: "/yourorders",
+      icon: <StoreIcon style={{ padding: "10px", fontSize: "46px" }} />,
+      text: "Order Details",
       class:
         "doctorsidebar" +
         `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
@@ -533,6 +543,8 @@ function SideBar() {
     tabsstate(dvtabs("About"));
   };
 
+  console.log(navData[1], "sisis");
+
   const hoverstate = (e) => {
     if (!sideactive) {
       // console.log(e);
@@ -541,12 +553,14 @@ function SideBar() {
       $(".arrow").css("display", "block");
     }
     navData[0] != undefined &&
-      navData[0] != "" &&navData[0].subMenus!=undefined &&
+      navData[0] != "" &&
+      navData[0].subMenus != undefined &&
       navData[0].subMenus.map((e) => {
         list.push(e.text);
       });
     navData[1] != undefined &&
       navData[1] != "" &&
+      navData[1].subMenus != undefined &&
       navData[1].subMenus.map((e) => {
         list2.push(e.text);
       });
@@ -565,7 +579,7 @@ function SideBar() {
       navData[4].subMenus.map((e) => {
         list5.push(e.text);
       });
-      console.log(navData,list,list2);
+    console.log(navData, list, list2);
 
     if (list.includes(sidebarstate)) {
       setexpand(0);
@@ -579,6 +593,7 @@ function SideBar() {
       setexpand(4);
     }
   };
+
   const hoverleave = (e) => {
     if (!sideactive) {
       // console.log(e);
@@ -595,14 +610,16 @@ function SideBar() {
   }, [sideactive]);
   useEffect(() => {
     if (sideactive) {
-      console.log(navData,sideactive,list);
+      console.log(navData, sideactive, list);
       navData[0] != undefined &&
-        navData[0] != "" && navData[0].subMenus!=undefined && 
+        navData[0] != "" &&
+        navData[0].subMenus != undefined &&
         navData[0].subMenus.map((e) => {
           list.push(e.text);
         });
       navData[1] != undefined &&
         navData[1] != "" &&
+        navData[1].subMenus != undefined &&
         navData[1].subMenus.map((e) => {
           list2.push(e.text);
         });
@@ -621,7 +638,7 @@ function SideBar() {
         navData[4].subMenus.map((e) => {
           list5.push(e.text);
         });
-        console.log(navData,list,list2);
+      console.log(navData, list, list2);
 
       if (list.includes(sidebarstate)) {
         setexpand(0);

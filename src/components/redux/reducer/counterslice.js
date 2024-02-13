@@ -32,6 +32,9 @@ const initialState = {
   Pharmacylistissueid: "",
   videobannerstate: "",
   userdata: "",
+
+  orderid: "",
+  ordername: "",
 };
 export const counterSlice = createSlice({
   name: "counterSlice",
@@ -156,6 +159,17 @@ export const counterSlice = createSlice({
     userdata: (state, action) => {
       state.userdata = action.payload;
     },
+
+
+    orderid: (state, action) => {
+      state.orderid = action.payload;
+      // console.log(state.edituser,"kdsjh")
+    },
+
+    ordername: (state, action) => {
+      state.ordername = action.payload;
+      // console.log(state,"oooo")
+    },
   },
 });
 
@@ -190,6 +204,11 @@ export const {
   Pharmacylistissueid,
   videobannerstate,
   userdata,
+
+  orderid,
+  ordername,
+
+  
 } = counterSlice.actions;
 
 export default counterSlice.reducer;
