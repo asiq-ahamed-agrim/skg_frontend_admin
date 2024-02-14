@@ -21,15 +21,19 @@ const YourOrderItem = (props) => {
 
   const [yourOrdersItem, setYourOrderItem] = useState([]);
 
+
+  const orderitemid = useSelector((state) => state.counter.orderid);
+
+
   // your orders details
   useEffect(() => {
     props.loaderchange("true");
 
-    console.log(orderid, "oooiii");
+    console.log(orderitemid, "oooiii");
 
     axios({
       method: "get",
-      url: getYourOrdersItem + orderid,
+      url: getYourOrdersItem + orderitemid,
       headers: {
         Authorization: localStorage.getItem("token"),
       },
@@ -41,9 +45,9 @@ const YourOrderItem = (props) => {
       },
     })
       .then((res) => {
-        setYourOrderItem(res.data.data.data);
+        setYourOrderItem(res.data.data);
         console.log(res.data, "cdres");
-        setdatacount(res.data.data.pagination.total);
+        // setdatacount(res.data.data.pagination.total);
         props.loaderchange("false");
       })
       .catch((error) => {

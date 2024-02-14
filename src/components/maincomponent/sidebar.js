@@ -26,6 +26,7 @@ import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
 import BusinessIcon from "@mui/icons-material/Business";
 import StoreIcon from "@mui/icons-material/Store";
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
 function SideBar() {
   var list = [];
@@ -84,16 +85,16 @@ function SideBar() {
       text: "Org Management",
       class:
         "doctorsidebar" +
-        `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
+        `${sidebarstate == "Org Management" ? " activesidemenu" : ""}`,
     },
     {
       name: "OrderDetails",
       link: "/yourorders",
-      icon: <StoreIcon style={{ padding: "10px", fontSize: "46px" }} />,
+      icon: <ShoppingCartCheckoutIcon style={{ padding: "10px", fontSize: "46px" }} />,
       text: "Order Details",
       class:
         "doctorsidebar" +
-        `${sidebarstate == "Client Details" ? " activesidemenu" : ""}`,
+        `${sidebarstate == "Order Details" ? " activesidemenu" : ""}`,
     },
 
     //  {
